@@ -2411,7 +2411,7 @@ gpg --verify /tmp/gpg-smoke.asc
 
 #### 🚀 BÔNUS: Script de health-check completo
 
-> 💡 Este script usa **`grep -P`** (Perl regex) e **`bc`** para comparar versões — no Ubuntu do curso: `sudo apt install bc`. Em ambiente minimal sem `-P`, edite a linha que extrai a versão ou use `gpg --version | head -n1` manualmente.
+> 💡 Este script usa **`grep -oE`** (primeiro par **M.N** na linha da versão) e **`bc`** para comparar versões — no Ubuntu do curso: `sudo apt install bc`. Se `bc` não existir, instale-o ou comente o bloco numérico e confira a versão à mão com `gpg --version | head -n1`.
 
 ```sh
 #!/bin/bash
@@ -2427,8 +2427,8 @@ echo -e "${GREEN}=== HEALTH CHECK GPG ===${NC}"
 # Identidade monitorada (laboratório do curso; exporte LAB_EMAIL antes de rodar se for outra)
 LAB_EMAIL="${LAB_EMAIL:-aluno.training@openpgp-lab.local}"
 
-# 1. Versão
-GPG_VER=$(gpg --version | head -n1 | grep -oP '\d+\.\d+')
+# 1. Versão (M.N — sem depender de grep -P)
+GPG_VER=$(gpg --version | head -n1 | grep -oE '[0-9]+\.[0-9]+' | head -1)
 if (( $(echo "$GPG_VER >= 2.5" | bc -l) )); then
     echo -e "${GREEN}✓ GPG $GPG_VER (OK)${NC}"
 elif (( $(echo "$GPG_VER >= 2.2" | bc -l) )); then
@@ -3825,6 +3825,7 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 - **Título do Módulo 11 (PQ):** alguns editores substituem **ã** por **â** em «quântica». Procure por `QUÂNTICA` (U+00C2) e deixe **`PÓS-QUÃNTICA`** (U+00C3), como no mapa e no restante do texto em PT‑BR.
 - **`$FP` / `$FP_MASTER`:** fingerprint pela linha `fpr:` (campo 10) só **depois** de filtrar identidade (`LAB_EMAIL`, `UID_MASTER`, `"$EMAIL"` no script bônus, etc.). Evite reintroduzir `gpg --list-secret-keys --with-colons | awk …` sem esse filtro se houver risco de mais de uma mestra.
 - **Versões e URLs:** alterou Tails, ISO de download ou ramo experimental do GnuPG? Atualize **cabeçalho**, **checklist de ferramentas** e blocos `wget` / `gpg --verify` correspondentes. Em links novos, confirme com **HEAD** (`curl -I` no Linux; no Windows, `Invoke-WebRequest -Method Head`): o índice `…/sequoia-sq/man/` devolve **404** — use `…/man/sq.1.html` ou a [raiz do `sequoia-sq`](https://sequoia-pgp.gitlab.io/sequoia-sq/).
+- **Parsing do `gpg`:** scripts novos devem preferir **`--with-colons` + `awk`** (fingerprint `fpr:`, keygrip `grp:`/`ssb:`, checagens `:s:`/`:e:`/`:a:`). Reserve `gpg -K … | grep` para blocos **didáticos** onde a saída humana for o objectivo (ex.: COMANDO 5.1).
 
 * * *
 
