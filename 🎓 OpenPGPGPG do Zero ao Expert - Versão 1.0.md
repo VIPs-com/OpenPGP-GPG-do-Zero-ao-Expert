@@ -92,6 +92,8 @@ Ao final deste curso, você será capaz de:
 
 > 💡 **Versões empacotadas:** no Ubuntu **24.04 LTS**, `gnupg2` instalado pelo `apt` normalmente é **2.4.x** — cobre quase todo o curso. Onde o texto pede **GnuPG 2.5.19+** (por exemplo Kyber/ML-KEM em laboratório), use pacote mais novo ou build a partir do site oficial do projeto.
 
+> 📎 **Conferência dos comandos `gpg`:** os exemplos foram revisados contra o manual oficial do projeto ([gestão OpenPGP / opções principais](https://www.gnupg.org/documentation/manuals/gnupg/OpenPGP-Key-Management.html)) para as séries **2.4.x** e **2.5.x**. Na máquina do curso, confirme sempre com `gpg --version`; em caso de divergência de distro, use `gpg OPÇÃO --help` ou `man gpg`.
+
 * * *
 
 ### 🎯 ESCOLHA SEU CAMINHO
@@ -1456,7 +1458,7 @@ chmod 400 ~/secure-backup/offline/revogacao-*.asc
 gpg --export-secret-subkeys --armor > subchaves.asc
 ```
 
-**Percebeu o problema?** Esse script exporta a PRIMEIRA chave que encontra. Se você tiver várias chaves, pode exportar a errada.
+**Percebeu o problema?** Sem dizer **qual** chave (`"$FP"` ou outro seletor suportado pelo `gpg`), o comando concatena no arquivo **todas** as subchaves secretas exportáveis de **todas** as identidades no chaveiro padrão — backup ambíguo (mistura várias mestras no mesmo `.asc`), maior que o necessário e difícil de auditar. Com uma única chave de laboratório até “passa”; na vida real **sempre** restrinja pelo fingerprint.
 
 * * *
 
