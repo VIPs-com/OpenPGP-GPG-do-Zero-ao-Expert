@@ -1442,7 +1442,7 @@ chmod 400 ~/secure-backup/offline/revogacao-*.asc
 
 | Problema | Solução |
 | --- | --- |
-| `No secret key` | `$FP` não definido ou não é a mestra certa. Rode `gpg -K` e exporte `FP` com o fingerprint completo da linha `sec`. |
+| `No secret key` | `$FP` incorreto ou chave errada. Confirme com `gpg --fingerprint` ou `gpg --list-secret-keys --with-colons 'UID ou email'`: use o **campo 10** da linha **`fpr:`** (não confunda com o campo 5 de `sec:`, que é só o KeyID longo). |
 | `Cannot create` | O diretório pode não existir. Crie com `mkdir -p ~/secure-backup/offline` |
 
 * * *
@@ -1789,6 +1789,8 @@ SSH via GPG:
 ```sh
 gpg -K --with-keygrip "$FP" | grep -A2 "\[A\]"
 ```
+
+> 📎 O mesmo keygrip sai da listagem **`--with-colons`** (linha `grp:` após `ssb:` com **`:a:`**) — é o método do script bônus **setup-ssh-gpg.sh** (Módulo 5).
 
 **Saída esperada:**
 
@@ -2204,11 +2206,17 @@ gpg --export-secret-subkeys --armor "$FP_MASTER" > "$PENDRIVE/auth.asc"
 echo "✅ Subchave [A] exportada"
 
 # === VERIFICAÇÃO AUTOMÁTICA ===
-echo "🔎 Verificando subchaves criadas..."
-gpg -K --with-keygrip | grep -E "\[S\]|\[E\]|\[A\]" || {
+echo "🔎 Verificando subchaves criadas (colon: ssb com :s:, :e: e :a:)..."
+if ! gpg --list-secret-keys --with-colons "$UID_MASTER" | awk -F: '
+BEGIN{s=e=a=0}
+/^ssb:/ && $0 ~ /:s:/ {s=1}
+/^ssb:/ && $0 ~ /:e:/ {e=1}
+/^ssb:/ && $0 ~ /:a:/ {a=1}
+END{exit !(s&&e&&a)}
+'; then
     echo "❌ Alguma subchave não foi encontrada!"
     exit 1
-}
+fi
 
 echo "🧩 Todas as subchaves foram criadas e exportadas com sucesso!"
 echo "💾 Arquivos gerados:"
@@ -2260,12 +2268,18 @@ if ! grep -q "SSH_AUTH_SOCK" ~/.bashrc; then
 fi
 source ~/.bashrc
 
-# Verificação automática
-echo "🔎 Verificando subchaves importadas..."
-gpg -K --with-keygrip | grep -E "\[S\]|\[E\]|\[A\]" || {
+# Verificação automática (chaveiro inteiro — use VM só de laboratório ou ajuste o filtro)
+echo "🔎 Verificando subchaves importadas (colon: há ssb :s:, :e: e :a:)..."
+if ! gpg --list-secret-keys --with-colons | awk -F: '
+BEGIN{s=e=a=0}
+/^ssb:/ && $0 ~ /:s:/ {s=1}
+/^ssb:/ && $0 ~ /:e:/ {e=1}
+/^ssb:/ && $0 ~ /:a:/ {a=1}
+END{exit !(s&&e&&a)}
+'; then
     echo "❌ Alguma subchave não foi encontrada!"
     exit 1
-}
+fi
 
 echo "🧩 Subchaves importadas e gpg-agent configurado com sucesso!"
 echo "💻 Agora você pode usar:"
