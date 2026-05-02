@@ -2456,8 +2456,9 @@ else
     echo -e "${RED}✗ ~/.gnupg não existe${NC}"
 fi
 
-# 3. Chaves secretas
-SECRET_KEYS=$(gpg --list-secret-keys --with-colons 2>/dev/null | grep -c "^sec:" || echo "0")
+# 3. Chaves secretas (grep -c já imprime 0 sem linhas — evite || echo para não duplicar)
+SECRET_KEYS=$(gpg --list-secret-keys --with-colons 2>/dev/null | grep -c "^sec:" || true)
+SECRET_KEYS=$((10#${SECRET_KEYS:-0}))
 if [ "$SECRET_KEYS" -gt 0 ]; then
     echo -e "${GREEN}✓ $SECRET_KEYS chave(s) secreta(s) encontrada(s)${NC}"
     if [ "$SECRET_KEYS" -gt 1 ]; then
@@ -3045,9 +3046,13 @@ Computadores quânticos suficientemente grandes (milhões de qubits) quebrarão:
 
 ```sh
 # 🔵 EXPERIMENTAL - Gerando chave híbrida (Kyber + cv25519)
-gpg --quick-generate-key --expert "Aluno Lab (PQ) <pq@lab>" kyber768+cv25519 cert 1y
+UID_PQ="Aluno Lab (PQ) <pq@lab>"
+gpg --quick-generate-key --expert "$UID_PQ" kyber768+cv25519 cert 1y
 
-# Verificando se o material da chave menciona Kyber (ajuste $FP à sua chave PQ de laboratório)
+# Fingerprint da identidade PQ (evita pegar outra mestra no mesmo chaveiro)
+FP=$(gpg --list-secret-keys --with-colons "$UID_PQ" | awk -F: '/^fpr:/ {print $10; exit}')
+
+# Verificando se o material da chave menciona Kyber
 gpg --export "$FP" 2>/dev/null | gpg --list-packets 2>/dev/null | grep -i kyber
 
 # ⚠️ NÃO use em produção crítica - experimental!
@@ -3145,6 +3150,8 @@ gpg --quick-generate-key "Seu Nome (PQ) <seu@dominio>" kyber768 cert 3y
 # 2030: SPHINCS+ disponível para assinaturas (quando suportado)
 # gpg --quick-generate-key --expert "Seu Nome" sphincsplus cert 3y
 ```
+
+> 📎 Ao exportar para inspecionar (`--export` / `--list-packets`), use **`FP`** obtido com **`--with-colons`** no **mesmo UID** da `quick-generate-key` (como no bloco Kyber laboratorial acima).
 
 * * *
 
