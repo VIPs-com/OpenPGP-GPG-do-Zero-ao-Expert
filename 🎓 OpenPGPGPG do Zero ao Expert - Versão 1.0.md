@@ -3657,10 +3657,10 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 | Recurso | URL |
 | --- | --- |
 | Documentação GnuPG | https://www.gnupg.org/documentation/ |
-| Wiki WKD | https://wiki.gnupg.org/WebKeyDirectory |
+| Wiki WKD | https://wiki.gnupg.org/WKD |
 | Sequoia-PGP | https://sequoia-pgp.org |
 | SafeCurves (Bernstein) | https://safecurves.cr.yp.to |
-| Passphrases Diceware (EFF) | https://www.eff.org/diceware |
+| Diceware / dados — guia EFF | https://www.eff.org/dice |
 | Tails | https://tails.net |
 
 * * *
