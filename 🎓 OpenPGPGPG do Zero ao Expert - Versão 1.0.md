@@ -2411,7 +2411,7 @@ gpg --verify /tmp/gpg-smoke.asc
 
 #### 🚀 BÔNUS: Script de health-check completo
 
-> 💡 Este script usa **`grep -oE`** (primeiro par **M.N** na linha da versão) e **`bc`** para comparar versões — no Ubuntu do curso: `sudo apt install bc`. Sem `bc`, o script apenas **avisa** e mostra o **M.N** detetado; confira sempre com `gpg --version | head -n1`.
+> 💡 Este script usa **`grep -oE`** (primeiro par **M.N** na linha da versão) e **`bc`** para comparar versões — no Ubuntu do curso: `sudo apt install bc`. Sem `bc`, o script apenas **avisa** e mostra o **M.N** detectado; confira sempre com `gpg --version | head -n1`.
 
 ```sh
 #!/bin/bash
@@ -2439,7 +2439,7 @@ if command -v bc >/dev/null 2>&1; then
         echo -e "${RED}✗ GPG $GPG_VER (muito antigo)${NC}"
     fi
 else
-    echo -e "${YELLOW}⚠ bc não encontrado — comparativo numérico ignorado (detetado M.N ≈ $GPG_VER). Instale: sudo apt install bc${NC}"
+    echo -e "${YELLOW}⚠ bc não encontrado — comparativo numérico ignorado (detectado M.N ≈ $GPG_VER). Instale: sudo apt install bc${NC}"
 fi
 
 # 2. Diretório .gnupg
@@ -3141,14 +3141,20 @@ gpg --export "$FP" 2>/dev/null | gpg --list-packets 2>/dev/null | grep -i kyber
 #### 🚀 Guia de migração para 2028-2030
 
 ```sh
-# 2028: Comece a usar chaves híbridas em produção não-crítica
-gpg --quick-generate-key --expert "Seu Nome (PQ) <seu@dominio>" kyber768+cv25519 cert 3y
+# UID único por cenário — não repita --quick-generate-key com o mesmo texto se já existir mestra com esse UID.
+UID_PQ_MIG="Seu Nome (PQ) <seu@dominio>"
 
-# 2029: Kyber como padrão para dados de longo prazo
-gpg --quick-generate-key "Seu Nome (PQ) <seu@dominio>" kyber768 cert 3y
+# 2028: Comece a usar chaves híbridas em produção não-crítica
+gpg --quick-generate-key --expert "$UID_PQ_MIG" kyber768+cv25519 cert 3y
+FP=$(gpg --list-secret-keys --with-colons "$UID_PQ_MIG" | awk -F: '/^fpr:/ {print $10; exit}')
+# gpg --export "$FP" 2>/dev/null | gpg --list-packets 2>/dev/null | grep -i kyber
+
+# 2029: Kyber como padrão para dados de longo prazo (confira sintaxe no manual do gpg da época)
+gpg --quick-generate-key "$UID_PQ_MIG" kyber768 cert 3y
+FP=$(gpg --list-secret-keys --with-colons "$UID_PQ_MIG" | awk -F: '/^fpr:/ {print $10; exit}')
 
 # 2030: SPHINCS+ disponível para assinaturas (quando suportado)
-# gpg --quick-generate-key --expert "Seu Nome" sphincsplus cert 3y
+# gpg --quick-generate-key --expert "$UID_PQ_MIG" sphincsplus cert 3y
 ```
 
 > 📎 Ao exportar para inspecionar (`--export` / `--list-packets`), use **`FP`** obtido com **`--with-colons`** no **mesmo UID** da `quick-generate-key` (como no bloco Kyber laboratorial acima).
