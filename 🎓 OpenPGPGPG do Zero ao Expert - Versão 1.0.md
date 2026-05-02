@@ -1040,7 +1040,7 @@ echo "Email: $EMAIL"
 
 gpg --quick-generate-key "$NOME ($COMENTARIO) <$EMAIL>" ed25519 cert 3y
 
-FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
+FP=$(gpg --list-secret-keys --with-colons "$EMAIL" | awk -F: '/^fpr:/ {print $10; exit}')
 
 echo "✅ Fingerprint: $FP"
 
@@ -1052,7 +1052,7 @@ echo "✅ Subchaves criadas com sucesso!"
 echo "💰 Não se esqueça: gere o certificado de revogação!"
 ```
 
-> 📎 Nos listings `--with-colons`, a **fingerprint completa** da mestra está na linha `fpr:` (**campo 10**). Os scripts usam `awk` nessa linha para preencher `$FP` — certo quando há **uma** mestra de laboratório ou quando a listagem já foi filtrada (ex.: `gpg … --with-colons 'Nome <email>'`). O **campo 5** de `sec:` é só o **KeyID longo**; o `gpg` aceita nos mesmos comandos, mas prefira a fingerprint ao cruzar com papel, WKD ou GitHub.
+> 📎 Nos listings `--with-colons`, a **fingerprint completa** da mestra está na linha `fpr:` (**campo 10**). Os scripts deste curso passam **e-mail ou UID** para `gpg --list-secret-keys --with-colons …` antes do `awk`, assim o `fpr` corresponde à identidade certa mesmo com **várias** mestras no chaveiro. O **campo 5** de `sec:` é só o **KeyID longo**; use `fpr` ao cruzar com papel, WKD ou GitHub.
 
 * * *
 
@@ -1323,7 +1323,8 @@ BACKUP_DIR="$HOME/gpg-backups"
 TIMESTAMP=$(date -u +"%Y%m%dT%H%M%SZ")
 mkdir -p "$BACKUP_DIR"
 
-FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
+LAB_EMAIL="${LAB_EMAIL:-aluno.training@openpgp-lab.local}"
+FP=$(gpg --list-secret-keys --with-colons "$LAB_EMAIL" | awk -F: '/^fpr:/ {print $10; exit}')
 
 if [ -z "$FP" ]; then
     echo "❌ Nenhuma chave encontrada!"
@@ -1467,7 +1468,8 @@ gpg --export-secret-subkeys --armor > subchaves.asc
 **🟡 Abordagem com fingerprint (melhor):**
 
 ```sh
-FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
+LAB_EMAIL="aluno.training@openpgp-lab.local"
+FP=$(gpg --list-secret-keys --with-colons "$LAB_EMAIL" | awk -F: '/^fpr:/ {print $10; exit}')
 gpg --export-secret-subkeys --armor "$FP" > subchaves.asc
 ```
 
@@ -1485,7 +1487,8 @@ BACKUP_DIR="$HOME/gpg-backups"
 TIMESTAMP=$(date -u +"%Y%m%dT%H%M%SZ")
 mkdir -p "$BACKUP_DIR"
 
-FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
+LAB_EMAIL="${LAB_EMAIL:-aluno.training@openpgp-lab.local}"
+FP=$(gpg --list-secret-keys --with-colons "$LAB_EMAIL" | awk -F: '/^fpr:/ {print $10; exit}')
 
 if [ -z "$FP" ]; then
     echo "❌ ERRO: Nenhuma chave secreta encontrada!"
@@ -1962,8 +1965,9 @@ fi
 
 source ~/.bashrc
 
-# Exporta chave pública SSH (use sempre o fingerprint da mestra correta se tiver mais de uma chave)
-FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
+# Exporta chave pública SSH (ajuste LAB_EMAIL se sua identidade de laboratório for outra)
+LAB_EMAIL="${LAB_EMAIL:-aluno.training@openpgp-lab.local}"
+FP=$(gpg --list-secret-keys --with-colons "$LAB_EMAIL" | awk -F: '/^fpr:/ {print $10; exit}')
 gpg --export-ssh-key "$FP" > gpg-ssh-key.pub
 echo "✅ Chave SSH exportada para gpg-ssh-key.pub"
 
@@ -2074,14 +2078,15 @@ echo "✅ Pendrive Tails criado com sucesso!"
 # 🔴 PASSO CRÍTICO: DESCONECTE A INTERNET (fisicamente, se possível)
 # A chave mestra NUNCA deve tocar a internet
 
-# Gere a chave mestra (use seu nome real aqui)
-gpg --quick-generate-key "Seu Nome Real (OFFLINE MASTER) <seu@email.com>" ed25519 cert 3y
+# Gere a chave mestra (use seu nome real aqui — mantenha o mesmo texto em UID_MASTER)
+UID_MASTER="Seu Nome Real (OFFLINE MASTER) <seu@email.com>"
+gpg --quick-generate-key "$UID_MASTER" ed25519 cert 3y
 
 # A saída mostrará algo como:
 # gpg: key 3A4B5C6D7E8F9A0B marked as ultimately trusted
 
-# Capture o fingerprint automaticamente
-FP_MASTER=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
+# Fingerprint da mestra (filtrado pelo mesmo UID que você acabou de criar)
+FP_MASTER=$(gpg --list-secret-keys --with-colons "$UID_MASTER" | awk -F: '/^fpr:/ {print $10; exit}')
 echo "Fingerprint da sua identidade mestra: $FP_MASTER"
 
 # ANOTE EM PAPEL! Não no computador. O papel é offline.
@@ -2153,8 +2158,9 @@ sync
 
 set -euo pipefail
 
-# Fingerprint da mestra (campo 10 da primeira linha fpr: em --with-colons)
-FP_MASTER=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
+# Mesmo UID usado no --quick-generate-key da mestra no Tails (ajuste se for outro)
+UID_MASTER="${UID_MASTER:-Seu Nome Real (OFFLINE MASTER) <seu@email.com>}"
+FP_MASTER=$(gpg --list-secret-keys --with-colons "$UID_MASTER" | awk -F: '/^fpr:/ {print $10; exit}')
 PENDRIVE="/media/pendrive"  # ajuste conforme o nome do seu pendrive
 
 # === VERIFICAÇÕES ===
@@ -2397,6 +2403,9 @@ NC='\033[0m'
 
 echo -e "${GREEN}=== HEALTH CHECK GPG ===${NC}"
 
+# Identidade monitorada (laboratório do curso; exporte LAB_EMAIL antes de rodar se for outra)
+LAB_EMAIL="${LAB_EMAIL:-aluno.training@openpgp-lab.local}"
+
 # 1. Versão
 GPG_VER=$(gpg --version | head -n1 | grep -oP '\d+\.\d+')
 if (( $(echo "$GPG_VER >= 2.5" | bc -l) )); then
@@ -2425,7 +2434,10 @@ fi
 SECRET_KEYS=$(gpg --list-secret-keys --with-colons 2>/dev/null | grep -c "^sec:" || echo "0")
 if [ "$SECRET_KEYS" -gt 0 ]; then
     echo -e "${GREEN}✓ $SECRET_KEYS chave(s) secreta(s) encontrada(s)${NC}"
-    FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
+    if [ "$SECRET_KEYS" -gt 1 ]; then
+        echo -e "${YELLOW}⚠ Várias mestras — fingerprint abaixo segue LAB_EMAIL=$LAB_EMAIL${NC}"
+    fi
+    FP=$(gpg --list-secret-keys --with-colons "$LAB_EMAIL" | awk -F: '/^fpr:/ {print $10; exit}')
     echo -e "${GREEN}✓ Fingerprint da mestra: $FP${NC}"
 else
     echo -e "${RED}✗ Nenhuma chave secreta encontrada${NC}"
@@ -2499,8 +2511,8 @@ A progressão **🔴 simples → 🟡 com fingerprint → 🟢 completa**, com e
 
 set -euo pipefail
 
-# Identificador da chave primária (mesmo formato usado em todo o curso: campo 5 da linha sec)
-FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
+LAB_EMAIL="${LAB_EMAIL:-aluno.training@openpgp-lab.local}"
+FP=$(gpg --list-secret-keys --with-colons "$LAB_EMAIL" | awk -F: '/^fpr:/ {print $10; exit}')
 if [ -z "$FP" ]; then
     echo "❌ Nenhuma chave secreta encontrada."
     exit 1
@@ -2574,7 +2586,8 @@ fi
 #!/bin/bash
 # gpg-automation.sh - Script completo com todas as funções
 
-FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
+LAB_EMAIL="${LAB_EMAIL:-aluno.training@openpgp-lab.local}"
+FP=$(gpg --list-secret-keys --with-colons "$LAB_EMAIL" | awk -F: '/^fpr:/ {print $10; exit}')
 
 case "${1:-}" in
     backup)
