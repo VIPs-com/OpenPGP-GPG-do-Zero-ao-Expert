@@ -3256,6 +3256,8 @@ O complemento Enigmail está **descontinuado**; Thunderbird **78+** traz OpenPGP
 
 > 📎 No Sequoia, **`sq cert export`** é só material **público**; já **`sq key export`** envia o OpenPGP **com segredo** disponível no cofre (como `gpg --export-secret-keys`). O **`--cert=FPR`** em **`sq key export`** só **escolhe** qual identidade exportar — não significa “sem segredo”. Saída OpenPGP costuma vir **ASCII armor por omissão**; confira `sq help` na sua versão.
 
+> 📎 **`sq verify` / `sq decrypt` (~1.3.x):** verificação **destacada** → **`--signature-file=SIG`** + ficheiro de dados (como na tabela). Mensagem **inline** assinada → **`sq verify --message`**; **clearsigned** → **`sq verify --cleartext`**. Em **`sq decrypt`**, se o segredo estiver **só** num ficheiro exportado (fora do cofre Sequoia), use **`--recipient-file=chave-secreta.pgp`**; com cofre já povoado, **`sq decrypt ciphertext.pgp`** costuma bastar (exemplos em `man sq-verify` / `man sq-decrypt`).
+
 * * *
 
 #### Mapa de Transição GnuPG → Sequoia
@@ -3274,9 +3276,9 @@ O complemento Enigmail está **descontinuado**; Thunderbird **78+** traz OpenPGP
 ├─ gpg --export-secret-keys (segredo) → sq key export --cert=FPR
 ├─ gpg --list-keys → sq key list
 ├─ gpg --clearsign / gpg --sign → sq sign (--cleartext … ou --message …; --signer-email ou --signer-file …)
-├─ gpg --verify (.sig destacada) → sq verify --signature-file=X arquivo
+├─ gpg --verify → sq verify (--signature-file … destacada; --message / --cleartext inline)
 ├─ gpg --encrypt → sq encrypt --for-email=EMAIL …
-└─ gpg --decrypt → sq decrypt …
+└─ gpg --decrypt → sq decrypt … (opc. --recipient-file … se a chave for só ficheiro)
 ```
 
 > 💡 **DICA DO PROFESSOR:** O **modelo mental** de OpenPGP (certificado, UID, fingerprint, subchaves, agente) **serve quase igual** no Sequoia; mudam sobretudo **sintaxe de CLI**, defaults e alguns cantos de WoT/policy entre `gpg` e `sq`. Por isso dominar o `gpg` **e** saber ler o `sq help` deixa você preparado quando o `sq` ganhar mais tração no *tooling*.
