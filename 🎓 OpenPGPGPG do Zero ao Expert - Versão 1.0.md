@@ -3247,13 +3247,14 @@ O complemento Enigmail está **descontinuado**; Thunderbird **78+** traz OpenPGP
 | --- | --- | --- |
 | Importar chave/certificado | `gpg --import chave.asc` | `sq key import chave.asc` |
 | Exportar certificado **público** | `gpg --export -a FPR` | `sq cert export --cert=FPR` |
+| Exportar material **secreto** (backup mestra / cofre local) | `gpg --export-secret-keys --armor FPR` | `sq key export --cert=FPR` |
 | Listar chaves | `gpg --list-keys` | `sq key list` |
 | Assinar (mensagem inline) | `gpg --sign arquivo.txt` | `sq sign --signer-email=EMAIL --message arquivo.txt` |
 | Verificar assinatura **destacada** | `gpg --verify arquivo.sig arquivo.txt` | `sq verify --signature-file=arquivo.sig arquivo.txt` |
 | Cifrar | `gpg --encrypt -r EMAIL arquivo.txt` | `sq encrypt --for-email=EMAIL arquivo.txt` |
 | Decifrar | `gpg --decrypt arquivo.gpg` | `sq decrypt arquivo.gpg` |
 
-> 📎 No Sequoia, **certificado** = material só público; **chave** = material com segredo. Export de segredo (`gpg --export-secret-keys`…) equivale a `sq key export --cert=FPR`, não à linha “certificado público” acima. Saída OpenPGP costuma vir **ASCII armor por omissão**; confira `sq help` na sua versão.
+> 📎 No Sequoia, **`sq cert export`** é só material **público**; já **`sq key export`** envia o OpenPGP **com segredo** disponível no cofre (como `gpg --export-secret-keys`). O **`--cert=FPR`** em **`sq key export`** só **escolhe** qual identidade exportar — não significa “sem segredo”. Saída OpenPGP costuma vir **ASCII armor por omissão**; confira `sq help` na sua versão.
 
 * * *
 
@@ -3270,6 +3271,7 @@ O complemento Enigmail está **descontinuado**; Thunderbird **78+** traz OpenPGP
 ⚙️ APENAS OS COMANDOS MUDAM:
 ├─ gpg --import → sq key import
 ├─ gpg --export -a (público) → sq cert export --cert=FPR
+├─ gpg --export-secret-keys (segredo) → sq key export --cert=FPR
 ├─ gpg --list-keys → sq key list
 ├─ gpg --sign → sq sign (--signer-email ou --signer-file …)
 ├─ gpg --verify (.sig destacada) → sq verify --signature-file=X arquivo
