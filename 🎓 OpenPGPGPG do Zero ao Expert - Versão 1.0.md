@@ -1838,6 +1838,8 @@ ls -la ~/.gnupg/S.gpg-agent.ssh
 srw------- 1 aluno aluno 0 May 2 10:00 /home/aluno/.gnupg/S.gpg-agent.ssh
 ```
 
+> 💡 No **Módulo 0** você já pode ter `enable-ssh-support` em `~/.gnupg/gpg-agent.conf`. Antes de acrescentar de novo, confira com `grep enable-ssh-support ~/.gnupg/gpg-agent.conf` para não duplicar linhas sem necessidade.
+
 * * *
 
 #### ▸ COMANDO 5.4: Exportando a chave pública SSH
@@ -1891,15 +1893,17 @@ Hi AlunoLab! You've successfully authenticated...
 ```
 
 ```sh
-# Teste com localhost
+# Teste com localhost (opcional — exige servidor SSH ouvindo na máquina)
 ssh localhost echo "Conectado via GPG!"
 ```
 
-**Saída esperada:**
+**Saída esperada (se `openssh-server` estiver instalado e ativo):**
 
 ```
 Conectado via GPG!
 ```
+
+> ⚠️ Em muitas VMs Ubuntu **minimal** não há `sshd`. Se `ssh localhost` falhar, não desanime: o teste que importa neste curso costuma ser **`ssh -T git@github.com`** (ou um servidor onde você já instalou `gpg-ssh-key.pub`).
 
 * * *
 
@@ -1953,8 +1957,9 @@ fi
 
 source ~/.bashrc
 
-# Exporta chave pública SSH
-gpg --export-ssh-key > gpg-ssh-key.pub
+# Exporta chave pública SSH (use sempre o fingerprint da mestra correta se tiver mais de uma chave)
+FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^sec:/ {print $5; exit}')
+gpg --export-ssh-key "$FP" > gpg-ssh-key.pub
 echo "✅ Chave SSH exportada para gpg-ssh-key.pub"
 
 echo "🧩 SSH via GPG configurado com sucesso!"
@@ -2079,7 +2084,7 @@ echo "Fingerprint da sua identidade mestra: $FP_MASTER"
 # Gere o certificado de revogação
 gpg --output "/live/persistence/TailsData_unlocked/revogacao.asc" --gen-revoke "$FP_MASTER"
 
-# Exporte a chave mestra (para backup offlines)
+# Exporte a chave mestra (para backup offline)
 gpg --export-secret-keys --armor "$FP_MASTER" > "/live/persistence/TailsData_unlocked/master-key.asc"
 
 # Exporte subchaves vazias (para importar no PC depois)
@@ -2193,6 +2198,8 @@ ls -lh "$PENDRIVE"/*.asc
 
 echo "⚠️ Agora desligue o Tails — a chave mestra nunca deve tocar a internet."
 ```
+
+> ⚠️ **Leitura técnica:** cada `gpg --export-secret-subkeys` exporta **todas** as subchaves secretas já criadas até aquele momento; os nomes `sign.asc` / `encrypt.asc` / `auth.asc` são só destinos sugeridos no roteiro. Em produção siga um fluxo único de export das subchaves operacionais (como nos Módulos 3 e 6 — exports consolidados).
 
 * * *
 
@@ -2371,6 +2378,8 @@ gpg --verify /tmp/gpg-smoke.asc
 * * *
 
 #### 🚀 BÔNUS: Script de health-check completo
+
+> 💡 Este script usa **`grep -P`** (Perl regex) e **`bc`** para comparar versões — no Ubuntu do curso: `sudo apt install bc`. Em ambiente minimal sem `-P`, edite a linha que extrai a versão ou use `gpg --version | head -n1` manualmente.
 
 ```sh
 #!/bin/bash
@@ -2638,6 +2647,8 @@ echo "recuperei" | gpg --clearsign > /dev/null 2>&1 && echo "✓ Recuperação O
 # 6. Se tiver a chave mestra (pendrive LUKS), recupere também
 # Boot Tails, monte pendrive, decifre mestra.age, importe
 ```
+
+> ⚠️ Como no **Módulo 3**, o nome **`subchaves.age`** aqui é **exemplo**. Aponte para o arquivo `.age` real do seu backup (ex.: `~/gpg-backups/subkeys-….age`) ou ajuste o caminho no `age --decrypt`.
 
 #### Rubrica de aprovação do Checkpoint 3
 
