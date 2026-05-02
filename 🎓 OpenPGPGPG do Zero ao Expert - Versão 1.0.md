@@ -1436,7 +1436,7 @@ chmod 400 ~/secure-backup/offline/revogacao-*.asc
 
 | Problema | Solução |
 | --- | --- |
-| `No secret key` | O email está errado. Verifique com `gpg --list-keys` |
+| `No secret key` | `$FP` não definido ou não é a mestra certa. Rode `gpg -K` e exporte `FP` com o fingerprint completo da linha `sec`. |
 | `Cannot create` | O diretório pode não existir. Crie com `mkdir -p ~/secure-backup/offline` |
 
 * * *
@@ -1497,6 +1497,8 @@ find "$BACKUP_DIR" -name "*.age" -mtime +30 -delete
 
 echo "✓ Backup: $BACKUP_DIR/subkeys-${TIMESTAMP}.age"
 ```
+
+> ⚠️ Nos passos seguintes, **`subchaves.age`** é só nome de exemplo. Use o caminho real do arquivo `.age` gerado aqui (ex.: `$BACKUP_DIR/subkeys-<TIMESTAMP>.age`), ou renomeie cópia de laboratório para `subchaves.age` para bater com os comandos tal como estão escritos.
 
 * * *
 
@@ -1634,6 +1636,8 @@ git config --global user.name "Aluno Lab"
 git config --global user.email "aluno.training@openpgp-lab.local"
 ```
 
+> 💡 Se `FP_SIGN` vier **vazio**, rode `gpg -K --with-subkey-fingerprints --keyid-format long`, localize a linha da subchave com **`[S]`** e use esse fingerprint inteiro em `git config --global user.signingkey "..."`.
+
 * * *
 
 #### ▸ COMANDO 4.2: Primeiro commit assinado
@@ -1662,7 +1666,7 @@ gpg: Assinatura correta de "Aluno Lab (TRAINING 2026)..."
 
 * * *
 
-**▶️ EXERCÍCIO 4.1:** Exporte sua chave pública e adicione no GitHub. Faça um push e veja o selo "Verified".
+**▶️ EXERCÍCIO 4.1:** Exporte sua chave pública (ex.: `gpg --armor --export "$FP"` ou `gpg --armor --export aluno.training@openpgp-lab.local`), adicione em **SSH and GPG keys** no GitHub, faça `git push` e confira o selo **Verified** no commit.
 
 * * *
 
@@ -1713,6 +1717,8 @@ git log --show-signature -1
 > ✅ **Aprovado:** todos os critérios marcados.
 
 **✅ Checkpoint 2 aprovado!**
+
+* * *
 
 ## 🔴 4. PARTE 3: SEGURANÇA AVANÇADA (Semana 3)
 
@@ -2316,7 +2322,7 @@ gpgconf --check-programs
 gpgconf --reload gpg-agent
 ```
 
-**Usado após alterar o** `**gpg-agent.conf**`**.**
+**Usado após alterar o** `~/.gnupg/gpg-agent.conf` **(depois, recarregue o agente conforme o Módulo 0).**
 
 * * *
 
