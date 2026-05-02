@@ -1052,6 +1052,8 @@ echo "✅ Subchaves criadas com sucesso!"
 echo "💰 Não se esqueça: gere o certificado de revogação!"
 ```
 
+> 📎 Nos listings `--with-colons`, o **campo 5** da linha `sec:` é o **KeyID longo** (16 caracteres hex — últimos 64 bits da fingerprint SHA‑1 “clássica”), não os 40 caracteres da fingerprint completa. O GnuPG aceita esse valor na maioria dos comandos onde também aceita fingerprint; para conferência visual humana use `gpg --fingerprint`.
+
 * * *
 
 ### 📋 MÓDULO 2: CIFRANDO E DECIFRANDO
@@ -2151,8 +2153,8 @@ sync
 
 set -euo pipefail
 
-# Captura o fingerprint automaticamente
-FP_MASTER=$(gpg --list-secret-keys --with-colons | grep '^sec:' | cut -d: -f5)
+# KeyID longo da mestra (campo 5 da linha sec: — aceito pelo gpg como seletor)
+FP_MASTER=$(gpg --list-secret-keys --with-colons | grep '^sec:' | head -1 | cut -d: -f5)
 PENDRIVE="/media/pendrive"  # ajuste conforme o nome do seu pendrive
 
 # === VERIFICAÇÕES ===
