@@ -2411,7 +2411,7 @@ gpg --verify /tmp/gpg-smoke.asc
 
 #### 🚀 BÔNUS: Script de health-check completo
 
-> 💡 Este script usa **`grep -oE`** (primeiro par **M.N** na linha da versão) e **`bc`** para comparar versões — no Ubuntu do curso: `sudo apt install bc`. Se `bc` não existir, instale-o ou comente o bloco numérico e confira a versão à mão com `gpg --version | head -n1`.
+> 💡 Este script usa **`grep -oE`** (primeiro par **M.N** na linha da versão) e **`bc`** para comparar versões — no Ubuntu do curso: `sudo apt install bc`. Sem `bc`, o script apenas **avisa** e mostra o **M.N** detetado; confira sempre com `gpg --version | head -n1`.
 
 ```sh
 #!/bin/bash
@@ -2430,12 +2430,16 @@ LAB_EMAIL="${LAB_EMAIL:-aluno.training@openpgp-lab.local}"
 # 1. Versão (M.N — sem depender de grep -P)
 GPG_VER=$(gpg --version | head -n1 | grep -oE '[0-9]+\.[0-9]+' | head -1)
 GPG_VER="${GPG_VER:-0.0}"
-if (( $(echo "$GPG_VER >= 2.5" | bc -l) )); then
-    echo -e "${GREEN}✓ GPG $GPG_VER (OK)${NC}"
-elif (( $(echo "$GPG_VER >= 2.2" | bc -l) )); then
-    echo -e "${YELLOW}⚠ GPG $GPG_VER (considere atualizar)${NC}"
+if command -v bc >/dev/null 2>&1; then
+    if (( $(echo "$GPG_VER >= 2.5" | bc -l) )); then
+        echo -e "${GREEN}✓ GPG $GPG_VER (OK)${NC}"
+    elif (( $(echo "$GPG_VER >= 2.2" | bc -l) )); then
+        echo -e "${YELLOW}⚠ GPG $GPG_VER (considere atualizar)${NC}"
+    else
+        echo -e "${RED}✗ GPG $GPG_VER (muito antigo)${NC}"
+    fi
 else
-    echo -e "${RED}✗ GPG $GPG_VER (muito antigo)${NC}"
+    echo -e "${YELLOW}⚠ bc não encontrado — comparativo numérico ignorado (detetado M.N ≈ $GPG_VER). Instale: sudo apt install bc${NC}"
 fi
 
 # 2. Diretório .gnupg
@@ -3407,7 +3411,7 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | **Fingerprint** | Identificador longo e estável da chave — compare **fora da banda** com o interlocutor antes de marcar confiança ou assinar a chave de terceiros. |
 | **`--with-colons`** | Saída máquina-legível (`pub:`, `sec:`, `sub:`/`ssb:`, `fpr:`, `grp:`…). Em **`fpr:`**, o campo **10** costuma ser a fingerprint completa; em **`sec:`**/`pub:`**, o campo **5** é em geral o KeyID longo (vários formatos funcionam como seletor no `gpg`). Ver scripts dos Módulos 3–6 e anexo do mantenedor. |
 | **Keygrip** | Identificador que o `gpg-agent` usa para mapear material criptográfico (ligação ao SSH via `[A]`, `sshcontrol`, etc.). Ver Módulo 5. |
-| **pinentry** | Programa que solicita passphrase ou PIN ao agente (`pinentry-tty`, `pinentry-gnome`, …). Fundamental para não treinar má hábitos como passphrase em variável de ambiente. |
+| **pinentry** | Programa que solicita passphrase ou PIN ao agente (`pinentry-tty`, `pinentry-gnome`, …). Fundamental para não treinar **maus hábitos**, como guardar passphrase em variável de ambiente. |
 | **Air-gapped / offline** | Operação sem rede no momento sensível (ex.: gerir mestra no Tails sem Internet). Objetivo: reduzir superfície de vazamento. |
 | **LUKS** | Criptografia de disco/partição no Linux — uso típico para proteger mídia física onde você guarda backups ou cofres. |
 | **age** | Ferramenta simples para cifrar arquivos com chave ou passphrase — usada nos roteiros de backup com `gpg` + arquivos `.age`. |
