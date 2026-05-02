@@ -3,7 +3,7 @@
 **Autor:** Professor Especialista em Criptografia Aplicada no Linux, Windows, Android, iPhone  
 **GnuPG:** ~**2.4.x** no Ubuntu 24.04 do curso (`apt`) · **2.5.19+** nas seções Kyber/ML‑KEM experimental (consulte [download](https://www.gnupg.org/download/index.en.html))  
 **Tails:** 7.7.1+ (confira sempre em [tails.net/install/download](https://tails.net/install/download/index.en.html))  
-**Sequoia (`sq`):** exemplos do curso alinhados a **sequoia-sq ~1.3.x** ([manuais](https://sequoia-pgp.gitlab.io/sequoia-sq/man/) · depois de instalar, use `sq version`)  
+**Sequoia (`sq`):** exemplos do curso alinhados a **sequoia-sq ~1.3.x** ([manual `sq(1)`](https://sequoia-pgp.gitlab.io/sequoia-sq/man/sq.1.html) · [páginas do projeto](https://sequoia-pgp.gitlab.io/sequoia-sq/) · depois de instalar, use `sq version`)  
 **Metodologia:** 🔴🟡🟢🔵 + COMANDO A COMANDO + Checkpoints  
 **Status:** ✅ **VERSÃO 1.0 — material canônico único**
 
@@ -350,7 +350,7 @@ Ao final deste curso, você será capaz de:
     ├── Apêndice E: GUIA MULTIPLATAFORMA (Win/Android/iPhone + SSH sem YubiKey: FIDO2/sk, ssh-add -c, cofres)
     ├── Apêndice F: MIGRAÇÃO RSA → ECC (Legado para Moderno)
     ├── ⚖️ Qualidade, ética e referências (checklist mantenedor + ética + URLs)
-    ├── 📎 Anexo (mantenedor — opcional): orientações editoriais
+    ├── 📎 Anexo (mantenedor — opcional): princípios editoriais + pré-commit (PQ/Unicode, FP, URLs)
     └── 🏁 Conclusão
 
 ┌─────────────────────────────────────────────────────────────┐
@@ -3775,6 +3775,7 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 | Documentação GnuPG | https://www.gnupg.org/documentation/ |
 | Wiki WKD | https://wiki.gnupg.org/WKD |
 | Sequoia-PGP | https://sequoia-pgp.org |
+| Sequoia `sq` — manual (entrada) | https://sequoia-pgp.gitlab.io/sequoia-sq/man/sq.1.html |
 | SafeCurves (Bernstein) | https://safecurves.cr.yp.to |
 | Diceware / dados — guia EFF | https://www.eff.org/dice |
 | Tails | https://tails.net |
@@ -3799,7 +3800,7 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 
 - **Título do Módulo 11 (PQ):** alguns editores substituem **ã** por **â** em «quântica». Procure por `QUÂNTICA` (U+00C2) e deixe **`PÓS-QUÃNTICA`** (U+00C3), como no mapa e no restante do texto em PT‑BR.
 - **`$FP` / `$FP_MASTER`:** fingerprint pela linha `fpr:` (campo 10) só **depois** de filtrar identidade (`LAB_EMAIL`, `UID_MASTER`, `"$EMAIL"` no script bônus, etc.). Evite reintroduzir `gpg --list-secret-keys --with-colons | awk …` sem esse filtro se houver risco de mais de uma mestra.
-- **Versões e URLs:** alterou Tails, ISO de download ou ramo experimental do GnuPG? Atualize **cabeçalho**, **checklist de ferramentas** e blocos `wget` / `gpg --verify` correspondentes.
+- **Versões e URLs:** alterou Tails, ISO de download ou ramo experimental do GnuPG? Atualize **cabeçalho**, **checklist de ferramentas** e blocos `wget` / `gpg --verify` correspondentes. Em links novos, confirme com **HEAD** (`curl -I` no Linux; no Windows, `Invoke-WebRequest -Method Head`): o índice `…/sequoia-sq/man/` devolve **404** — use `…/man/sq.1.html` ou a [raiz do `sequoia-sq`](https://sequoia-pgp.gitlab.io/sequoia-sq/).
 
 * * *
 
