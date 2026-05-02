@@ -3256,7 +3256,7 @@ O complemento Enigmail está **descontinuado**; Thunderbird **78+** traz OpenPGP
 
 > 📎 No Sequoia, **`sq cert export`** é só material **público**; já **`sq key export`** envia o OpenPGP **com segredo** disponível no cofre (como `gpg --export-secret-keys`). O **`--cert=FPR`** em **`sq key export`** só **escolhe** qual identidade exportar — não significa “sem segredo”. Saída OpenPGP costuma vir **ASCII armor por omissão**; confira `sq help` na sua versão.
 
-> 📎 **`sq verify` / `sq decrypt` (~1.3.x):** verificação **destacada** → **`--signature-file=SIG`** + ficheiro de dados (como na tabela). Mensagem **inline** assinada → **`sq verify --message`**; **clearsigned** → **`sq verify --cleartext`**. Em **`sq decrypt`**, se o segredo estiver **só** num ficheiro exportado (fora do cofre Sequoia), use **`--recipient-file=chave-secreta.pgp`**; com cofre já povoado, **`sq decrypt ciphertext.pgp`** costuma bastar (exemplos em `man sq-verify` / `man sq-decrypt`).
+> 📎 **`sq verify` / `sq decrypt` (~1.3.x):** verificação **destacada** → **`--signature-file=SIG`** + arquivo de dados (como na tabela). Mensagem **inline** assinada → **`sq verify --message`**; **clearsigned** → **`sq verify --cleartext`**. Em **`sq decrypt`**, se o segredo estiver **só** em um arquivo exportado (fora do cofre Sequoia), use **`--recipient-file=chave-secreta.pgp`**; com cofre já povoado, **`sq decrypt arquivo_cifrado.pgp`** costuma bastar (exemplos em `man sq-verify` / `man sq-decrypt`).
 
 * * *
 
@@ -3278,7 +3278,7 @@ O complemento Enigmail está **descontinuado**; Thunderbird **78+** traz OpenPGP
 ├─ gpg --clearsign / gpg --sign → sq sign (--cleartext … ou --message …; --signer-email ou --signer-file …)
 ├─ gpg --verify → sq verify (--signature-file … destacada; --message / --cleartext inline)
 ├─ gpg --encrypt → sq encrypt --for-email=EMAIL …
-└─ gpg --decrypt → sq decrypt … (opc. --recipient-file … se a chave for só ficheiro)
+└─ gpg --decrypt → sq decrypt … (opc. --recipient-file … se a chave estiver só em arquivo)
 ```
 
 > 💡 **DICA DO PROFESSOR:** O **modelo mental** de OpenPGP (certificado, UID, fingerprint, subchaves, agente) **serve quase igual** no Sequoia; mudam sobretudo **sintaxe de CLI**, defaults e alguns cantos de WoT/policy entre `gpg` e `sq`. Por isso dominar o `gpg` **e** saber ler o `sq help` deixa você preparado quando o `sq` ganhar mais tração no *tooling*.
@@ -3852,7 +3852,7 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 - **Legendas:** fluxos ou comandos antigos aparecem como 🔴 **OBSOLETO** ou 🟡 **LEGADO**, com aviso curto do risco.
 - **Didática:** ordem sugerida nos blocos — *por quê* → *como fazer* → *comandos* → *validar* → *erros comuns*; dicas soltas viram checklist ou **Dica do professor** no fim do módulo.
 - **Duplicação:** depois de editar, remover trechos repetidos neste próprio arquivo.
-- **Revisões futuras:** manter **VERSÃO 1.0 canônica** neste único ficheiro; incrementos (1.0.1, 1.0.2…) no mesmo `.md`, com **mapa** e **cabeçalho** sempre coerentes com o corpo.
+- **Revisões futuras:** manter **VERSÃO 1.0 canônica** neste único arquivo; incrementos (1.0.1, 1.0.2…) no mesmo `.md`, com **mapa** e **cabeçalho** sempre coerentes com o corpo.
 
 * * *
 
