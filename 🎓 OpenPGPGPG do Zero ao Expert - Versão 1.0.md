@@ -3200,18 +3200,18 @@ FP=$(gpg --list-secret-keys --with-colons "$UID_PQ_MIG" | awk -F: '/^fpr:/ {prin
 
 #### O que é Sequoia-PGP?
 
-**Sequoia-PGP** é uma implementação moderna do protocolo OpenPGP, escrita em **Rust** (linguagem mais segura que C).
+**Sequoia-PGP** é uma implementação moderna do protocolo OpenPGP em **Rust**, linguagem que **por desenho** reduz várias classes de erros de memória típicos de bases de código C grandes — sem substituir auditoria, política nem uso correto da API.
 
 **Por que foi criada:**
 
 *   O GnuPG (GPG) tem código legado de 20+ anos
-*   C é vulnerável a falhas de memória (buffer overflow, use-after-free)
-*   Rust elimina essas vulnerabilidades em tempo de compilação
+*   C legacy facilita falhas de memória quando não há disciplina rigorosa de revisão e hardening
+*   Rust obriga regras de ownership/`borrow` em tempo de compilação, o que **corta bastante** este tipo de bug **antes** do binário existir
 
 | Aspecto | GnuPG (GPG) | Sequoia-PGP |
 | --- | --- | --- |
-| **Linguagem** | C   | Rust (seguro contra falhas de memória) |
-| **Maturidade** | 20+ anos | ~5 anos |
+| **Linguagem** | C   | Rust (memória mais estrita por omissão do compilador) |
+| **Maturidade** | 20+ anos | Projeto público desde ~2017; **`sq`** ~1.3.x nas distros do curso |
 | **Adoção** | Ampla | Crescente |
 | **Arquitetura** | Monolítica | Modular (bibliotecas) |
 | **Integração** | CLI, ampla compatibilidade | CLI + API Rust/Python |
@@ -3220,16 +3220,15 @@ FP=$(gpg --list-secret-keys --with-colons "$UID_PQ_MIG" | awk -F: '/^fpr:/ {prin
 
 * * *
 
-#### Onde Sequoia é usado hoje
+#### Onde Sequoia costuma aparecer (2026)
 
-*   **ProtonMail** (usa internamente)
-*   **Thunderbird** (OpenPGP nativo desde versões recentes — sem Enigmail)
-*   **rPGP** (implementação em Rust)
-*   Ferramentas de segurança que buscam integração com Rust
+*   **Distribuições Linux** que empacotam **`sequoia-sq`** e projetos Rust que dependem do crate **`sequoia-openpgp`** (assinatura, parsing, ferramentas internas).
+*   **Integrações sob política «Rust/OpenPGP»** — ao avaliar um produto, confira **qual** biblioteca entra na build (**Sequoia**, **rPGP**, outra).
+*   **Ecossistema em expansão:** uso costuma ser **menos visível** que o `gpg` no desktop, mas cresce em *tooling* e *supply chain* — por isso o **`sq`** vale como segunda ferramenta na caixa do expert.
 
 #### Thunderbird com OpenPGP nativo (e-mail desktop)
 
-O complemento Enigmail está **descontinuado**; Thunderbird **78+** traz OpenPGP integrado. Instale o Thunderbird, configure a conta, depois **Editar → Configurações → Criptografia ponta a ponta**: ative OpenPGP e associe sua chave. Valide sempre fingerprints como no restante do curso.
+O complemento Enigmail está **descontinuado**; Thunderbird **78+** traz OpenPGP integrado *(pilha própria da Mozilla — **não** é o projeto Sequoia)*. Instale o Thunderbird, configure a conta, depois **Editar → Configurações → Criptografia ponta a ponta**: ative OpenPGP e associe sua chave. Valide sempre fingerprints como no restante do curso.
 
 * * *
 
