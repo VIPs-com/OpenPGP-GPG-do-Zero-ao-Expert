@@ -3228,7 +3228,7 @@ FP=$(gpg --list-secret-keys --with-colons "$UID_PQ_MIG" | awk -F: '/^fpr:/ {prin
 
 #### Thunderbird com OpenPGP nativo (e-mail desktop)
 
-O complemento Enigmail está **descontinuado**; Thunderbird **78+** traz OpenPGP integrado *(pilha própria da Mozilla — **não** é o projeto Sequoia)*. Instale o Thunderbird, configure a conta, depois **Editar → Configurações → Criptografia ponta a ponta**: ative OpenPGP e associe sua chave. Valide sempre fingerprints como no restante do curso.
+O complemento Enigmail está **descontinuado**; Thunderbird **78+** traz OpenPGP integrado *(pilha **RNP** / Mozilla — **não** é o projeto Sequoia)*. Instale o Thunderbird, configure a conta, depois **Editar → Configurações → Criptografia ponta a ponta**: ative OpenPGP e associe sua chave. Valide sempre fingerprints como no restante do curso.
 
 * * *
 
@@ -3248,7 +3248,8 @@ O complemento Enigmail está **descontinuado**; Thunderbird **78+** traz OpenPGP
 | Exportar certificado **público** | `gpg --export -a FPR` | `sq cert export --cert=FPR` |
 | Exportar material **secreto** (backup mestra / cofre local) | `gpg --export-secret-keys --armor FPR` | `sq key export --cert=FPR` |
 | Listar chaves | `gpg --list-keys` | `sq key list` |
-| Assinar (mensagem inline) | `gpg --sign arquivo.txt` | `sq sign --signer-email=EMAIL --message arquivo.txt` |
+| Assinar (**cleartext** legível, estilo e-mail) | `gpg --clearsign arquivo.txt` | `sq sign --signer-email=EMAIL --cleartext arquivo.txt` |
+| Assinar (**pacote** OpenPGP assinado) | `gpg --sign arquivo.txt` (gera `arquivo.txt.gpg`) | `sq sign --signer-email=EMAIL --message arquivo.txt` |
 | Verificar assinatura **destacada** | `gpg --verify arquivo.sig arquivo.txt` | `sq verify --signature-file=arquivo.sig arquivo.txt` |
 | Cifrar | `gpg --encrypt -r EMAIL arquivo.txt` | `sq encrypt --for-email=EMAIL arquivo.txt` |
 | Decifrar | `gpg --decrypt arquivo.gpg` | `sq decrypt arquivo.gpg` |
@@ -3272,13 +3273,13 @@ O complemento Enigmail está **descontinuado**; Thunderbird **78+** traz OpenPGP
 ├─ gpg --export -a (público) → sq cert export --cert=FPR
 ├─ gpg --export-secret-keys (segredo) → sq key export --cert=FPR
 ├─ gpg --list-keys → sq key list
-├─ gpg --sign → sq sign (--signer-email ou --signer-file …)
+├─ gpg --clearsign / gpg --sign → sq sign (--cleartext … ou --message …; --signer-email ou --signer-file …)
 ├─ gpg --verify (.sig destacada) → sq verify --signature-file=X arquivo
 ├─ gpg --encrypt → sq encrypt --for-email=EMAIL …
 └─ gpg --decrypt → sq decrypt …
 ```
 
-> 💡 **DICA DO PROFESSOR:** O conhecimento que você tem de GPG é **100% transferível** para o Sequoia. Os conceitos são exatamente os mesmos. Apenas os comandos mudam. Quando o Sequoia se tornar mais difundido (2027-2028), você já vai entender toda a lógica.
+> 💡 **DICA DO PROFESSOR:** O **modelo mental** de OpenPGP (certificado, UID, fingerprint, subchaves, agente) **serve quase igual** no Sequoia; mudam sobretudo **sintaxe de CLI**, defaults e alguns cantos de WoT/policy entre `gpg` e `sq`. Por isso dominar o `gpg` **e** saber ler o `sq help` deixa você preparado quando o `sq` ganhar mais tração no *tooling*.
 
 * * *
 
