@@ -1040,7 +1040,7 @@ echo "Email: $EMAIL"
 
 gpg --quick-generate-key "$NOME ($COMENTARIO) <$EMAIL>" ed25519 cert 3y
 
-FP=$(gpg --list-secret-keys --with-colons | grep '^sec:' | head -1 | cut -d: -f5)
+FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
 
 echo "✅ Fingerprint: $FP"
 
@@ -1052,7 +1052,7 @@ echo "✅ Subchaves criadas com sucesso!"
 echo "💰 Não se esqueça: gere o certificado de revogação!"
 ```
 
-> 📎 Nos listings `--with-colons`, o **campo 5** da linha `sec:` é o **KeyID longo** (16 caracteres hex — últimos 64 bits da fingerprint SHA‑1 “clássica”), não os 40 caracteres da fingerprint completa. O GnuPG aceita esse valor na maioria dos comandos onde também aceita fingerprint; para conferência visual humana use `gpg --fingerprint`.
+> 📎 Nos listings `--with-colons`, a **fingerprint completa** da mestra está na linha `fpr:` (**campo 10**). Os scripts usam `awk` nessa linha para preencher `$FP` — certo quando há **uma** mestra de laboratório ou quando a listagem já foi filtrada (ex.: `gpg … --with-colons 'Nome <email>'`). O **campo 5** de `sec:` é só o **KeyID longo**; o `gpg` aceita nos mesmos comandos, mas prefira a fingerprint ao cruzar com papel, WKD ou GitHub.
 
 * * *
 
@@ -1323,7 +1323,7 @@ BACKUP_DIR="$HOME/gpg-backups"
 TIMESTAMP=$(date -u +"%Y%m%dT%H%M%SZ")
 mkdir -p "$BACKUP_DIR"
 
-FP=$(gpg --list-secret-keys --with-colons | grep '^sec:' | head -1 | cut -d: -f5)
+FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
 
 if [ -z "$FP" ]; then
     echo "❌ Nenhuma chave encontrada!"
@@ -1467,7 +1467,7 @@ gpg --export-secret-subkeys --armor > subchaves.asc
 **🟡 Abordagem com fingerprint (melhor):**
 
 ```sh
-FP=$(gpg --list-secret-keys --with-colons | grep '^sec:' | head -1 | cut -d: -f5)
+FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
 gpg --export-secret-subkeys --armor "$FP" > subchaves.asc
 ```
 
@@ -1485,7 +1485,7 @@ BACKUP_DIR="$HOME/gpg-backups"
 TIMESTAMP=$(date -u +"%Y%m%dT%H%M%SZ")
 mkdir -p "$BACKUP_DIR"
 
-FP=$(gpg --list-secret-keys --with-colons | grep '^sec:' | head -1 | cut -d: -f5)
+FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
 
 if [ -z "$FP" ]; then
     echo "❌ ERRO: Nenhuma chave secreta encontrada!"
@@ -1963,7 +1963,7 @@ fi
 source ~/.bashrc
 
 # Exporta chave pública SSH (use sempre o fingerprint da mestra correta se tiver mais de uma chave)
-FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^sec:/ {print $5; exit}')
+FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
 gpg --export-ssh-key "$FP" > gpg-ssh-key.pub
 echo "✅ Chave SSH exportada para gpg-ssh-key.pub"
 
@@ -2081,7 +2081,7 @@ gpg --quick-generate-key "Seu Nome Real (OFFLINE MASTER) <seu@email.com>" ed2551
 # gpg: key 3A4B5C6D7E8F9A0B marked as ultimately trusted
 
 # Capture o fingerprint automaticamente
-FP_MASTER=$(gpg --list-secret-keys --with-colons --keyid-format LONG | grep '^sec:' | head -1 | cut -d: -f5)
+FP_MASTER=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
 echo "Fingerprint da sua identidade mestra: $FP_MASTER"
 
 # ANOTE EM PAPEL! Não no computador. O papel é offline.
@@ -2153,8 +2153,8 @@ sync
 
 set -euo pipefail
 
-# KeyID longo da mestra (campo 5 da linha sec: — aceito pelo gpg como seletor)
-FP_MASTER=$(gpg --list-secret-keys --with-colons | grep '^sec:' | head -1 | cut -d: -f5)
+# Fingerprint da mestra (campo 10 da primeira linha fpr: em --with-colons)
+FP_MASTER=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
 PENDRIVE="/media/pendrive"  # ajuste conforme o nome do seu pendrive
 
 # === VERIFICAÇÕES ===
@@ -2425,8 +2425,8 @@ fi
 SECRET_KEYS=$(gpg --list-secret-keys --with-colons 2>/dev/null | grep -c "^sec:" || echo "0")
 if [ "$SECRET_KEYS" -gt 0 ]; then
     echo -e "${GREEN}✓ $SECRET_KEYS chave(s) secreta(s) encontrada(s)${NC}"
-    FP=$(gpg --list-secret-keys --with-colons | grep '^sec:' | head -1 | cut -d: -f5)
-    echo -e "${GREEN}✓ Fingerprint: ${FP:0:16}...${NC}"
+    FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
+    echo -e "${GREEN}✓ Fingerprint da mestra: $FP${NC}"
 else
     echo -e "${RED}✗ Nenhuma chave secreta encontrada${NC}"
 fi
@@ -2500,7 +2500,7 @@ A progressão **🔴 simples → 🟡 com fingerprint → 🟢 completa**, com e
 set -euo pipefail
 
 # Identificador da chave primária (mesmo formato usado em todo o curso: campo 5 da linha sec)
-FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^sec:/ {print $5; exit}')
+FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
 if [ -z "$FP" ]; then
     echo "❌ Nenhuma chave secreta encontrada."
     exit 1
@@ -2574,7 +2574,7 @@ fi
 #!/bin/bash
 # gpg-automation.sh - Script completo com todas as funções
 
-FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^sec:/ {print $5; exit}')
+FP=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
 
 case "${1:-}" in
     backup)
@@ -2971,7 +2971,7 @@ alias gpg-agent-reset='gpgconf --kill gpg-agent && gpgconf --launch gpg-agent'
 
 * * *
 
-### 📋 MÓDULO 11: CRIPTOGRAFIA PÓS-QUÂNTICA
+### 📋 MÓDULO 11: CRIPTOGRAFIA PÓS-QUÃNTICA
 
 > 🎯 **Objetivo:** Entender a ameaça dos computadores quânticos e como se preparar
 
@@ -3705,7 +3705,9 @@ Trilha de referência para operações **multi-dispositivo**: pensar em **zonas*
 gpg --list-keys --keyid-format long
 
 # 2) crie nova identidade ECC (ou nova hierarquia de subchaves ECC)
-gpg --quick-generate-key "Seu Nome (ECC 2026) <seu@email>" ed25519 cert 3y
+UID_NOVO="Seu Nome (ECC 2026) <seu@email>"
+gpg --quick-generate-key "$UID_NOVO" ed25519 cert 3y
+FP_NOVO=$(gpg --list-secret-keys --with-colons "$UID_NOVO" | awk -F: '/^fpr:/ {print $10; exit}')
 
 # 3) adicione subchaves modernas
 gpg --quick-add-key "$FP_NOVO" ed25519 sign 1y
