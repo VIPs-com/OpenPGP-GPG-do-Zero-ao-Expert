@@ -2908,6 +2908,8 @@ gpg --fingerprint EMAIL_TERCEIRO
 gpg --sign-key EMAIL_TERCEIRO
 ```
 
+> 💡 Com vários UIDs ou nomes parecidos, prefira fluxo por **fingerprint**: `gpg --edit-key FPR_DA_PESSOA` → `sign` → `save`.
+
 > ⚠️ **Regra de segurança:** nunca assine chave de terceiro sem validação independente de fingerprint.
 
 **Manutenção avançada da própria chave (opcional)**
@@ -2964,7 +2966,7 @@ alias gpg-agent-reset='gpgconf --kill gpg-agent && gpgconf --launch gpg-agent'
 
 * * *
 
-### 📋 MÓDULO 11: CRIPTOGRAFIA PÓS-QUÂNTICA
+### 📋 MÓDULO 11: CRIPTOGRAFIA PÓS-QUÃNTICA
 
 > 🎯 **Objetivo:** Entender a ameaça dos computadores quânticos e como se preparar
 
@@ -2999,8 +3001,8 @@ Computadores quânticos suficientemente grandes (milhões de qubits) quebrarão:
 # 🔵 EXPERIMENTAL - Gerando chave híbrida (Kyber + cv25519)
 gpg --quick-generate-key --expert "Aluno Lab (PQ) <pq@lab>" kyber768+cv25519 cert 1y
 
-# Verificando
-gpg --list-packets --verbose | grep -i "kyber"
+# Verificando se o material da chave menciona Kyber (ajuste $FP à sua chave PQ de laboratório)
+gpg --export "$FP" | gpg --list-packets | grep -i kyber
 
 # ⚠️ NÃO use em produção crítica - experimental!
 ```
@@ -3261,6 +3263,8 @@ Complete este desafio para obter seu certificado:
 5.  **Configure SSH via GPG** e teste a conexão
 6.  **Simule a perda total** e restaure a partir do backup
 7.  **Documente todo o processo** (comandos e saídas)
+
+> 📎 No restore, use o **caminho real** do arquivo `.age` do seu backup (como no Módulo 3 e no Checkpoint 3 — evite copiar só o nome fictício `subchaves.age`).
 
 * * *
 
