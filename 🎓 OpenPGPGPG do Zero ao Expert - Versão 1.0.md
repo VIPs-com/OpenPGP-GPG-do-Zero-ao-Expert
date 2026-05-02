@@ -1630,7 +1630,8 @@ Seu Nome
 **Encontre o fingerprint da subchave \[S\] (Assinatura):**
 
 ```sh
-FP_SIGN=$(gpg --list-keys --with-subkey-fingerprints "$FP" | grep -A1 "\[S\]" | grep -E "^       " | tr -d ' ')
+# Colon listing: primeira subchave com capacidade de assinatura (:s:) e a respectiva linha fpr:
+FP_SIGN=$(gpg --list-keys --with-colons "$FP" | awk -F: '/^sub:/ { want = ($0 ~ /:s:/) } /^fpr:/ && want { print $10; exit }')
 echo "✅ Fingerprint da subchave [S]: $FP_SIGN"
 ```
 
@@ -1644,7 +1645,7 @@ git config --global user.name "Aluno Lab"
 git config --global user.email "aluno.training@openpgp-lab.local"
 ```
 
-> 💡 Se `FP_SIGN` vier **vazio**, rode `gpg -K --with-subkey-fingerprints --keyid-format long`, localize a linha da subchave com **`[S]`** e use esse fingerprint inteiro em `git config --global user.signingkey "..."`.
+> 💡 Se `FP_SIGN` vier **vazio**, confira `gpg --list-keys --with-colons "$FP"` (deve haver `sub:` com `:s:` e logo a seguir `fpr:`), ou rode `gpg -K --with-subkey-fingerprints --keyid-format long`, localize **`[S]`** e copie o fingerprint manualmente para `git config --global user.signingkey "..."`.
 
 * * *
 
@@ -3168,6 +3169,8 @@ gpg --quick-generate-key "Seu Nome (PQ) <seu@dominio>" kyber768 cert 3y
 | **Arquitetura** | Monolítica | Modular (bibliotecas) |
 | **Integração** | CLI, ampla compatibilidade | CLI + API Rust/Python |
 
+> 📖 **Leitura recomendada:** [documentação do utilizador do `sq`](https://sequoia-pgp.gitlab.io/user-documentation/) (guia em livro; complementa o [manual `sq(1)`](https://sequoia-pgp.gitlab.io/sequoia-sq/man/sq.1.html) do cabeçalho).
+
 * * *
 
 #### Onde Sequoia é usado hoje
@@ -3776,6 +3779,7 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 | Wiki WKD | https://wiki.gnupg.org/WKD |
 | Sequoia-PGP | https://sequoia-pgp.org |
 | Sequoia `sq` — manual (entrada) | https://sequoia-pgp.gitlab.io/sequoia-sq/man/sq.1.html |
+| Sequoia `sq` — guia do utilizador (livro) | https://sequoia-pgp.gitlab.io/user-documentation/ |
 | SafeCurves (Bernstein) | https://safecurves.cr.yp.to |
 | Diceware / dados — guia EFF | https://www.eff.org/dice |
 | Tails | https://tails.net |
