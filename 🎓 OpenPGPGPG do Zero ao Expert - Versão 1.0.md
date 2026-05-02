@@ -2322,7 +2322,7 @@ gpgconf --check-programs
 gpgconf --reload gpg-agent
 ```
 
-**Usado após alterar o** `~/.gnupg/gpg-agent.conf` **(depois, recarregue o agente conforme o Módulo 0).**
+**Usado após alterar** `~/.gnupg/gpg-agent.conf`. Se `reload` não existir ou não surtir efeito no seu `gpgconf`, use `gpgconf --kill gpg-agent && gpgconf --launch gpg-agent` (como no Módulo 0).
 
 * * *
 
