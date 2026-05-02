@@ -2238,6 +2238,8 @@ echo "⚠️ Agora desligue o Tails — a chave mestra nunca deve tocar a intern
 set -euo pipefail
 
 PENDRIVE="/media/pendrive"  # ajuste conforme o ponto de montagem
+# Opcional (recomendado): mesmo UID da mestra no Tails — filtra a verificação ssb no fim do script
+UID_IMPORT="${UID_IMPORT:-}"
 
 echo "✅ Importando subchaves do pendrive..."
 
@@ -2268,9 +2270,12 @@ if ! grep -q "SSH_AUTH_SOCK" ~/.bashrc; then
 fi
 source ~/.bashrc
 
-# Verificação automática (chaveiro inteiro — use VM só de laboratório ou ajuste o filtro)
+# Verificação automática (sem UID_IMPORT = chaveiro inteiro — só aceitável em VM isolada de laboratório)
+COLON_FILTER=( gpg --list-secret-keys --with-colons )
+[ -n "$UID_IMPORT" ] && COLON_FILTER+=( "$UID_IMPORT" )
+
 echo "🔎 Verificando subchaves importadas (colon: há ssb :s:, :e: e :a:)..."
-if ! gpg --list-secret-keys --with-colons | awk -F: '
+if ! "${COLON_FILTER[@]}" | awk -F: '
 BEGIN{s=e=a=0}
 /^ssb:/ && $0 ~ /:s:/ {s=1}
 /^ssb:/ && $0 ~ /:e:/ {e=1}
@@ -2287,6 +2292,8 @@ echo "   - [S] para assinar commits e arquivos"
 echo "   - [E] para cifrar/decifrar mensagens"
 echo "   - [A] para autenticação SSH"
 ```
+
+> 📎 Se neste PC existirem **várias** mestras secretas, exporte **`UID_IMPORT`** com o **mesmo texto** que **`UID_MASTER`** no Tails antes de rodar o script — a verificação **`ssb`** no fim deixa de percorrer o chaveiro inteiro.
 
 * * *
 
@@ -3849,6 +3856,7 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 
 - **Título do Módulo 11 (PQ):** alguns editores substituem **ã** por **â** em «quântica». Procure por `QUÂNTICA` (U+00C2) e deixe **`PÓS-QUÃNTICA`** (U+00C3), como no mapa e no restante do texto em PT‑BR.
 - **`$FP` / `$FP_MASTER`:** fingerprint pela linha `fpr:` (campo 10) só **depois** de filtrar identidade (`LAB_EMAIL`, `UID_MASTER`, `"$EMAIL"` no script bônus, etc.). Evite reintroduzir `gpg --list-secret-keys --with-colons | awk …` sem esse filtro se houver risco de mais de uma mestra.
+- **Bônus `gpg-import-subkeys.sh` (Módulo 6):** defina **`UID_IMPORT`** igual ao **`UID_MASTER`** do Tails para a verificação **`ssb`** não misturar outra mestra; sem isso o script assume chaveiro inteiro (didática de VM só).
 - **Versões e URLs:** alterou Tails, ISO de download ou ramo experimental do GnuPG? Atualize **cabeçalho**, **checklist de ferramentas** e blocos `wget` / `gpg --verify` correspondentes. Em links novos, confirme com **HEAD** (`curl -I` no Linux; no Windows, `Invoke-WebRequest -Method Head`): o índice `…/sequoia-sq/man/` devolve **404** — use `…/man/sq.1.html` ou a [raiz do `sequoia-sq`](https://sequoia-pgp.gitlab.io/sequoia-sq/).
 - **Parsing do `gpg`:** scripts novos devem preferir **`--with-colons` + `awk`** (fingerprint `fpr:`, keygrip `grp:`/`ssb:`, checagens `:s:`/`:e:`/`:a:`). Reserve `gpg -K … | grep` para blocos **didáticos** onde a saída humana for o **objetivo** (ex.: COMANDO 5.1).
 
