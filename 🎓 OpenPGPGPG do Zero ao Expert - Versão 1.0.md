@@ -3042,7 +3042,7 @@ Computadores quânticos suficientemente grandes (milhões de qubits) quebrarão:
 gpg --quick-generate-key --expert "Aluno Lab (PQ) <pq@lab>" kyber768+cv25519 cert 1y
 
 # Verificando se o material da chave menciona Kyber (ajuste $FP à sua chave PQ de laboratório)
-gpg --export "$FP" | gpg --list-packets | grep -i kyber
+gpg --export "$FP" | gpg --list-packets 2>/dev/null | grep -i kyber
 
 # ⚠️ NÃO use em produção crítica - experimental!
 ```
@@ -3352,7 +3352,7 @@ Material de consulta do aluno e tabelas de apoio. **Quem mantém o texto:** o an
 
 ### ✅ Folha única — checklists dos checkpoints
 
-Use esta página como **referência rápida** antes de encerrar cada fase do curso. Os desafios completos e o contexto pedagógico continuam nas secções **🏁 CHECKPOINT 1**, **2** e **3**.
+Use esta página como **referência rápida** antes de encerrar cada fase do curso. Os desafios completos e o contexto pedagógico continuam nas seções **🏁 CHECKPOINT 1**, **2** e **3**.
 
 #### Antes de avançar para a Parte 2 — Checkpoint 1 (cifrar, assinar, verificar)
 
@@ -3401,6 +3401,7 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | **WoT** | *Web of Trust* — confiança derivada de assinaturas mútuas e níveis de confiança no chaveiro (não confundir com “confiar cegamente” em keyserver). Ver Módulo 10 / apêndices de política. |
 | **HKPS** | Acesso a servidor de chaves sobre TLS (`hkps://`), reduzindo exposição em relação a HKP simples ou infraestruturas SKS legadas. |
 | **Fingerprint** | Identificador longo e estável da chave — compare **fora da banda** com o interlocutor antes de marcar confiança ou assinar a chave de terceiros. |
+| **`--with-colons`** | Saída máquina-legível (`pub:`, `sec:`, `sub:`/`ssb:`, `fpr:`, `grp:`…). Em **`fpr:`**, o campo **10** costuma ser a fingerprint completa; em **`sec:`**/`pub:`**, o campo **5** é em geral o KeyID longo (vários formatos funcionam como seletor no `gpg`). Ver scripts dos Módulos 3–6 e anexo do mantenedor. |
 | **Keygrip** | Identificador que o `gpg-agent` usa para mapear material criptográfico (ligação ao SSH via `[A]`, `sshcontrol`, etc.). Ver Módulo 5. |
 | **pinentry** | Programa que solicita passphrase ou PIN ao agente (`pinentry-tty`, `pinentry-gnome`, …). Fundamental para não treinar má hábitos como passphrase em variável de ambiente. |
 | **Air-gapped / offline** | Operação sem rede no momento sensível (ex.: gerir mestra no Tails sem Internet). Objetivo: reduzir superfície de vazamento. |
