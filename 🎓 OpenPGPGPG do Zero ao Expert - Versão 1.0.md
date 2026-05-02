@@ -1935,10 +1935,17 @@ Conectado via GPG!
 
 set -euo pipefail
 
+LAB_EMAIL="${LAB_EMAIL:-aluno.training@openpgp-lab.local}"
+
 echo "🔐 Configurando SSH via GPG..."
 
-# Encontra o keygrip da subchave [A]
-KEYGRIP=$(gpg -K --with-keygrip | grep -A2 "\[A\]" | grep "Keygrip" | cut -d= -f2 | tr -d ' ')
+# Keygrip da primeira subchave secreta com autenticação (:a:) — listagem colon (estável entre locales)
+KEYGRIP=$(gpg --list-secret-keys --with-colons "$LAB_EMAIL" | awk -F: '
+/^ssb:/ { want = ($0 ~ /:a:/) }
+/^grp:/ && want {
+  for (i = 1; i <= NF; i++)
+    if ($i ~ /^[0-9A-Fa-f]{40}$/) { print $i; exit }
+}')
 
 if [ -z "$KEYGRIP" ]; then
     echo "❌ Subchave [A] não encontrada!"
@@ -1966,8 +1973,7 @@ fi
 
 source ~/.bashrc
 
-# Exporta chave pública SSH (ajuste LAB_EMAIL se sua identidade de laboratório for outra)
-LAB_EMAIL="${LAB_EMAIL:-aluno.training@openpgp-lab.local}"
+# Exporta chave pública SSH (usa o mesmo LAB_EMAIL do início do script)
 FP=$(gpg --list-secret-keys --with-colons "$LAB_EMAIL" | awk -F: '/^fpr:/ {print $10; exit}')
 gpg --export-ssh-key "$FP" > gpg-ssh-key.pub
 echo "✅ Chave SSH exportada para gpg-ssh-key.pub"
@@ -2445,7 +2451,7 @@ else
 fi
 
 # 4. Subchave de encrypt (deve ser cv25519!)
-if gpg -K 2>/dev/null | grep -q "\[E\]"; then
+if gpg --list-secret-keys --with-colons "$LAB_EMAIL" 2>/dev/null | awk -F: 'BEGIN{f=0} /^ssb:/ && $0 ~ /:e:/ {f=1} END{exit !f}'; then
     if gpg --export 2>/dev/null | gpg --list-packets 2>/dev/null | grep -qi "cv25519"; then
         echo -e "${GREEN}✓ Subchave [E] com cv25519 (correto)${NC}"
     else
