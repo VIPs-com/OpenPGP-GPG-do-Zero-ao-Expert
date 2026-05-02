@@ -2467,7 +2467,9 @@ fi
 
 # 4. Subchave de encrypt (deve ser cv25519!)
 if gpg --list-secret-keys --with-colons "$LAB_EMAIL" 2>/dev/null | awk -F: 'BEGIN{f=0} /^ssb:/ && $0 ~ /:e:/ {f=1} END{exit !f}'; then
-    if gpg --export 2>/dev/null | gpg --list-packets 2>/dev/null | grep -qi "cv25519"; then
+    if [ -z "${FP:-}" ]; then
+        echo -e "${YELLOW}⚠ Subchave [E] detectada mas \$FP vazio — confira LAB_EMAIL e o passo 3 (fingerprint em fpr:)${NC}"
+    elif gpg --export "$FP" 2>/dev/null | gpg --list-packets 2>/dev/null | grep -qi "cv25519"; then
         echo -e "${GREEN}✓ Subchave [E] com cv25519 (correto)${NC}"
     else
         echo -e "${RED}✗ Subchave [E] NÃO está usando cv25519${NC}"
@@ -3383,6 +3385,8 @@ Use esta página como **referência rápida** antes de encerrar cada fase do cur
 | Restauração | Import a partir do backup (ex.: `.age`) sem erro | [ ] |
 | Assinatura pós-restore | `gpg --clearsign` (ou equivalente) conclui com sucesso | [ ] |
 | Documentação | Notas ou log com comandos e saídas relevantes | [ ] |
+
+> 📎 Os scripts deste curso assumem **`LAB_EMAIL`** / UID certos e um **caminho real** para o `.age` — ao fechar este checkpoint, confira que usou os mesmos valores que no **Módulo 3** e no **Desafio final**.
 
 > **Regra:** só avance para a parte seguinte quando **todos** os itens da tabela correspondente estiverem marcados. Se algo falhar, volte ao módulo indicado na seção do checkpoint e repita até fechar a rubrica.
 
