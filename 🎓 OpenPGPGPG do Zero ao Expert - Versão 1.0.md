@@ -3,6 +3,7 @@
 **Autor:** Professor Especialista em Criptografia Aplicada no Linux, Windows, Android, iPhone  
 **GnuPG:** ~**2.4.x** no Ubuntu 24.04 do curso (`apt`) · **2.5.19+** nas seções Kyber/ML‑KEM experimental (consulte [download](https://www.gnupg.org/download/index.en.html))  
 **Tails:** 7.7.1+ (confira sempre em [tails.net/install/download](https://tails.net/install/download/index.en.html))  
+**Sequoia (`sq`):** exemplos do curso alinhados a **sequoia-sq ~1.3.x** ([manuais](https://sequoia-pgp.gitlab.io/sequoia-sq/man/) · depois de instalar, use `sq version`)  
 **Metodologia:** 🔴🟡🟢🔵 + COMANDO A COMANDO + Checkpoints  
 **Status:** ✅ **VERSÃO 1.0 — material canônico único**
 
@@ -2966,7 +2967,7 @@ alias gpg-agent-reset='gpgconf --kill gpg-agent && gpgconf --launch gpg-agent'
 
 * * *
 
-### 📋 MÓDULO 11: CRIPTOGRAFIA PÓS-QUÃNTICA
+### 📋 MÓDULO 11: CRIPTOGRAFIA PÓS-QUÂNTICA
 
 > 🎯 **Objetivo:** Entender a ameaça dos computadores quânticos e como se preparar
 
@@ -3177,13 +3178,15 @@ O complemento Enigmail está **descontinuado**; Thunderbird **78+** traz OpenPGP
 
 | Ação | GnuPG (gpg) | Sequoia (sq) |
 | --- | --- | --- |
-| Importar chave | `gpg --import chave.asc` | `sq key import chave.asc` |
-| Exportar chave | `gpg --export -a FPR` | `sq key export FPR` |
+| Importar chave/certificado | `gpg --import chave.asc` | `sq key import chave.asc` |
+| Exportar certificado **público** | `gpg --export -a FPR` | `sq cert export --cert=FPR` |
 | Listar chaves | `gpg --list-keys` | `sq key list` |
-| Assinar arquivo | `gpg --sign arquivo.txt` | `sq sign arquivo.txt` |
-| Verificar assinatura | `gpg --verify arquivo.sig` | `sq verify arquivo.sig` |
-| Cifrar | `gpg --encrypt -r EMAIL` | `sq encrypt -r EMAIL` |
+| Assinar (mensagem inline) | `gpg --sign arquivo.txt` | `sq sign --signer-email=EMAIL --message arquivo.txt` |
+| Verificar assinatura **destacada** | `gpg --verify arquivo.sig arquivo.txt` | `sq verify --signature-file=arquivo.sig arquivo.txt` |
+| Cifrar | `gpg --encrypt -r EMAIL arquivo.txt` | `sq encrypt --for-email=EMAIL arquivo.txt` |
 | Decifrar | `gpg --decrypt arquivo.gpg` | `sq decrypt arquivo.gpg` |
+
+> 📎 No Sequoia, **certificado** = material só público; **chave** = material com segredo. Export de segredo (`gpg --export-secret-keys`…) equivale a `sq key export --cert=FPR`, não à linha “certificado público” acima. Saída OpenPGP costuma vir **ASCII armor por omissão**; confira `sq help` na sua versão.
 
 * * *
 
@@ -3198,12 +3201,13 @@ O complemento Enigmail está **descontinuado**; Thunderbird **78+** traz OpenPGP
 └─ Agente de chaves
 
 ⚙️ APENAS OS COMANDOS MUDAM:
-├─ gpg --import    → sq key import
-├─ gpg --export    → sq key export
+├─ gpg --import → sq key import
+├─ gpg --export -a (público) → sq cert export --cert=FPR
 ├─ gpg --list-keys → sq key list
-├─ gpg --sign      → sq sign
-├─ gpg --encrypt   → sq encrypt
-└─ gpg --decrypt   → sq decrypt
+├─ gpg --sign → sq sign (--signer-email ou --signer-file …)
+├─ gpg --verify (.sig destacada) → sq verify --signature-file=X arquivo
+├─ gpg --encrypt → sq encrypt --for-email=EMAIL …
+└─ gpg --decrypt → sq decrypt …
 ```
 
 > 💡 **DICA DO PROFESSOR:** O conhecimento que você tem de GPG é **100% transferível** para o Sequoia. Os conceitos são exatamente os mesmos. Apenas os comandos mudam. Quando o Sequoia se tornar mais difundido (2027-2028), você já vai entender toda a lógica.
