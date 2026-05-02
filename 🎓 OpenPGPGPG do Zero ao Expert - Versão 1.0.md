@@ -3044,7 +3044,7 @@ Computadores quânticos suficientemente grandes (milhões de qubits) quebrarão:
 gpg --quick-generate-key --expert "Aluno Lab (PQ) <pq@lab>" kyber768+cv25519 cert 1y
 
 # Verificando se o material da chave menciona Kyber (ajuste $FP à sua chave PQ de laboratório)
-gpg --export "$FP" | gpg --list-packets 2>/dev/null | grep -i kyber
+gpg --export "$FP" 2>/dev/null | gpg --list-packets 2>/dev/null | grep -i kyber
 
 # ⚠️ NÃO use em produção crítica - experimental!
 ```
@@ -3409,13 +3409,15 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | **Keygrip** | Identificador que o `gpg-agent` usa para mapear material criptográfico (ligação ao SSH via `[A]`, `sshcontrol`, etc.). Ver Módulo 5. |
 | **pinentry** | Programa que solicita passphrase ou PIN ao agente (`pinentry-tty`, `pinentry-gnome`, …). Fundamental para não treinar má hábitos como passphrase em variável de ambiente. |
 | **Air-gapped / offline** | Operação sem rede no momento sensível (ex.: gerir mestra no Tails sem Internet). Objetivo: reduzir superfície de vazamento. |
-| **LUKS** | Criptografia de disco/partição no Linux — uso típico para proteger mídia física onde guardas backups ou cofres. |
+| **LUKS** | Criptografia de disco/partição no Linux — uso típico para proteger mídia física onde você guarda backups ou cofres. |
 | **age** | Ferramenta simples para cifrar arquivos com chave ou passphrase — usada nos roteiros de backup com `gpg` + arquivos `.age`. |
 | **Backup 3-2-1** | Três cópias dos dados importantes, em **dois** tipos de mídia diferentes, com **uma** cópia fora do local principal (ex.: fora de casa ou data center distinto). |
 
 * * *
 
 ### APÊNDICE A: TABELA DE ERROS RÁPIDOS (TOP 15)
+
+> 📎 Várias linhas abaixo usam **`"$FP"`** — deve ser o identificador da **mestra certa** (fingerprint na linha **`fpr:`**, campo **10**, após filtrar por `LAB_EMAIL`/UID). Se `FP` estiver errado ou vazio, os `quick-add-key` falham; ver **Módulo 3** e glossário **`--with-colons`**.
 
 | #   | Mensagem de Erro | Causa | Solução Rápida |
 | --- | --- | --- | --- |
