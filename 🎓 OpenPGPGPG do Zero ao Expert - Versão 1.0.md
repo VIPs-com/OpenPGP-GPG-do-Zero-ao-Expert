@@ -3791,7 +3791,15 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 - **Legendas:** fluxos ou comandos antigos aparecem como 🔴 **OBSOLETO** ou 🟡 **LEGADO**, com aviso curto do risco.
 - **Didática:** ordem sugerida nos blocos — *por quê* → *como fazer* → *comandos* → *validar* → *erros comuns*; dicas soltas viram checklist ou **Dica do professor** no fim do módulo.
 - **Duplicação:** depois de editar, remover trechos repetidos neste próprio arquivo.
-- **Revisões futuras:** usar **1.1, 1.2…** no mesmo `.md`, mantendo o mapa principal (0 a 6) coerente.
+- **Revisões futuras:** manter **VERSÃO 1.0 canônica** neste único ficheiro; incrementos (1.0.1, 1.0.2…) no mesmo `.md`, com **mapa** e **cabeçalho** sempre coerentes com o corpo.
+
+* * *
+
+### Antes de commitar (sanidade rápida)
+
+- **Título do Módulo 11 (PQ):** alguns editores substituem **ã** por **â** em «quântica». Procure por `QUÂNTICA` (U+00C2) e deixe **`PÓS-QUÃNTICA`** (U+00C3), como no mapa e no restante do texto em PT‑BR.
+- **`$FP` / `$FP_MASTER`:** fingerprint pela linha `fpr:` (campo 10) só **depois** de filtrar identidade (`LAB_EMAIL`, `UID_MASTER`, `"$EMAIL"` no script bônus, etc.). Evite reintroduzir `gpg --list-secret-keys --with-colons | awk …` sem esse filtro se houver risco de mais de uma mestra.
+- **Versões e URLs:** alterou Tails, ISO de download ou ramo experimental do GnuPG? Atualize **cabeçalho**, **checklist de ferramentas** e blocos `wget` / `gpg --verify` correspondentes.
 
 * * *
 
