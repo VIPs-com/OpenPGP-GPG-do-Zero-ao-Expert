@@ -2429,6 +2429,7 @@ LAB_EMAIL="${LAB_EMAIL:-aluno.training@openpgp-lab.local}"
 
 # 1. Versão (M.N — sem depender de grep -P)
 GPG_VER=$(gpg --version | head -n1 | grep -oE '[0-9]+\.[0-9]+' | head -1)
+GPG_VER="${GPG_VER:-0.0}"
 if (( $(echo "$GPG_VER >= 2.5" | bc -l) )); then
     echo -e "${GREEN}✓ GPG $GPG_VER (OK)${NC}"
 elif (( $(echo "$GPG_VER >= 2.2" | bc -l) )); then
@@ -3189,7 +3190,7 @@ gpg --quick-generate-key "Seu Nome (PQ) <seu@dominio>" kyber768 cert 3y
 | **Arquitetura** | Monolítica | Modular (bibliotecas) |
 | **Integração** | CLI, ampla compatibilidade | CLI + API Rust/Python |
 
-> 📖 **Leitura recomendada:** [documentação do utilizador do `sq`](https://sequoia-pgp.gitlab.io/user-documentation/) (guia em livro; complementa o [manual `sq(1)`](https://sequoia-pgp.gitlab.io/sequoia-sq/man/sq.1.html) do cabeçalho).
+> 📖 **Leitura recomendada:** [guia do usuário do `sq`](https://sequoia-pgp.gitlab.io/user-documentation/) (livro / documentação oficial; complementa o [manual `sq(1)`](https://sequoia-pgp.gitlab.io/sequoia-sq/man/sq.1.html) do cabeçalho).
 
 * * *
 
@@ -3799,7 +3800,7 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 | Wiki WKD | https://wiki.gnupg.org/WKD |
 | Sequoia-PGP | https://sequoia-pgp.org |
 | Sequoia `sq` — manual (entrada) | https://sequoia-pgp.gitlab.io/sequoia-sq/man/sq.1.html |
-| Sequoia `sq` — guia do utilizador (livro) | https://sequoia-pgp.gitlab.io/user-documentation/ |
+| Sequoia `sq` — guia do usuário (livro) | https://sequoia-pgp.gitlab.io/user-documentation/ |
 | SafeCurves (Bernstein) | https://safecurves.cr.yp.to |
 | Diceware / dados — guia EFF | https://www.eff.org/dice |
 | Tails | https://tails.net |
@@ -3825,7 +3826,7 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 - **Título do Módulo 11 (PQ):** alguns editores substituem **ã** por **â** em «quântica». Procure por `QUÂNTICA` (U+00C2) e deixe **`PÓS-QUÃNTICA`** (U+00C3), como no mapa e no restante do texto em PT‑BR.
 - **`$FP` / `$FP_MASTER`:** fingerprint pela linha `fpr:` (campo 10) só **depois** de filtrar identidade (`LAB_EMAIL`, `UID_MASTER`, `"$EMAIL"` no script bônus, etc.). Evite reintroduzir `gpg --list-secret-keys --with-colons | awk …` sem esse filtro se houver risco de mais de uma mestra.
 - **Versões e URLs:** alterou Tails, ISO de download ou ramo experimental do GnuPG? Atualize **cabeçalho**, **checklist de ferramentas** e blocos `wget` / `gpg --verify` correspondentes. Em links novos, confirme com **HEAD** (`curl -I` no Linux; no Windows, `Invoke-WebRequest -Method Head`): o índice `…/sequoia-sq/man/` devolve **404** — use `…/man/sq.1.html` ou a [raiz do `sequoia-sq`](https://sequoia-pgp.gitlab.io/sequoia-sq/).
-- **Parsing do `gpg`:** scripts novos devem preferir **`--with-colons` + `awk`** (fingerprint `fpr:`, keygrip `grp:`/`ssb:`, checagens `:s:`/`:e:`/`:a:`). Reserve `gpg -K … | grep` para blocos **didáticos** onde a saída humana for o objectivo (ex.: COMANDO 5.1).
+- **Parsing do `gpg`:** scripts novos devem preferir **`--with-colons` + `awk`** (fingerprint `fpr:`, keygrip `grp:`/`ssb:`, checagens `:s:`/`:e:`/`:a:`). Reserve `gpg -K … | grep` para blocos **didáticos** onde a saída humana for o **objetivo** (ex.: COMANDO 5.1).
 
 * * *
 
