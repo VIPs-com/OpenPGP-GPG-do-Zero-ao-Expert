@@ -1,0 +1,69 @@
+# Cursor Rules — projeto `pgp` (OpenPGP/GPG do Zero ao Expert)
+
+Este repositório **não** é uma aplicação web nem monorepo TypeScript. O trabalho aqui é **documentação canônica** + **Git**. Ajuste expectativas: não há React, estado global, nem pipeline de lint de código de produto.
+
+---
+
+## Stack tecnológica (o que realmente existe)
+
+| Camada | Uso |
+|--------|-----|
+| **Conteúdo** | Um único arquivo Markdown canônico: `🎓 OpenPGPGPG do Zero ao Expert - Versão 1.0.md` (~3900 linhas), **VERSÃO 1.0**, **PT-BR (Brasil)**. |
+| **Controle de versão** | **Git** (`main`). Commits frequentes no material didático. |
+| **Ferramentas alvo do curso (referência no texto)** | **GnuPG** ~2.4.x (Ubuntu 24.04 do curso); trechos **2.5.19+** para Kyber/ML-KEM experimental; **Tails** 7.7.1+; **Sequoia `sq`** ~1.3.x; **bash** nos blocos de script; **age**, **git** com assinatura, etc. |
+| **Estilização** | Markdown padrão (títulos, tabelas, listas, blocos ` ```sh `, callouts com `> 📎` / `> 💡`). Sem CSS/Tailwind neste repo. |
+
+Não introduzir `package.json`, frameworks ou pastas `src/` “por hábito” — só se o escopo do projeto mudar explicitamente.
+
+---
+
+## Padrões de projeto (onde colocar coisas novas)
+
+1. **Corpo do curso** — Editar o `.md` canônico na seção correta do mapa (módulos, COMANDOs, checkpoints). **Um tópico, um lugar**; evitar duplicar o mesmo parágrafo em vários módulos.
+2. **Checklist e política editorial** — **Anexo (mantenedor)** no final do `.md` (antes da Conclusão): pré-commit, Unicode do Módulo 11 (`PÓS-QUÃNTICA`), URLs, `FP`/`fpr:`.
+3. **Novos artefatos** — Preferir manter **um arquivo único** (1.0.x no mesmo `.md`) salvo decisão explícita de dividir (ex.: site, PDF).
+4. **Scripts shell nos blocos** — Devem ser **portáteis no alvo do curso** (Linux/Tails/Ubuntu VM): `bash`, `grep -oE` (evitar `grep -oP`), `awk` com `--with-colons` onde couber.
+
+---
+
+## Estilo de código e de escrita
+
+### Markdown e PT-BR
+
+- **Português do Brasil:** preferir **usuário**, **arquivo**, **seções**, **detectado**, etc. (evitar **ficheiro** / PT-EU salvo citação intencional).
+- **Módulo 11 (PQ):** título e mapa usam **`PÓS-QUÃNTICA`** (ã); alguns editores trocam por **â** — o anexo pede grep por `QUÂNTICA` (U+00C2) para corrigir.
+- **Links oficiais:** índice `…/sequoia-sq/man/` → **404**; usar `…/man/sq.1.html` ou raiz do projeto Sequoia. Confirmar URLs com **HEAD** ao atualizar versões (Tails, ISO/**IMG**, GnuPG).
+- **Tails 7.7+ pendrive:** roteiro de laboratório usa **imagem USB `.img` + `.img.sig`** e `dd` da **`.img`**; **ISO** só DVD/VM (ver matriz Tails e COMANDO 6.1).
+
+### Scripts `gpg` / bash (padrões estabelecidos no curso)
+
+- **Fingerprint:** linha **`fpr:`**, campo **10**, com **`gpg --list-secret-keys --with-colons "$UID_OU_EMAIL"`** (ou equivalente) **antes** do `awk` — nunca listar o chaveiro inteiro sem filtro se houver risco de várias mestras.
+- **Contagens:** `grep -c` com `|| true` e aritmética segura (`$((10#${VAR:-0}))`) onde já padronizado (ex.: chaves secretas no health-check).
+- **Verificação `ssb`:** capacidades **`:s:` / `:e:` / `:a:`** em colon listings; no import bônus, **`UID_IMPORT`** opcional alinhado ao **`UID_MASTER`** do Tails.
+- **Sequoia:** distinguir **`sq cert export`** (público) vs **`sq key export`** (material com segredo); `sq verify` / `sq decrypt` conforme `man` ~1.3.x (`--signature-file`, `--message`, `--cleartext`, `--recipient-file`).
+
+### Git e shell no Windows (mantenedor)
+
+- Se **hooks** alterarem commits de forma indesejada:  
+  `git -c core.hooksPath=.git/hooks-disabled commit …`
+- No **PowerShell**, evitar **`$`** dentro de `git commit -am "..."` (a mensagem pode truncar); preferir **`-m "..."`** ou mensagem sem `$`.
+
+---
+
+## Estado atual (resumo) e prioridades
+
+**Onde paramos:** o repositório consolidou o curso num **único Markdown** com revisões incrementais: Tails **`.img`** para pendrive; tabela e notas **GnuPG × Sequoia** (`sq sign` clearsign vs pacote, `sq verify`/`decrypt`); adoção Sequoia sem afirmações não verificáveis; **PT-BR** e pedidos técnicos nos scripts (`UID_IMPORT`, `SECRET_KEYS`, `FP` filtrado, etc.).
+
+**Prioridades razoáveis agora:**
+
+1. Manter **cabeçalho**, **matriz Tails**, **wget/gpg --verify** e **anexo** alinhados quando **Tails** ou **GnuPG** mudarem de versão.
+2. Continuar **revisão técnica** dos blocos `gpg`/`sq` contra manuais oficiais (sem alucinar flags).
+3. Só expandir para **código de aplicação** (TypeScript, site, etc.) se o **usuário** definir esse produto — até lá, **não** assumir stack de frontend neste repo.
+
+---
+
+## Comportamento esperado do agente
+
+- **Mudanças mínimas** ao pedido: não refatorar o `.md` inteiro nem acrescentar arquivos de documentação não pedidos.
+- **Citações de código** para o utilizador: usar o formato exigido pelo cliente (blocos com caminho e linhas quando aplicável).
+- Respostas ao utilizador em **português** claro, tom técnico de curso, alinhado ao tom já estabelecido no material.
