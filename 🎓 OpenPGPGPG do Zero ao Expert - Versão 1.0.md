@@ -369,7 +369,7 @@ Ao final deste curso, você será capaz de:
 | 🟢  | **PADRÃO ATUAL** | Recomendado para o dia a dia. Use sempre que possível |
 | 🔵  | **NÍVEL EXPERT** | O método mais correto. Use depois de entender o básico |
 
-> 💰 **DICA DO PROFESSOR:** Guarde esta legenda. Você vai usar ela o tempo todo durante o curso.
+> 💰 **DICA DO PROFESSOR:** Guarde esta legenda. Você vai usá-la o tempo todo durante o curso.
 
 * * *
 
@@ -673,7 +673,7 @@ gpgconf --kill gpg-agent && gpgconf --launch gpg-agent
 
 **Perfis opcionais do `gpg-agent.conf` (escolha consciente)**
 
-O COMANDO 0.8 acima já implementa um perfil **equilibrado** com SSH ativo para você cursar os módulos 4–5 sem atrito. Para vida real, compare três níveis (evolução pedagógica fundida neste arquivo):
+O COMANDO 0.8 acima já implementa um perfil **equilibrado** com SSH ativo para você cursar os módulos 4–5 sem atrito. Para vida real, compare três níveis na tabela abaixo:
 
 | Perfil | TTL / timeouts | SSH | Observação |
 | --- | --- | --- | --- |
@@ -865,7 +865,7 @@ Você selecionou este identificador de usuário:
     "Aluno Lab (TRAINING 2026) <aluno.training@openpgp-lab.local>"
 ```
 
-**Digite** `**O**` **(para OK).**
+**Digite** `O` **(OK)** quando o GnuPG pedir confirmação do identificador.
 
 ```
 Vai pedir uma senha (passphrase).
@@ -881,7 +881,7 @@ gpg: revocation certificate stored as '/home/aluno/.gnupg/openpgp-revocs.d/3A4B5
 gpg: done
 ```
 
-> ✅ **Anote esse código** `**3A4B5C6D...**` — é o **fingerprint** da sua chave. Você vai usar ele o tempo todo.
+> ✅ **Guarde o fingerprint completo** da sua chave (`gpg --fingerprint …` ou o bloco “Impressão digital” nas listagens). Você vai usá-lo nos próximos comandos — não confunda só com o ID curto que aparece em algumas linhas de log.
 
 * * *
 
@@ -904,9 +904,11 @@ gpg --list-keys --keyid-format long
 ```
 pub   ed25519/3A4B5C6D7E8F9A0B 2026-04-30 [C] [expires: 2027-04-30]
       Impressão digital = 3A4B 5C6D 7E8F 9A0B 1C2D 3E4F 5A6B 7C8D 9E0F
-uid                 [ultimamente confiável] Aluno Lab (TRAINING 2026) <aluno.training@openpgp-lab.local>
+uid                 [ultimate] Aluno Lab (TRAINING 2026) <aluno.training@openpgp-lab.local>
 sub   cv25519/7E8F9A0B1C2D3E4F 2026-04-30 [E] [expires: 2027-04-30]
 ```
+
+> 💡 O campo `[ultimate]` é a marca de **confiança absoluta** na sua própria chave (traduções ou locales podem mudar o texto — não confunda com a palavra “ultimamente”).
 
 **O que significa:**
 
@@ -950,7 +952,7 @@ uid           Aluno Lab (TRAINING 2026) <aluno.training@openpgp-lab.local>
 FP="3A4B5C6D7E8F9A0B1C2D3E4F5A6B7C8D9E0F1A2B"
 ```
 
-> ⚠️ **Substitua pela SEU fingerprint!** Use o que você anotou no exercício 1.1.
+> ⚠️ **Substitua pelo seu fingerprint!** Use o que você anotou no exercício 1.1.
 
 * * *
 
@@ -1019,7 +1021,7 @@ ssb   ed25519/DDDDDDDD... [A]  ← Autenticação (SSH)
 
 #### 🚀 BÔNUS: Script de geração automática de chaves
 
-> _Agora que você já sabe o que cada comando faz, aqui está um script que automatiza todo o processo de criação de chaves._
+> _Depois de repetir os passos manualmente, você pode usar este script para recriar o mesmo modelo de chave em outro laboratório._
 
 ```sh
 #!/bin/bash
@@ -1219,7 +1221,7 @@ gpg: usando subchave "BBBBBBBBBBBBBBBB" para assinar
 gpg: Assinatura criada em 2026-04-30
 ```
 
-**Foi criado o arquivo** `**declaracao.txt.asc**`**.** É sua assinatura digital.
+**Foi criado o arquivo** `declaracao.txt.asc`. É sua assinatura digital.
 
 * * *
 
@@ -1395,7 +1397,7 @@ gpg --output revogacao-mestra-$(date +%Y%m%d).asc --gen-revoke "$FP"
 Crie um certificado de revogação para esta chave? (s/N) s
 ```
 
-**Digite** `**s**`
+**Digite** `s`
 
 ```
 Motivo da revogação:
@@ -1406,7 +1408,7 @@ Motivo da revogação:
 Por favor, selecione o motivo (0, 1, 2):
 ```
 
-**Para laboratório, escolha** `**2**` **(substituída)**
+**Para laboratório, escolha** `2` **(substituída)**.
 
 ```
 Confirme que deseja criar este certificado? (s/N) s
@@ -2945,7 +2947,7 @@ alias gpg-agent-reset='gpgconf --kill gpg-agent && gpgconf --launch gpg-agent'
 
 * * *
 
-### 📋 MÓDULO 11: CRIPTOGRAFIA PÓS-QUÃNTICA
+### 📋 MÓDULO 11: CRIPTOGRAFIA PÓS-QUÂNTICA
 
 > 🎯 **Objetivo:** Entender a ameaça dos computadores quânticos e como se preparar
 
