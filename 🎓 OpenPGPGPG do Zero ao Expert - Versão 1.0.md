@@ -173,6 +173,8 @@ Ao final deste curso, você será capaz de:
 
 * * *
 
+<a id="glossario-rapido"></a>
+
 ### 📖 GLOSSÁRIO RÁPIDO (1 MINUTO)
 
 | Termo | Significado | Analogia |
@@ -188,6 +190,8 @@ Ao final deste curso, você será capaz de:
 | **Revogar** | Invalidar uma chave comprometida | Cancelar um documento |
 | **WKD** | Web Key Directory | Seu site oficial de contato |
 | **Kyber** | Algoritmo pós-quântico (futuro) | Cadeado quântico |
+
+> 📎 **Mais termos** (WoT, HKPS, keygrip, LUKS, `age`, air-gapped…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
 
 * * *
 
@@ -334,6 +338,8 @@ Ao final deste curso, você será capaz de:
 │
 └── 📚 6. APÊNDICES E FECHO DO CURSO
     │
+    ├── ✅ Folha única — checklists dos checkpoints
+    ├── 📖 Glossário de referência (aluno)
     ├── Apêndice A: TABELA DE ERROS RÁPIDOS (Top 15)
     ├── Apêndice B: SCRIPTS EVOLUTIVOS (simples → fingerprint → completo)
     ├── Apêndice C: HARDWARE WALLETS + SMARTCARDS
@@ -2939,7 +2945,7 @@ alias gpg-agent-reset='gpgconf --kill gpg-agent && gpgconf --launch gpg-agent'
 
 * * *
 
-### 📋 MÓDULO 11: CRIPTOGRAFIA PÓS-QUÂNTICA
+### 📋 MÓDULO 11: CRIPTOGRAFIA PÓS-QUÃNTICA
 
 > 🎯 **Objetivo:** Entender a ameaça dos computadores quânticos e como se preparar
 
@@ -3271,6 +3277,70 @@ Complete este desafio para obter seu certificado:
 * * *
 
 ## 📚 APÊNDICES
+
+Material de consulta do aluno e tabelas de apoio. **Quem mantém o texto:** o anexo editorial e a Conclusão vêm depois dos apêndices técnicos.
+
+* * *
+
+### ✅ Folha única — checklists dos checkpoints
+
+Use esta página como **referência rápida** antes de encerrar cada fase do curso. Os desafios completos e o contexto pedagógico continuam nas secções **🏁 CHECKPOINT 1**, **2** e **3**.
+
+#### Antes de avançar para a Parte 2 — Checkpoint 1 (cifrar, assinar, verificar)
+
+| Critério | Evidência mínima | OK |
+| --- | --- | :---: |
+| Chave funcional | `gpg -K` mostra `[C]`, `[S]`, `[E]`, `[A]` | [ ] |
+| Cifragem | Arquivo `.gpg` criado com sucesso | [ ] |
+| Decifragem | Conteúdo original recuperado sem erro | [ ] |
+| Assinatura | `.sig` ou clearsign gerado sem erro | [ ] |
+| Verificação | Assinatura válida no arquivo íntegro | [ ] |
+| Integridade | Após alterar o arquivo, verificação retorna BAD signature | [ ] |
+
+#### Antes de avançar para a Parte 3 — Checkpoint 2 (Git assinado)
+
+| Critério | Evidência mínima | OK |
+| --- | --- | :---: |
+| Chave pública publicada | Chave adicionada na conta GitHub/GitLab | [ ] |
+| Commit assinado localmente | `git log --show-signature -1` válido | [ ] |
+| Assinatura na plataforma | Selo **Verified** (ou equivalente) no commit remoto | [ ] |
+| Tag assinada | `git tag -s` criada e verificável | [ ] |
+| Reprodutibilidade | Novo commit assina sem ajustes ad-hoc | [ ] |
+
+#### Antes de avançar para a Parte 4 — Checkpoint 3 (perda total simulada)
+
+| Critério | Evidência mínima | OK |
+| --- | --- | :---: |
+| Estado limpo | Após remover o chaveiro de laboratório, `gpg -K` não lista segredos | [ ] |
+| Restauração | Import a partir do backup (ex.: `.age`) sem erro | [ ] |
+| Assinatura pós-restore | `gpg --clearsign` (ou equivalente) conclui com sucesso | [ ] |
+| Documentação | Notas ou log com comandos e saídas relevantes | [ ] |
+
+> **Regra:** só avance para a parte seguinte quando **todos** os itens da tabela correspondente estiverem marcados. Se algo falhar, volte ao módulo indicado na seção do checkpoint e repita até fechar a rubrica.
+
+* * *
+
+<a id="glossario-referencia"></a>
+
+### 📖 Glossário de referência
+
+Definições curtas dos termos que mais reaparecem no curso. Para uma leitura inicial de um minuto, veja também o [Glossário rápido](#glossario-rapido) no onboarding.
+
+| Termo | Significado |
+| --- | --- |
+| **\[C\] / \[S\] / \[E\] / \[A\]** | Capacidades OpenPGP na chave: **C**ertify (mestra: assinar identidades da própria chave e emitir revogação), **S**ign (assinatura), **E**ncryption (cifragem a terceiros), **A**uthentication (ex.: SSH com `gpg-agent`). |
+| **WKD** | *Web Key Directory* — forma padrão de publicar a chave pública via HTTPS no domínio do email (`.well-known/openpgpkey/` ou subdomínio `openpgpkey`). Ver Módulo 10. |
+| **WoT** | *Web of Trust* — confiança derivada de assinaturas mútuas e níveis de confiança no chaveiro (não confundir com “confiar cegamente” em keyserver). Ver Módulo 10 / apêndices de política. |
+| **HKPS** | Acesso a servidor de chaves sobre TLS (`hkps://`), reduzindo exposição em relação a HKP simples ou infraestruturas SKS legadas. |
+| **Fingerprint** | Identificador longo e estável da chave — compare **fora da banda** com o interlocutor antes de marcar confiança ou assinar a chave de terceiros. |
+| **Keygrip** | Identificador que o `gpg-agent` usa para mapear material criptográfico (ligação ao SSH via `[A]`, `sshcontrol`, etc.). Ver Módulo 5. |
+| **pinentry** | Programa que solicita passphrase ou PIN ao agente (`pinentry-tty`, `pinentry-gnome`, …). Fundamental para não treinar má hábitos como passphrase em variável de ambiente. |
+| **Air-gapped / offline** | Operação sem rede no momento sensível (ex.: gerir mestra no Tails sem Internet). Objetivo: reduzir superfície de vazamento. |
+| **LUKS** | Criptografia de disco/partição no Linux — uso típico para proteger mídia física onde guardas backups ou cofres. |
+| **age** | Ferramenta simples para cifrar arquivos com chave ou passphrase — usada nos roteiros de backup com `gpg` + arquivos `.age`. |
+| **Backup 3-2-1** | Três cópias dos dados importantes, em **dois** tipos de mídia diferentes, com **uma** cópia fora do local principal (ex.: fora de casa ou data center distinto). |
+
+* * *
 
 ### APÊNDICE A: TABELA DE ERROS RÁPIDOS (TOP 15)
 
