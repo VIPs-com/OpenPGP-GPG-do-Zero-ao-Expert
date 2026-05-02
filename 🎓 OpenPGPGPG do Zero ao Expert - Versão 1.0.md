@@ -2022,7 +2022,7 @@ echo "💻 Adicione o conteúdo de gpg-ssh-key.pub ao ~/.ssh/authorized_keys do 
 | --- | --- | --- | --- | --- |
 | **Laboratório (este curso)** | Desligada ao gerar/exportar segredos | Opcional — só para não perder exports entre reboots | Pendrive ou pasta da VM **sem misturar com produção** | OK usar persistência **apenas** para exercício com identidade fictícia |
 | **Identidade real (produção)** | **Desligada** (Wi‑Fi, cabo, tethering) | Evite deixar mestra “morando” na persistência por meses | Gere offline → copie **na hora** para **segundo pendrive LUKS** ou mídia física exclusiva | Preferível: **sessão amnésica + cópia imediata offline**, depois desligar |
-| **Baixar/gravar ISO** | Normalmente **no host** (ex.: Ubuntu da VM), não no ambiente onde você opera a mestra | — | ISO + `.sig` verificados antes do `dd` | Baixar e verificar assinatura da ISO **fora** do fluxo offline da mestra reduz erro operacional |
+| **Baixar/gravar mídia** | Normalmente **no host** (ex.: Ubuntu da VM), não no ambiente onde você opera a mestra | — | **Pendrive:** imagem **`.img`** + `.img.sig` antes do `dd` (Tails **7.7+** — ISO em USB não é mais o caminho oficial); **ISO** só DVD/VM | Baixar e verificar **fora** do fluxo offline da mestra reduz erro operacional |
 | **Levar material ao PC online** | — | — | Só pacotes com **subchaves** `[S][E][A]` (ou `.age`); **nunca** enviar `master-key.asc` por rede/cloud | Segundo meio físico ou arquivo `age` com passphrase forte |
 
 **Resumo em 30 s:** para **produção**, trate o Tails como **cozinha limpa**: entre, opera offline, exporta para **mídia dedicada**, sai — sem depender de persistência como “cofre permanente”. Para **lab**, persistência é conforto pedagógico, não modelo de vida útil da mestra.
@@ -2035,18 +2035,20 @@ echo "💻 Adicione o conteúdo de gpg-ssh-key.pub ao ~/.ssh/authorized_keys do 
 
 > 💡 **Como o Tails recomenda verificar:** na [página oficial de download](https://tails.net/install/download/index.en.html), a equipe prioriza verificação **no navegador** (assistida por JavaScript ou comparação manual com checksum). Isso é totalmente válido para uso real. Os passos **2–3** abaixo fazem uma verificação **OpenPGP na linha de comando** — boa para o laboratório e para exercitar o mesmo tipo de garantia que você já usa no curso.
 
+> 📎 **Pendrive físico (7.7+):** use a **imagem USB** (`.img`) — o projeto deixou de posicionar a **ISO** em pendrive (DVD/VM continuam com `.iso`). Ajuste `7.7.1` se a página oficial listar versão mais nova.
+
 ```sh
-# 1. Baixe a imagem ISO do Tails (ajuste o número se a página oficial tiver versão mais nova)
+# 1. Baixe a imagem USB do Tails (.img) — ajuste o número se a página oficial tiver versão mais nova
 #    Página oficial: https://tails.net/install/download/index.en.html
-wget https://download.tails.net/tails/stable/tails-amd64-7.7.1/tails-amd64-7.7.1.iso
+wget https://download.tails.net/tails/stable/tails-amd64-7.7.1/tails-amd64-7.7.1.img
 
 # 2. Baixe a assinatura OpenPGP e a chave de assinatura oficial do projeto (uma vez por máquina de trabalho)
-wget https://tails.net/torrents/files/tails-amd64-7.7.1.iso.sig
+wget https://tails.net/torrents/files/tails-amd64-7.7.1.img.sig
 wget https://tails.net/tails-signing.key
 gpg --import tails-signing.key
 
-# 3. Verifique a ISO (esperado: "Good signature"; aviso de confiança na chave é comum no primeiro uso)
-gpg --verify tails-amd64-7.7.1.iso.sig tails-amd64-7.7.1.iso
+# 3. Verifique a imagem (esperado: "Good signature"; aviso de confiança na chave é comum no primeiro uso)
+gpg --verify tails-amd64-7.7.1.img.sig tails-amd64-7.7.1.img
 
 # 4. IDENTIFIQUE seu pendrive (PASSO CRÍTICO!)
 lsblk -p | grep "disk"
@@ -2062,8 +2064,8 @@ if [ "$CONFIRMA" != "SIM" ]; then
     exit 1
 fi
 
-# 6. Grave a ISO (com status de progresso)
-sudo dd if=tails-amd64-7.7.1.iso of=$PENDRIVE bs=4M status=progress
+# 6. Grave a imagem USB no pendrive (com status de progresso)
+sudo dd if=tails-amd64-7.7.1.img of=$PENDRIVE bs=4M status=progress
 sync
 
 echo "✅ Pendrive Tails criado com sucesso!"
@@ -3223,12 +3225,12 @@ FP=$(gpg --list-secret-keys --with-colons "$UID_PQ_MIG" | awk -F: '/^fpr:/ {prin
 #### Onde Sequoia costuma aparecer (2026)
 
 *   **Distribuições Linux** que empacotam **`sequoia-sq`** e projetos Rust que dependem do crate **`sequoia-openpgp`** (assinatura, parsing, ferramentas internas).
-*   **Integrações sob política «Rust/OpenPGP»** — ao avaliar um produto, confira **qual** biblioteca entra na build (**Sequoia**, **rPGP**, outra).
-*   **Ecossistema em expansão:** uso costuma ser **menos visível** que o `gpg` no desktop, mas cresce em *tooling* e *supply chain* — por isso o **`sq`** vale como segunda ferramenta na caixa do expert.
+*   **Integrações sob política «Rust/OpenPGP»** — ao avaliar um produto, confira **qual** biblioteca entra **no pacote que você instala** (**Sequoia**, **rPGP**, outra).
+*   **Ecossistema em expansão:** uso costuma ser **menos visível** que o `gpg` no desktop, mas cresce em **CI, assinatura de artefatos e integração em pipelines** — por isso o **`sq`** vale como segunda ferramenta na caixa do expert.
 
 #### Thunderbird com OpenPGP nativo (e-mail desktop)
 
-O complemento Enigmail está **descontinuado**; Thunderbird **78+** traz OpenPGP integrado *(pilha **RNP** / Mozilla — **não** é o projeto Sequoia)*. Instale o Thunderbird, configure a conta, depois **Editar → Configurações → Criptografia ponta a ponta**: ative OpenPGP e associe sua chave. Valide sempre fingerprints como no restante do curso.
+O complemento Enigmail está **descontinuado**; o Thunderbird moderno traz OpenPGP integrado **desde a série 78** *(pilha **RNP** / Mozilla — **não** é o projeto Sequoia)* — em versões muito novas os menus podem mudar; use a ajuda do aplicativo. Instale o Thunderbird, configure a conta, depois **Editar → Configurações → Criptografia ponta a ponta**: ative OpenPGP e associe sua chave. Valide sempre fingerprints como no restante do curso.
 
 * * *
 
@@ -3281,7 +3283,7 @@ O complemento Enigmail está **descontinuado**; Thunderbird **78+** traz OpenPGP
 └─ gpg --decrypt → sq decrypt … (opc. --recipient-file … se a chave estiver só em arquivo)
 ```
 
-> 💡 **DICA DO PROFESSOR:** O **modelo mental** de OpenPGP (certificado, UID, fingerprint, subchaves, agente) **serve quase igual** no Sequoia; mudam sobretudo **sintaxe de CLI**, defaults e alguns cantos de WoT/policy entre `gpg` e `sq`. Por isso dominar o `gpg` **e** saber ler o `sq help` deixa você preparado quando o `sq` ganhar mais tração no *tooling*.
+> 💡 **DICA DO PROFESSOR:** O **modelo mental** de OpenPGP (certificado, UID, fingerprint, subchaves, agente) **serve quase igual** no Sequoia; mudam sobretudo **sintaxe de CLI**, **valores padrão** e alguns cantos de WoT/policy entre `gpg` e `sq`. Por isso dominar o `gpg` **e** saber ler o `sq help` deixa você preparado quando o `sq` ganhar mais tração em **ferramentas de apoio ao desenvolvedor**.
 
 * * *
 
@@ -3861,7 +3863,7 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 - **Título do Módulo 11 (PQ):** alguns editores substituem **ã** por **â** em «quântica». Procure por `QUÂNTICA` (U+00C2) e deixe **`PÓS-QUÃNTICA`** (U+00C3), como no mapa e no restante do texto em PT‑BR.
 - **`$FP` / `$FP_MASTER`:** fingerprint pela linha `fpr:` (campo 10) só **depois** de filtrar identidade (`LAB_EMAIL`, `UID_MASTER`, `"$EMAIL"` no script bônus, etc.). Evite reintroduzir `gpg --list-secret-keys --with-colons | awk …` sem esse filtro se houver risco de mais de uma mestra.
 - **Bônus `gpg-import-subkeys.sh` (Módulo 6):** defina **`UID_IMPORT`** igual ao **`UID_MASTER`** do Tails para a verificação **`ssb`** não misturar outra mestra; sem isso o script assume chaveiro inteiro (didática de VM só).
-- **Versões e URLs:** alterou Tails, ISO de download ou ramo experimental do GnuPG? Atualize **cabeçalho**, **checklist de ferramentas** e blocos `wget` / `gpg --verify` correspondentes. Em links novos, confirme com **HEAD** (`curl -I` no Linux; no Windows, `Invoke-WebRequest -Method Head`): o índice `…/sequoia-sq/man/` devolve **404** — use `…/man/sq.1.html` ou a [raiz do `sequoia-sq`](https://sequoia-pgp.gitlab.io/sequoia-sq/).
+- **Versões e URLs:** alterou Tails, imagem de download (**.img** para pendrive; **.iso** só DVD/VM) ou ramo experimental do GnuPG? Atualize **cabeçalho**, **checklist de ferramentas**, **matriz Tails** e blocos `wget` / `gpg --verify` correspondentes. Em links novos, confirme com **HEAD** (`curl -I` no Linux; no Windows, `Invoke-WebRequest -Method Head`): o índice `…/sequoia-sq/man/` devolve **404** — use `…/man/sq.1.html` ou a [raiz do `sequoia-sq`](https://sequoia-pgp.gitlab.io/sequoia-sq/).
 - **Parsing do `gpg`:** scripts novos devem preferir **`--with-colons` + `awk`** (fingerprint `fpr:`, keygrip `grp:`/`ssb:`, checagens `:s:`/`:e:`/`:a:`). Reserve `gpg -K … | grep` para blocos **didáticos** onde a saída humana for o **objetivo** (ex.: COMANDO 5.1).
 
 * * *
