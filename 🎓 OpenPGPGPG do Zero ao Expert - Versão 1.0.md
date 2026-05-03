@@ -196,7 +196,7 @@ Ao final deste curso, você será capaz de:
 | **WKD** | Web Key Directory | Seu site oficial de contato |
 | **Kyber** | Algoritmo pós-quântico (futuro) | Cadeado quântico |
 
-> 📎 **Mais termos** (WoT, HKPS, HKP, UID, ASCII armor, keygrip, LUKS, `age`, air-gapped…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
+> 📎 **Mais termos** (WoT, HKPS, HKP, UID, ASCII armor, entropia, keygrip, LUKS, `age`, air-gapped…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
 
 * * *
 
@@ -503,7 +503,7 @@ sudo apt install -y gnupg2 rng-tools age cryptsetup pinentry-tty
 **O que cada um faz:**
 
 *   `gnupg2` → O próprio GPG (versão moderna)
-*   `rng-tools` → Gera números aleatórios (entropia) para chaves seguras
+*   `rng-tools` → Ajuda o sistema a **repôr entropia** durante geração pesada de chaves — sobretudo útil em **VM minimal/antiga**; em desktop físico Ubuntu 24.x costuma ser medida de conforto/laboratório, não sempre obrigatória
 *   `age` → Ferramenta para backups (moderna, simples)
 *   `cryptsetup` → Para criar pendrives criptografados (LUKS)
 *   `pinentry-tty` → Interface para digitar senha no terminal
@@ -702,7 +702,6 @@ echo "🔐 Instalando GPG e ferramentas..."
 
 sudo apt update
 sudo apt install -y gnupg2 rng-tools age cryptsetup pinentry-tty
-sudo rngd -r /dev/urandom -o /dev/random
 
 echo "✅ Instalação concluída!"
 gpg --version | head -n1
@@ -3440,6 +3439,7 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | **Fingerprint** | Identificador longo e estável da chave — compare **fora da banda** com o interlocutor antes de marcar confiança ou assinar a chave de terceiros. |
 | **UID** | *User ID* — bloco **nome + e-mail** (e por vezes comentário) associado à chave no OpenPGP; aparece em `gpg --list-keys` e nas linhas `uid:` do `--with-colons`. Não confundir com *username* de sistema operacional. |
 | **ASCII armor** | Blocos texto **`-----BEGIN PGP...-----`** para transportar chaves e mensagens OpenPGP (e-mail, *paste*, anexos `.asc`). No `gpg`, **`--armor`** / **`-a`**; alternativa ao pacote binário “nu”. |
+| **Entropia** | Aleatoriedade de qualidade que o SO alimenta ao crypto stack — ver **`/proc/sys/kernel/random/entropy_avail`**. Geração de chaves longa pode **esperar** se o pool estiver baixo; **`rng-tools`** (COMANDO 0.3) ajuda sobretudo em **VM minimal/antiga** ou hosts fracos; desktop físico Ubuntu 24.x moderno costuma repor rápido sem drama. |
 | **`--with-colons`** | Saída máquina-legível (`pub:`, `sec:`, `sub:`/`ssb:`, `fpr:`, `grp:`…). Em **`fpr:`**, o campo **10** costuma ser a fingerprint completa; em **`sec:`**/`pub:`**, o campo **5** é em geral o KeyID longo (vários formatos funcionam como seletor no `gpg`). Ver scripts dos Módulos 3–6 e anexo do mantenedor. |
 | **Keygrip** | Identificador que o `gpg-agent` usa para mapear material criptográfico (ligação ao SSH via `[A]`, `sshcontrol`, etc.). Ver Módulo 5. |
 | **pinentry** | Programa que solicita passphrase ou PIN ao agente (`pinentry-tty` em servidor/SSH só texto; `pinentry-gnome3` típico no Ubuntu Desktop 24.x GNOME). Fundamental para não treinar **maus hábitos**, como guardar passphrase em variável de ambiente. |
