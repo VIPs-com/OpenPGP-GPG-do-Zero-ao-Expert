@@ -32,7 +32,7 @@ A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática; o 
 | Grep scripts + PQ (`list-secret-keys`, `fpr:`, sem `grep -oP`, `QUÂNTICA` indevido) | **PASS** 2026-05-02 | Sem `grep -oP`; `QUÂNTICA` só no anexo; exceções aceites: contagem `^sec:` no health-check; `gpg-import-subkeys` com `UID_IMPORT` vazio **só** com comentário de laboratório no script |
 | VM (spot-check) | **PENDENTE** | Roteiro **§ Spot-check VM Ubuntu** — única lacuna que exige Ubuntu real |
 | Governança (`.cursorrules`, `.mdc`, formato entrega) | **PASS** 2026-05-02 | `openpgp-course-pointer.mdc` → `.cursorrules`, `alwaysApply: true`; README coerente com trunk = MD + meta |
-| `LICENSE` (opcional) | **WARN** leve | Ainda ausente no remoto — decisão editorial; README já documenta fallback |
+| `LICENSE` | **PASS** 2026-05-03 | Ficheiro `LICENSE` no trunk (direitos reservados); README alinhado — mudança para licença aberta = substituir `LICENSE` + editar README |
 
 *Substituir células conforme novas rodadas; VM passa a **PASS** quando o roteiro for executado ou desvio for documentado.*
 
@@ -59,7 +59,7 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 | --- | --- | --- |
 | 1 | Colar ou abrir este `ROADMAP.md` + `.cursorrules` | Contexto estável para o agente |
 | 2 | `git pull` / `git status` / `git remote -v` | Em `E:\pgp` ou `/e/pgp` |
-| 3 | **P3** — **LICENSE** se aplicável; **spot-check VM** (R2) | Ver **§ Pendências ativas — P3** e § VM |
+| 3 | **Spot-check VM** (R2) — única lacuna P3 que exige Ubuntu | **§ Spot-check VM Ubuntu**; preencher tabela de auditoria «VM» ao concluir |
 | 4 | Checklist **camadas 1–2–4** (e **3** se houver rede) | Atualizar **tabela de auditoria** |
 | 5 | **Spot-check VM** | **§ Spot-check VM Ubuntu**; único passo que exige Ubuntu real |
 
@@ -88,7 +88,7 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 
 - [ ] **R2:** Spot-check VM (espelha P1 operacional no SO real).
 - [x] **T5:** Idempotência COMANDO 5.3 (`grep -q` antes de `echo >>` em `enable-ssh-support`).
-- [ ] **R1:** Ficheiro `LICENSE` no repositório (decisão editorial; README já menciona fallback).
+- [x] **R1:** Ficheiro `LICENSE` no repositório (direitos reservados; substituir se a decisão editorial for licença aberta).
 - [x] **R3:** Rever ponta a ponta `openpgp-course-pointer.mdc` ↔ `.cursorrules`.
 
 ### Outras (alta utilidade, fora P1–P3)
@@ -135,7 +135,8 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-VI** | Formato entrega trunk; **`.cursor/rules/openpgp-course-pointer.mdc`** |
 | **2026-05-VII** | **P1** no `.md`: remover `agent-timeout` + nota `pinentry-timeout`; COMANDO **1.1–1.3** alinhados a `--generate-key` sem comentário obrigatório; passphrase exemplo **6** segmentos (Mandamento 6); grep **`QUÂNTICA`** só no anexo |
 | **2026-05-VIII** | **P2:** `--gen-key` como legado/alias (T1); nota `openpgp-revocs.d` vs `--gen-revoke` (T7); «Resultados esperados» + legenda **⚫** e níveis 🔵 (E2/E3); rubrica CP1 `.asc`/clearsign/`.sig` (C1); cronograma quântico + NIST + incerteza (S1); mapa Módulo 1 |
-| **2026-05-IX** | **Auditoria estática trunk** (plano pré-roadmap): Git, versões, **HEAD** em URLs do `.md` canónico, grep preventivo, governança **R3**; correção URL GitHub sem `**` no Markdown; **T5** idempotência COMANDO 5.3; **VM** e **LICENSE** pendentes de decisão/execução |
+| **2026-05-IX** | **Auditoria estática trunk** (plano pré-roadmap): Git, versões, **HEAD** em URLs do `.md` canónico, grep preventivo, governança **R3**; correção URL GitHub sem `**` no Markdown; **T5** idempotência COMANDO 5.3; **VM** pendente de execução |
+| **2026-05-03** | **R1:** ficheiro **`LICENSE`** (todos os direitos reservados); **README** — secção licença; tabela de auditoria — linha `LICENSE` **PASS** |
 | **Repo** | `.vscode/` e `scripts/` só locais (`.gitignore` + fora do remoto) |
 
 **Manutenção recorrente:** ao **novo** bloco shell no `.md` canónico → rever `list-secret-keys` + `fpr:` + `UID_IMPORT` / `LAB_EMAIL`; ao **novo** link HTTPS → repetir **HEAD** em lote; ao subir **GnuPG** experimental → rever nomes PQ na CLI (Módulo 11).
