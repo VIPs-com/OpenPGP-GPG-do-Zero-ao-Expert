@@ -3847,6 +3847,7 @@ gpg --export --armor "$FP_NOVO" > nova-chave-ecc.asc
 | Recuperação real | Simulação de desastre validada | [ ] |
 | Futuro tecnológico | Pós-quântico e Sequoia com plano de transição | [ ] |
 | Multiplataforma | Linux, Windows, Android e iPhone cobertos | [ ] |
+| **Versões externas** (Tails / GnuPG / `sq`) | Cabeçalho, tabela de ferramentas (Módulo 0), **`README.md`** do repo, **matriz Tails** e blocos `wget` / `gpg --verify` do **COMANDO 6.1** com o **mesmo** número de série que a [página oficial](https://tails.net/install/download/index.en.html) (rodada mantenedor: conferir sempre antes de publicar) | [ ] |
 | Apêndices completos | A a F com uso real | [ ] |
 | Pronto para aluno | Linguagem clara, exercícios e rubricas em cada etapa | [ ] |
 
@@ -3890,12 +3891,18 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 
 * * *
 
+### Harmonização com `.cursorrules` (Git no agente Cursor)
+
+O ficheiro **`.cursorrules`** na raiz do repo define quando o agente deve correr **`git add` / `commit` / `push`** após editar material versionado. Para **eliminar ambiguidade** entre «salvo o utilizador pedir o contrário» e exceções concretas, as regras usam **uma única lista canónica de quatro exceções explícitas**: *só no disco* · *sem push* · *rascunho* · *não commits*. O bullet **Manter o remoto alinhado** enumera e delimita essa lista; o bullet **Git após entregar trabalho** remete **somente** a ela — **sem** ampliar por interpretação vaga. **Registo:** harmonização **2026-05** (mantenedor + agente).
+
+* * *
+
 ### Antes de commitar (sanidade rápida)
 
 - **Título do Módulo 11 (PQ):** alguns editores substituem **ã** por **â** em «quântica». Procure por `QUÂNTICA` (U+00C2) e deixe **`PÓS-QUÃNTICA`** (U+00C3), como no mapa e no restante do texto em PT‑BR.
 - **`$FP` / `$FP_MASTER`:** fingerprint pela linha `fpr:` (campo 10) só **depois** de filtrar identidade (`LAB_EMAIL`, `UID_MASTER`, `"$EMAIL"` no script bônus, etc.). Evite reintroduzir `gpg --list-secret-keys --with-colons | awk …` sem esse filtro se houver risco de mais de uma mestra.
 - **Bônus `gpg-import-subkeys.sh` (Módulo 6):** defina **`UID_IMPORT`** igual ao **`UID_MASTER`** do Tails para a verificação **`ssb`** não misturar outra mestra; sem isso o script assume chaveiro inteiro (didática de VM só).
-- **Versões e URLs:** alterou Tails, imagem de download (**.img** para pendrive; **.iso** só DVD/VM) ou ramo experimental do GnuPG? Atualize **cabeçalho**, **checklist de ferramentas**, **matriz Tails** e blocos `wget` / `gpg --verify` correspondentes. Em links novos, confirme com **HEAD** (`curl -I` no Linux; no Windows, `Invoke-WebRequest -Method Head`): o índice `…/sequoia-sq/man/` devolve **404** — use `…/man/sq.1.html` ou a [raiz do `sequoia-sq`](https://sequoia-pgp.gitlab.io/sequoia-sq/). Rodadas recentes verificaram os **URLs HTTPS únicos** então listados no arquivo (ordem do **HEAD em lote**); repita sempre que acrescentar hiperlinks (tabela de referências, novo repositório Git no texto, etc.).
+- **Versões e URLs:** alterou Tails, imagem de download (**.img** para pendrive; **.iso** só DVD/VM) ou ramo experimental do GnuPG? Atualize **cabeçalho**, **checklist de ferramentas**, **matriz Tails**, **`README.md`** na raiz do repo e blocos `wget` / `gpg --verify` correspondentes — **um único** número de série (ex.: `tails-amd64-7.7.1` em toda a cadeia). Em links novos, confirme com **HEAD** (`curl -I` no Linux; no Windows, `Invoke-WebRequest -Method Head`): o índice `…/sequoia-sq/man/` devolve **404** — use `…/man/sq.1.html` ou a [raiz do `sequoia-sq`](https://sequoia-pgp.gitlab.io/sequoia-sq/). Rodadas recentes verificaram os **URLs HTTPS únicos** então listados no arquivo (ordem do **HEAD em lote**); repita sempre que acrescentar hiperlinks (tabela de referências, novo repositório Git no texto, etc.).
 - **Parsing do `gpg`:** scripts novos devem preferir **`--with-colons` + `awk`** (fingerprint `fpr:`, keygrip `grp:`/`ssb:`, checagens `:s:`/`:e:`/`:a:`). Reserve `gpg -K … | grep` para blocos **didáticos** onde a saída humana for o **objetivo** (ex.: COMANDO 5.1).
 
 * * *

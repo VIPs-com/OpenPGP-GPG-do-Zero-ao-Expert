@@ -16,7 +16,9 @@
 |---|--------|--------|
 | 1 | «Continuar roadmap» ou colar este arquivo | Alinha com `.cursorrules`. |
 | 2 | `git pull` / `git status` | Na pasta do clone (**`/e/pgp`** ou `E:\pgp`); `git remote -v` tem de ser **OpenPGP-GPG-do-Zero-ao-Expert** — não `~` nem outro repo (ver `.cursorrules`). |
-| 3 | **Anexo do mantenedor** + cabeçalho | Versões Tails / GnuPG / `sq` vs blocos `wget` / links? |
+| 3 | **Spot-check na VM Ubuntu** (COMANDOs sensíveis) | `dd` + pendrive, `gpg --verify` da `.img`, `quick-add-key`, export/import subchaves, health-check — ver backlog **Alta utilidade**. |
+
+**Rodada mantenedor 2026-05 (feito):** Tails **7.7.1** conferido em [tails.net/install/download](https://tails.net/install/download/index.en.html); cabeçalho, tabela Módulo 0, COMANDO 6.1 (`wget`/`dd`/`gpg --verify`) e `README.md` coerentes. Anexo: linha de checklist **Versões externas** + bullet **README** na sincronização de versões.
 
 ---
 
