@@ -30,6 +30,14 @@
 
 **Rodada estática 2026-05-V (feito):** `ROADMAP` — secção **Spot-check VM Ubuntu (roteiro mínimo)**; `README` — linha da tabela sobre o roteiro; grep por corrupção **`QUÂNTICA`** no título PQ do `.md` — **nenhuma** ocorrência indevida (só a dica no anexo).
 
+**Rodada estática 2026-05-VI (feito):** decisão **formato de entrega** (secção abaixo); **`.cursor/rules/openpgp-course-pointer.mdc`** — ponte ao `.cursorrules` para o formato MDC do Cursor.
+
+---
+
+## Formato de entrega (decisão trunk 1.x)
+
+**Até nova decisão explícita do mantenedor:** o que conta como **entrega principal** no Git é o **Markdown canónico** do curso + ficheiros de repo (`README`, `ROADMAP`, `.cursorrules`, `.cursor/rules`). **Não** há no trunk obrigação de PDF, HTML estático nem site gerado — isso fica para **fase posterior** se/quando houver tempo e ferramenta escolhida.
+
 ---
 
 ## Spot-check VM Ubuntu (roteiro mínimo)
@@ -67,12 +75,12 @@ VM alinhada ao curso (**Ubuntu 24.04**, `gnupg2`, rede para `wget`/`apt` onde ne
 
 ### Baixa / decisão de produto
 
-- [ ] **Formato de entrega:** manter só `.md` vs export PDF/HTML/site — só quando quiser investir tempo; não bloqueia o trunk 1.x.
-- [ ] **Opcional:** regra Cursor em `.cursor/rules/*.mdc` espelhando trechos do `.cursorrules` (formato novo do IDE).
+- [x] **Formato de entrega:** decisão **2026-05-VI** — trunk = `.md` canónico + meta-repo; PDF/HTML/site **fora** do escopo até decisão nova (não bloqueia 1.x).
+- [x] **Opcional — `.cursor/rules/*.mdc`:** ficheiro **`.cursor/rules/openpgp-course-pointer.mdc`** (ponte ao `.cursorrules`); ampliar ou dividir regras só se o `.cursorrules` ficar desordenado.
 
 ---
 
 ## “Vai lembrar na próxima sessão?”
 
-- **Sim, no sentido prático:** o próximo agente vê **este repositório**, **`.cursorrules`** e **`ROADMAP.md`**.
+- **Sim, no sentido prático:** o próximo agente vê **este repositório**, **`.cursorrules`**, **`.cursor/rules/*.mdc`** e **`ROADMAP.md`**.
 - **Não** no sentido de chat infinito: decisões finas ficam no **Git** (`git log -p`) ou em notas aqui no roadmap.

@@ -9,6 +9,7 @@ Curso em **um único Markdown** (versão canônica **1.0**), com orientações p
 | [🎓 OpenPGPGPG do Zero ao Expert - Versão 1.0.md](./🎓%20OpenPGPGPG%20do%20Zero%20ao%20Expert%20-%20Versão%201.0.md) | Curso completo (módulos, comandos, checkpoints) |
 | [ROADMAP.md](./ROADMAP.md) | Próximas sessões, backlog técnico e **roteiro spot-check na VM Ubuntu** |
 | [.cursorrules](./.cursorrules) | Contexto e padrões do projeto para IA / equipe |
+| [`.cursor/rules/openpgp-course-pointer.mdc`](./.cursor/rules/openpgp-course-pointer.mdc) | Ponte MDC do Cursor ao `.cursorrules` (regras canónicas) |
 
 ## Requisitos no leitor
 

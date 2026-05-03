@@ -1,0 +1,10 @@
+---
+description: Curso OpenPGP/GPG — ponte para .cursorrules (regras canónicas do repo)
+alwaysApply: true
+---
+
+# Repo canónico OpenPGP/GPG
+
+A **fonte longa** de políticas, Git, shell e exceções ao `commit`/`push` está em **`.cursorrules`** na raiz do clone. Este ficheiro **não duplica** esse texto — serve para o Cursor reconhecer regras no formato **`.mdc`**.
+
+**Resumo:** respostas ao utilizador em **português**; alterações **mínimas** ao pedido; pasta do clone **`E:\pgp`** / `cd /e/pgp` (Git Bash); mensagens de commit **`docs(curso):`** para o `.md` canónico, **`chore(repo):`** para meta-repo; ver **`.cursorrules`** para a lista canónica de exceções ao push automático.
