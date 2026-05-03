@@ -574,7 +574,7 @@ ls -ld ~/.gnupg
 | --- | --- | --- |
 | GPG | 2.4+ (ideal 2.5+) | Atualize o sistema e reinstale `gnupg2` |
 | age | Instalado e respondendo versão | Rode `sudo apt install -y age` |
-| Entropia | > 100 (ideal > 300) | Aguarde atividade do sistema ou rode `rngd` |
+| Entropia | > 100 (ideal > 300) | Aguarde atividade na VM; se ficar crônico, veja glossário **Entropia** (`entropy_avail`, `rng-tools`) — **evite** *workarounds* manuais com `rngd` sem ler a política da distro |
 | Permissão `~/.gnupg` | `drwx------` (700) | Rode `chmod 700 ~/.gnupg` |
 
 * * *
