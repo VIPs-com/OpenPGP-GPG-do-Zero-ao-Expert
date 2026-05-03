@@ -3,3 +3,7 @@ Thumbs.db
 Desktop.ini
 *.tmp
 ~$*
+
+# Apenas local — não publicar no remoto (clone público fica só curso + metadados mínimos)
+.vscode/
+scripts/
