@@ -2,50 +2,104 @@
 
 **Objetivo:** continuidade entre sessões. O Cursor carrega `.cursorrules` + este repo; **este arquivo** e o **histórico Git** são a “memória” estável.
 
-**Repositório remoto:** [github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert) — antes de editar em outra máquina: `git pull origin main`.
-
-**Última ideia geral:** curso canônico num só `.md`; já há Tails `.img`, tabela Sequoia, `UID_IMPORT`, `FP`/`fpr:`, health-check, Módulo 12, política de idioma no `.cursorrules`.
+**Repositório remoto:** [github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert) — antes de editar noutra máquina: `git pull origin main`.
 
 **PowerShell (Windows):** pasta do clone = `E:\pgp` / `Set-Location E:\pgp` — **`cd /e/pgp` é só Git Bash** (ver `.cursorrules`).
 
 ---
 
-## Próxima sessão (passagem rápida — ~30–60 min)
+## Fluxo aprovado: auditoria → tabela → roadmap
 
-| # | Tarefa | Notas |
-|---|--------|--------|
-| 1 | «Continuar roadmap» ou colar este arquivo | Alinha com `.cursorrules`. |
-| 2 | `git pull` / `git status` | Na pasta do clone (**`/e/pgp`** ou `E:\pgp`); `git remote -v` tem de ser **OpenPGP-GPG-do-Zero-ao-Expert** — não `~` nem outro repo (ver `.cursorrules`). |
-| 3 | **Spot-check na VM Ubuntu** (COMANDOs sensíveis) | Seguir **§ Spot-check VM Ubuntu** abaixo; cruzar com o `.md` (COMANDOs 6.1, 3.x, health-check, import subchaves). |
+Ordem acordada com o **plano «Auditoria pré-roadmap»** (e auditoria técnica do conteúdo **2026-05-03**):
 
-**Rodada mantenedor 2026-05 (feito):** Tails **7.7.1** conferido em [tails.net/install/download](https://tails.net/install/download/index.en.html); cabeçalho, tabela Módulo 0, COMANDO 6.1 (`wget`/`dd`/`gpg --verify`) e `README.md` coerentes. Anexo: linha de checklist **Versões externas** + bullet **README** na sincronização de versões.
+1. **Auditoria de conteúdo** no `.md` canónico (precisão GnuPG/Sequoia, rubricas, exemplos) — fechar **P1 → P2 → P3** quando possível.
+2. **Auditoria estática do trunk** — checklist das **seis camadas** abaixo; preencher a **tabela de resultado** na secção seguinte.
+3. **Novas linhas datadas** neste ficheiro (ex.: «Rodada estática 2026-05-VII») só **depois** de lacunas reais (FAIL/WARN) ou decisão explícita do mantenedor.
 
-**Rodada estática 2026-05-II (feito, texto — VM ainda pendente):** COMANDO 6.1 — nota **disco inteiro vs `/dev/sdX1`** no bloco `dd`; Módulo 8 — nota **cron + `mail`/`mailutils`** no exemplo do health-check. Próximo passo real continua a ser **spot-check na VM** (backlog).
-
-**`.vscode/` e `scripts/` (2026-05):** deixam de ser versionados — **`.gitignore`** + remoção do índice no remoto; mantenedor mantém cópias **só no clone local** (task / `push-curso.bat` se quiser).
-
-**Rodada estática 2026-05-III (feito, grep):** todas as linhas didáticas com `gpg --list-secret-keys --with-colons` para `FP` / `KEYGRIP` / verificação `ssb` usam **filtro por UID ou e-mail**; exceções aceites e documentadas: contagem `^sec:` no **health-check**; `gpg-import-subkeys.sh` com **`UID_IMPORT` vazio** (só laboratório). Repetir esta verificação ao **acrescentar** qualquer script novo no `.md`.
-
-**Rodada estática 2026-05-IV (feito, PQ):** Módulo 11 — nota **mantenedor/aluno** sobre nomes de algoritmo na CLI (`--quick-generate-key` / build GnuPG); SPHINCS+ — lembrete de validar string quando houver suporte; anexo **Antes de commitar** — bullet **strings PQ na CLI**.
-
-**Rodada estática 2026-05-V (feito):** `ROADMAP` — secção **Spot-check VM Ubuntu (roteiro mínimo)**; `README` — linha da tabela sobre o roteiro; grep por corrupção **`QUÂNTICA`** no título PQ do `.md` — **nenhuma** ocorrência indevida (só a dica no anexo).
-
-**Rodada estática 2026-05-VI (feito):** decisão **formato de entrega** (secção abaixo); **`.cursor/rules/openpgp-course-pointer.mdc`** — ponte ao `.cursorrules` para o formato MDC do Cursor.
+A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática; o fecho formal do spot-check atualiza a tabela e o backlog.
 
 ---
 
-## Formato de entrega (decisão trunk 1.x)
+## Última auditoria estática (preencher após cada rodada completa)
 
-**Até nova decisão explícita do mantenedor:** o que conta como **entrega principal** no Git é o **Markdown canónico** do curso + ficheiros de repo (`README`, `ROADMAP`, `.cursorrules`, `.cursor/rules`). **Não** há no trunk obrigação de PDF, HTML estático nem site gerado — isso fica para **fase posterior** se/quando houver tempo e ferramenta escolhida.
+| Área | Resultado | Notas / próximo passo |
+| --- | --- | --- |
+| Git / trunk | — | `git remote -v`, `main`, `.vscode/` e `scripts/` fora do índice |
+| Versões (Tails / GnuPG / `sq`) | — | Cruzar cabeçalho, Módulo 0, `README`, notas aqui |
+| URLs (HEAD HTTPS únicos) | — | 200 ou redirects **esperados**; sem **404** |
+| Grep scripts + PQ (`list-secret-keys`, `fpr:`, sem `grep -oP`, `QUÂNTICA` indevido) | — | Ver anexo mantenedor + `.cursorrules` |
+| VM (spot-check) | — | Ver **§ Spot-check VM Ubuntu** |
+| Governança (`.cursorrules`, `.mdc`, formato entrega) | — | Ponte MDC; trunk = MD + meta |
+
+*Substituir «—» por PASS / WARN / FAIL + data quando fechar a rodada.*
+
+---
+
+## Checklist por camada (cada «rodada completa» de auditoria)
+
+Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** = VM quando houver tempo.
+
+| # | Camada | O quê |
+| --- | --- | --- |
+| 1 | Inventário Git | Pasta do clone; `git pull` / `status`; remoto = **OpenPGP-GPG-do-Zero-ao-Expert**; nada sensível em `~` por engano |
+| 2 | Versões | Grep cruzado `Tails`, `7.7`, `gnupg`, `2.4`, `2.5`, `sequoia`, `sq` entre `.md` canónico, `README`, notas de rodada |
+| 3 | URLs | HEAD em lote nos HTTPS **únicos** do `.md` canónico; repetir após **novos** links |
+| 4 | Grep preventivo | `list-secret-keys` / `fpr:` / `UID_IMPORT` / `LAB_EMAIL`; sem `grep -oP`; título PQ **`PÓS-QUÃNTICA`** (ã) — grep por **`QUÂNTICA`** (â) = corrupção de editor |
+| 5 | Spot-check VM | Tabela em **§ Spot-check VM Ubuntu** |
+| 6 | Governança | `.cursorrules` ↔ `openpgp-course-pointer.mdc`; secção **Formato de entrega**; `LICENSE` se política editorial existir |
+
+---
+
+## Próxima sessão (~30–90 min, «de vagar»)
+
+| # | Tarefa | Notas |
+| --- | --- | --- |
+| 1 | Colar ou abrir este `ROADMAP.md` + `.cursorrules` | Contexto estável para o agente |
+| 2 | `git pull` / `git status` / `git remote -v` | Em `E:\pgp` ou `/e/pgp` |
+| 3 | **P1** no `.md` canónico (se ainda aberto) | Ver **§ Pendências ativas — P1** |
+| 4 | Checklist **camadas 1–2–4** (e **3** se houver rede) | Atualizar **tabela de auditoria** |
+| 5 | **Spot-check VM** | **§ Spot-check VM Ubuntu**; único passo que exige Ubuntu real |
+
+---
+
+## Pendências ativas (curso + repo)
+
+### P1 — Correções técnicas imediatas (`.md` canónico)
+
+*Origem: auditoria técnica 2026-05-03 + plano aprovado. **Não** alterar o título PQ para «â» — política do anexo: manter **`PÓS-QUÃNTICA`** (ã); grep por corrupção **`QUÂNTICA`**.*
+
+- [ ] **T2:** Remover ou substituir `agent-timeout` em `gpg-agent.conf` (COMANDO 0.8 e tabela de perfis); confirmar com `man gpg-agent` / VM — opções válidas incluem `default-cache-ttl`, `max-cache-ttl`; para timeout de pinentry ver `pinentry-timeout` se for o objetivo.
+- [ ] **T6:** Ajustar texto/exemplo de `gpg --generate-key` vs comentário (2.4.x não pede comentário como em `--full-generate-key`).
+- [ ] **SEC1:** Alinhar exemplo de passphrase (COMANDO 1.1) com Mandamento 6 (mínimo 6 palavras em produção) ou nota explícita «laboratório».
+- [ ] **Validação PQ (camada 4):** confirmar zero `QUÂNTICA` indevido no título/corpo; título canónico com **ã**.
+
+### P2 — Precisão e clareza didática
+
+- [ ] **T1:** Reformular `--gen-key` vs alias moderno de `--generate-key` (evitar «obsoleto» enganoso).
+- [ ] **T7:** Nota sobre cert de revogação automático em `~/.gnupg/openpgp-revocs.d/` vs revogação manual exportada.
+- [ ] **E2 / E3:** Tabela «Resultados esperados» / legenda — coerência 🔴🟡🟢🔵 e ⚫ vs legenda.
+- [ ] **C1:** Rubrica checkpoint 1 — `.asc` (armor) vs `.sig` (binário).
+- [ ] **S1 (opcional):** Texto ECC/RSA 2030–2040 vs estimativas NIST/NSA, com ressalva de incerteza.
+
+### P3 — Ecossistema e robustez
+
+- [ ] **R2:** Spot-check VM (espelha P1 operacional no SO real).
+- [ ] **T5:** Idempotência COMANDO 5.3 (`grep -q` antes de `echo >>` em `enable-ssh-support`).
+- [ ] **R1:** Ficheiro `LICENSE` no repositório (decisão editorial; README já menciona fallback).
+- [ ] **R3:** Rever ponta a ponta `openpgp-course-pointer.mdc` ↔ `.cursorrules`.
+
+### Outras (alta utilidade, fora P1–P3)
+
+- [ ] **Spot-check na VM Ubuntu** — roteiro completo abaixo (`dd`, `gpg --verify` `.img`, `quick-add-key`, import subchaves, health-check).
 
 ---
 
 ## Spot-check VM Ubuntu (roteiro mínimo)
 
-VM alinhada ao curso (**Ubuntu 24.04**, `gnupg2`, rede para `wget`/`apt` onde necessário). Marque cada passo; anote desvios no backlog ou no commit seguinte.
+VM alinhada ao curso (**Ubuntu 24.04**, `gnupg2`, rede para `wget`/`apt` onde necessário). Marque cada passo; anote desvios no commit seguinte ou em issue.
 
 | # | O quê | Referência no `.md` / notas |
-|---|--------|------------------------------|
+| --- | --- | --- |
 | 1 | `gpg --version` e `sq version` (se `sequoia-sq` instalado) | Cabeçalho + Módulo 12 |
 | 2 | `wget` assinatura + `gpg --verify` da `.img` Tails (ou fluxo equivalente) | **COMANDO 6.1** |
 | 3 | `lsblk -p`, confirmar **disco inteiro** (`/dev/sdX`), **não** `sdX1`; `dd` + `sync` em **pendrive de teste** ou imagem em loop | **COMANDO 6.1** |
@@ -54,33 +108,45 @@ VM alinhada ao curso (**Ubuntu 24.04**, `gnupg2`, rede para `wget`/`apt` onde ne
 | 6 | Copiar o **health-check** do curso para `~/scripts/`, `chmod +x`, `LAB_EMAIL=... ./gpg-health-check.sh` | Módulo 8 (bônus) |
 | 7 | (Opcional) `gpg --clearsign` / `gpg --verify` fumaça | Módulo 7 |
 
-**Critério de fecho:** checklist acima sem erro bloqueante **ou** issues abertas/documentadas com comando exacto e saída.
+**Critério de fecho:** checklist sem erro bloqueante **ou** desvio documentado com comando e saída.
 
 ---
 
-## Backlog técnico (verificar / melhorar)
+## Formato de entrega (decisão trunk 1.x)
 
-### Alta utilidade
-
-- [ ] **Spot-check na VM Ubuntu do curso** dos COMANDOs mais sensíveis: `dd` + caminho do pendrive, `gpg --verify` da `.img`, `quick-add-key`, export/import subchaves, health-check completo.
-- [x] **Varredura de URLs:** URLs HTTPS únicos do `.md` canônico verificados por **HEAD** na última rodada completa; **200** ou redirecionamentos esperados (**302** mirror Tails `.img`; **302** raiz `sequoia-sq/`; **308** guia `user-documentation/`). Sem **404**. Repetir **HEAD em lote** após novos links (ex.: GitHub do curso na nota editorial / tabela de referências).
-- [x] **Grep preventivo (parcial):** sem `grep -oP` nem `|| echo "0"` problemático nos scripts revistos; `grep -oE`/`bc` no health-check conforme o curso; exceções a `list-secret-keys` **sem** UID documentadas no **anexo** (rodada III).
-- [x] **Grep preventivo completo:** rodada **2026-05-III** no `.md` canónico; ao **novo** bloco script no curso → rever de novo `list-secret-keys` + `fpr:` + `UID_IMPORT` / `LAB_EMAIL`.
-
-### Média
-
-- [x] **Blocos Kyber / migração 2028–2030:** nota defensiva **2026-05-IV** no Módulo 11 (validar strings na CLI real + manual); repetir sempre que o **GnuPG** subir de série experimental ou mudarem nomes `kyber*` / PQC no `gpg`.
-- [x] **Thunderbird:** linha de **Ajuda** + caminho EN **Edit → Settings → End-to-End Encryption** no **Módulo 12**; repetir screenshot só se a UI mudar de novo de forma relevante.
-- [x] **Glossário (trecho Sequoia + rede):** entradas `sq cert export`, `sq key export`, `sq decrypt` / `--recipient-file` (Módulo 12); mais **HKP** vs HKPS e remissão no glossário rápido (expandir se novos comandos `sq` ou políticas de rede entrarem no curso).
-
-### Baixa / decisão de produto
-
-- [x] **Formato de entrega:** decisão **2026-05-VI** — trunk = `.md` canónico + meta-repo; PDF/HTML/site **fora** do escopo até decisão nova (não bloqueia 1.x).
-- [x] **Opcional — `.cursor/rules/*.mdc`:** ficheiro **`.cursor/rules/openpgp-course-pointer.mdc`** (ponte ao `.cursorrules`); ampliar ou dividir regras só se o `.cursorrules` ficar desordenado.
+**Até nova decisão explícita do mantenedor:** entrega principal no Git = **Markdown canónico** do curso + meta-repo (`README`, `ROADMAP`, `.cursorrules`, `.cursor/rules`). **Não** há obrigação no trunk de PDF, HTML estático nem site gerado — fase posterior se/quando houver ferramenta e tempo.
 
 ---
 
-## “Vai lembrar na próxima sessão?”
+## Histórico de rodadas (2026-05 — concluídas)
 
-- **Sim, no sentido prático:** o próximo agente vê **este repositório**, **`.cursorrules`**, **`.cursor/rules/*.mdc`** e **`ROADMAP.md`**.
-- **Não** no sentido de chat infinito: decisões finas ficam no **Git** (`git log -p`) ou em notas aqui no roadmap.
+Resumo do que já foi integrado no material ou no repo; detalhes finos no `git log`.
+
+| Rodada | Tema |
+| --- | --- |
+| **2026-05** (mantenedor) | Tails **7.7.1**; cabeçalho, Módulo 0, COMANDO 6.1, `README`; anexo **Versões externas** |
+| **2026-05-II** | `dd` disco vs partição; health-check **cron + mailutils** |
+| **2026-05-III** | Grep preventivo `list-secret-keys` / `fpr:` / exceções documentadas |
+| **2026-05-IV** | Módulo 11 PQ / strings CLI; SPHINCS+; anexo pré-commit PQ |
+| **2026-05-V** | Secção spot-check VM; `README`; grep corrupção **`QUÂNTICA`** |
+| **2026-05-VI** | Formato entrega trunk; **`.cursor/rules/openpgp-course-pointer.mdc`** |
+| **Repo** | `.vscode/` e `scripts/` só locais (`.gitignore` + fora do remoto) |
+
+**Manutenção recorrente:** ao **novo** bloco shell no `.md` canónico → rever `list-secret-keys` + `fpr:` + `UID_IMPORT` / `LAB_EMAIL`; ao **novo** link HTTPS → repetir **HEAD** em lote; ao subir **GnuPG** experimental → rever nomes PQ na CLI (Módulo 11).
+
+---
+
+## Backlog concluído (referência rápida)
+
+Itens já tratados nas rodadas acima (não reabrir salvo regressão):
+
+- Varredura URLs (última rodada completa; repetir só após links novos — agora coberto na **camada 3**).
+- Grep preventivo parcial/completo (rodada III + regra de manutenção).
+- Kyber / Thunderbird / glossário Sequoia+rede / decisão trunk / ponte MDC.
+
+---
+
+## «Vai lembrar na próxima sessão?»
+
+- **Sim:** o próximo agente vê este repo, **`.cursorrules`**, **`.cursor/rules/*.mdc`** e **`ROADMAP.md`**.
+- **Não** no sentido de chat infinito: decisões finas ficam no **Git** (`git log -p`) e na **tabela de auditoria** deste ficheiro.
