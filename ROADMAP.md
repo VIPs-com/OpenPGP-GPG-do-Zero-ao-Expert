@@ -23,13 +23,13 @@
 ### Alta utilidade
 
 - [ ] **Spot-check na VM Ubuntu do curso** dos COMANDOs mais sensíveis: `dd` + caminho do pendrive, `gpg --verify` da `.img`, `quick-add-key`, export/import subchaves, health-check completo.
-- [x] **Varredura de URLs:** todos os **19 URLs HTTPS únicos** no `.md` canônico verificados por **HEAD** (`curl.exe -sI`): **200** ou redirecionamentos esperados (**302** mirror Tails `.img`; **302** raiz `sequoia-sq/`; **308** guia `user-documentation/`). Sem **404** nos links atuais.
+- [x] **Varredura de URLs:** URLs HTTPS únicos do `.md` canônico verificados por **HEAD** na última rodada completa; **200** ou redirecionamentos esperados (**302** mirror Tails `.img`; **302** raiz `sequoia-sq/`; **308** guia `user-documentation/`). Sem **404**. Repetir **HEAD em lote** após novos links (ex.: GitHub do curso na nota editorial / tabela de referências).
 - [x] **Grep preventivo (parcial):** sem `grep -oP` nem `|| echo "0"` problemático nos scripts revistos; `list-secret-keys --with-colons |` só no anexo (advertência).
 - [ ] **Grep preventivo completo:** novo script no `.md` → rever filtro UID/`fpr:` sempre.
 
 ### Média
 
-- [ ] **Blocos Kyber / migração 2028–2030:** alinhar comentários se a CLI experimental do `gpg` mudar (nomes de algoritmo, `quick-generate-key`).
+- [ ] **Blocos Kyber / migração 2028–2030:** alinhar comentários se a CLI experimental do `gpg` mudar (nomes de algoritmo, `quick-generate-key`). URLs HEAD já cobertos na rodada anterior; repetir após mudanças grandes no `.md`.
 - [ ] **Thunderbird:** quando menus mudarem de novo, uma linha “confira ajuda integrada” + eventual screenshot/descrição mínima.
 - [x] **Glossário (trecho Sequoia):** entradas `sq cert export`, `sq key export`, `sq decrypt` / `--recipient-file` com remissão ao Módulo 12 (expandir se novos comandos `sq` entrarem no curso).
 

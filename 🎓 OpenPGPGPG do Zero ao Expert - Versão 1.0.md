@@ -9,6 +9,8 @@
 
 > 📌 **Nota editorial:** **`🎓 OpenPGPGPG do Zero ao Expert - Versão 1.0.md`** é o curso oficial (**VERSÃO 1.0 canônica**), arquivo único no projeto. O cabeçalho usa **OpenPGP/GPG** como nome didático do curso.
 
+> 📎 **Repositório Git (opcional):** histórico público em **https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert** — útil para `git clone`, *pull* e *issues*; estudar só com este `.md` local ou cópia ZIP continua válido.
+
 * * *
 
 ## 📐 Para quem mantém este arquivo
@@ -3836,6 +3838,7 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 
 | Recurso | URL |
 | --- | --- |
+| Este curso — fonte versionada (Git) | https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert |
 | Documentação GnuPG | https://www.gnupg.org/documentation/ |
 | Wiki WKD | https://wiki.gnupg.org/WKD |
 | Sequoia-PGP | https://sequoia-pgp.org |
@@ -3866,7 +3869,7 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 - **Título do Módulo 11 (PQ):** alguns editores substituem **ã** por **â** em «quântica». Procure por `QUÂNTICA` (U+00C2) e deixe **`PÓS-QUÃNTICA`** (U+00C3), como no mapa e no restante do texto em PT‑BR.
 - **`$FP` / `$FP_MASTER`:** fingerprint pela linha `fpr:` (campo 10) só **depois** de filtrar identidade (`LAB_EMAIL`, `UID_MASTER`, `"$EMAIL"` no script bônus, etc.). Evite reintroduzir `gpg --list-secret-keys --with-colons | awk …` sem esse filtro se houver risco de mais de uma mestra.
 - **Bônus `gpg-import-subkeys.sh` (Módulo 6):** defina **`UID_IMPORT`** igual ao **`UID_MASTER`** do Tails para a verificação **`ssb`** não misturar outra mestra; sem isso o script assume chaveiro inteiro (didática de VM só).
-- **Versões e URLs:** alterou Tails, imagem de download (**.img** para pendrive; **.iso** só DVD/VM) ou ramo experimental do GnuPG? Atualize **cabeçalho**, **checklist de ferramentas**, **matriz Tails** e blocos `wget` / `gpg --verify` correspondentes. Em links novos, confirme com **HEAD** (`curl -I` no Linux; no Windows, `Invoke-WebRequest -Method Head`): o índice `…/sequoia-sq/man/` devolve **404** — use `…/man/sq.1.html` ou a [raiz do `sequoia-sq`](https://sequoia-pgp.gitlab.io/sequoia-sq/). Rodadas recentes verificaram **~19 URLs HTTPS únicos** no arquivo; repita o **HEAD em lote** quando acrescentar hiperlinks (tabela de referências, novos módulos).
+- **Versões e URLs:** alterou Tails, imagem de download (**.img** para pendrive; **.iso** só DVD/VM) ou ramo experimental do GnuPG? Atualize **cabeçalho**, **checklist de ferramentas**, **matriz Tails** e blocos `wget` / `gpg --verify` correspondentes. Em links novos, confirme com **HEAD** (`curl -I` no Linux; no Windows, `Invoke-WebRequest -Method Head`): o índice `…/sequoia-sq/man/` devolve **404** — use `…/man/sq.1.html` ou a [raiz do `sequoia-sq`](https://sequoia-pgp.gitlab.io/sequoia-sq/). Rodadas recentes verificaram os **URLs HTTPS únicos** então listados no arquivo (ordem do **HEAD em lote**); repita sempre que acrescentar hiperlinks (tabela de referências, novo repositório Git no texto, etc.).
 - **Parsing do `gpg`:** scripts novos devem preferir **`--with-colons` + `awk`** (fingerprint `fpr:`, keygrip `grp:`/`ssb:`, checagens `:s:`/`:e:`/`:a:`). Reserve `gpg -K … | grep` para blocos **didáticos** onde a saída humana for o **objetivo** (ex.: COMANDO 5.1).
 
 * * *
