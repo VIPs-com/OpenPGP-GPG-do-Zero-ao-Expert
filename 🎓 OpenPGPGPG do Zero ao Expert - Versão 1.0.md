@@ -196,7 +196,7 @@ Ao final deste curso, você será capaz de:
 | **WKD** | Web Key Directory | Seu site oficial de contato |
 | **Kyber** | Algoritmo pós-quântico (futuro) | Cadeado quântico |
 
-> 📎 **Mais termos** (WoT, HKPS, HKP, SKS, UID, ASCII armor, assinatura destacada, clearsign, entropia, keygrip, `GNUPGHOME`, dirmngr, LUKS, `age`, certificado de revogação, air-gapped…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
+> 📎 **Mais termos** (WoT, HKPS, HKP, SKS, UID, ASCII armor, assinatura destacada, clearsign, entropia, keygrip, `GNUPGHOME`, dirmngr, RNP, LUKS, `age`, certificado de revogação, air-gapped…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
 
 * * *
 
@@ -2886,7 +2886,7 @@ Leia como uma árvore de decisão — sempre com **HKPS** e fingerprint confirma
    `gpg --keyserver hkps://keys.openpgp.org --recv-keys FPR`
 3. Não veio material ou UID incompleto para seu caso? → **Fallback:**  
    `gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys FPR`
-4. Ainda falhou? → Peça um **`.asc`** direto ao contato ou confirme se o FPR está atualizado (rotação/revogação). **Não** procure em pools SKS antigos, `pgp.mit.edu` ou endpoints sem TLS.
+4. Ainda falhou? → Peça um **`.asc`** direto ao contato ou confirme se o FPR está atualizado (rotação/revogação). Se o erro parecer de **rede/TLS** ou o `dirmngr` “preso”, tente `gpgconf --kill dirmngr && gpgconf --launch dirmngr` ([glossário **dirmngr**](#glossario-referencia), [Apêndice A](#apendice-a) nº 6). **Não** procure em pools SKS antigos, `pgp.mit.edu` ou endpoints sem TLS.
 
 **B) Publicar *sua* chave**
 
@@ -3238,7 +3238,7 @@ FP=$(gpg --list-secret-keys --with-colons "$UID_PQ_MIG" | awk -F: '/^fpr:/ {prin
 
 #### Thunderbird com OpenPGP nativo (e-mail desktop)
 
-O complemento Enigmail está **descontinuado**; o Thunderbird moderno traz OpenPGP integrado **desde a série 78** *(pilha **RNP** / Mozilla — **não** é o projeto Sequoia)* — em versões muito novas os menus podem mudar; use a ajuda do aplicativo. Instale o Thunderbird, configure a conta, depois **Editar → Configurações → Criptografia ponta a ponta**: ative OpenPGP e associe sua chave. Valide sempre fingerprints como no restante do curso.
+O complemento Enigmail está **descontinuado**; o Thunderbird moderno traz OpenPGP integrado **desde a série 78** *(pilha **RNP** / Mozilla — **não** é o projeto Sequoia)* — em versões muito novas os menus podem mudar; use a **Ajuda** do aplicativo (pesquisa interna por *OpenPGP* ou *PGP*). Instale o Thunderbird, configure a conta, depois **Editar → Configurações → Criptografia ponta a ponta** (em UI em inglês costuma ser **Edit → Settings → End-to-End Encryption**): ative OpenPGP e associe sua chave. Valide sempre fingerprints como no restante do curso.
 
 * * *
 
@@ -3454,6 +3454,7 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | **`--with-colons`** | Saída máquina-legível (`pub:`, `sec:`, `sub:`/`ssb:`, `fpr:`, `grp:`…). Em **`fpr:`**, o campo **10** costuma ser a fingerprint completa; em **`sec:`**/`pub:`**, o campo **5** é em geral o KeyID longo (vários formatos funcionam como seletor no `gpg`). Ver scripts dos Módulos 3–6 e anexo do mantenedor. |
 | **Keygrip** | Identificador que o `gpg-agent` usa para mapear material criptográfico (ligação ao SSH via `[A]`, `sshcontrol`, etc.). Ver Módulo 5. |
 | **pinentry** | Programa que solicita passphrase ou PIN ao agente (`pinentry-tty` em servidor/SSH só texto; `pinentry-gnome3` típico no Ubuntu Desktop 24.x GNOME). Fundamental para não treinar **maus hábitos**, como guardar passphrase em variável de ambiente. |
+| **RNP** | Biblioteca OpenPGP usada pelo **Thunderbird** (série 78+) na criptografia integrada da aplicação — **não** substitui o fluxo pedagógico do curso com **`gpg`** na linha de comando nem o projeto **Sequoia**; serve para contextualizar o cliente de e-mail. Ver **Módulo 12** (Thunderbird). |
 | **dirmngr** | Componente do GnuPG que trata de **HTTPS/TLS** e pedidos HTTP em nome do `gpg` (ex.: **HKPS**, descoberta WKD). Se **`--recv-keys`** ou **`--refresh-keys`** falharem com erro de rede ou TLS “congelado”, tente `gpgconf --kill dirmngr && gpgconf --launch dirmngr` antes de culpar só o keyserver (ver **Módulo 7** e Apêndice A nº 6). |
 | **Air-gapped / offline** | Operação sem rede no momento sensível (ex.: operar a mestra no Tails sem Internet). Objetivo: reduzir superfície de vazamento. |
 | **LUKS** | Criptografia de disco/partição no Linux — uso típico para proteger mídia física onde você guarda backups ou cofres. |
@@ -3465,6 +3466,8 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | **Backup 3-2-1** | Três cópias dos dados importantes, em **dois** tipos de mídia diferentes, com **uma** cópia fora do local principal (ex.: fora de casa ou data center distinto). |
 
 * * *
+
+<a id="apendice-a"></a>
 
 ### APÊNDICE A: TABELA DE ERROS RÁPIDOS (TOP 15)
 
@@ -3499,7 +3502,7 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 
 - Erro de assinatura: valide subchave `[S]`, `GPG_TTY`, `gpg-agent`, coerência de **`GNUPGHOME`** (se usar chaveiro alternativo).
 - Erro de decifração: confirme subchave `[E]` e import correto de subchaves.
-- Erro de keyserver / `recv-keys` / `refresh-keys`: FPR **completo**, HKPS (`keys.openpgp.org` / `keyserver.ubuntu.com`), preferir **WKD** ou `.asc`; se rede/TLS “travou”, **dirmngr** — ver glossário e **Apêndice A nº 6** + **COMANDO 10.1** (keyserver em `gpg.conf`).
+- Erro de keyserver / `recv-keys` / `refresh-keys`: FPR **completo**, HKPS (`keys.openpgp.org` / `keyserver.ubuntu.com`), preferir **WKD** ou `.asc`; se rede/TLS “travou”, **dirmngr** — ver [glossário](#glossario-referencia) e [Apêndice A](#apendice-a) nº 6 + **COMANDO 10.1** (keyserver em `gpg.conf`).
 - Erro de SSH: revise `sshcontrol`, keygrip, `SSH_AUTH_SOCK`.
 - Erro de trust/chave pública: atualize chaveiro e revalide fingerprint.
 

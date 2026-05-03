@@ -13,7 +13,7 @@
 | # | Tarefa | Notas |
 |---|--------|--------|
 | 1 | «Continuar roadmap» ou colar este arquivo | Alinha com `.cursorrules`. |
-| 2 | `git pull` / `git status` | Trabalhar em cima do `main`. |
+| 2 | `git pull` / `git status` | Na pasta do clone (**`/e/pgp`** ou `E:\pgp`); `git remote -v` tem de ser **OpenPGP-GPG-do-Zero-ao-Expert** — não `~` nem outro repo (ver `.cursorrules`). |
 | 3 | **Anexo do mantenedor** + cabeçalho | Versões Tails / GnuPG / `sq` vs blocos `wget` / links? |
 
 ---
@@ -30,7 +30,7 @@
 ### Média
 
 - [ ] **Blocos Kyber / migração 2028–2030:** alinhar comentários se a CLI experimental do `gpg` mudar (nomes de algoritmo, `quick-generate-key`). URLs HEAD já cobertos na rodada anterior; repetir após mudanças grandes no `.md`.
-- [ ] **Thunderbird:** quando menus mudarem de novo, uma linha “confira ajuda integrada” + eventual screenshot/descrição mínima.
+- [x] **Thunderbird:** linha de **Ajuda** + caminho EN **Edit → Settings → End-to-End Encryption** no **Módulo 12**; repetir screenshot só se a UI mudar de novo de forma relevante.
 - [x] **Glossário (trecho Sequoia + rede):** entradas `sq cert export`, `sq key export`, `sq decrypt` / `--recipient-file` (Módulo 12); mais **HKP** vs HKPS e remissão no glossário rápido (expandir se novos comandos `sq` ou políticas de rede entrarem no curso).
 
 ### Baixa / decisão de produto
