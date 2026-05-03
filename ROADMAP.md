@@ -20,6 +20,10 @@
 
 **Rodada mantenedor 2026-05 (feito):** Tails **7.7.1** conferido em [tails.net/install/download](https://tails.net/install/download/index.en.html); cabeçalho, tabela Módulo 0, COMANDO 6.1 (`wget`/`dd`/`gpg --verify`) e `README.md` coerentes. Anexo: linha de checklist **Versões externas** + bullet **README** na sincronização de versões.
 
+**Rodada estática 2026-05-II (feito, texto — VM ainda pendente):** COMANDO 6.1 — nota **disco inteiro vs `/dev/sdX1`** no bloco `dd`; Módulo 8 — nota **cron + `mail`/`mailutils`** no exemplo do health-check. Próximo passo real continua a ser **spot-check na VM** (backlog).
+
+**`.vscode/` e `scripts/` (2026-05):** deixam de ser versionados — **`.gitignore`** + remoção do índice no remoto; mantenedor mantém cópias **só no clone local** (task / `push-curso.bat` se quiser).
+
 ---
 
 ## Backlog técnico (verificar / melhorar)
