@@ -26,6 +26,8 @@
 
 **Rodada estática 2026-05-III (feito, grep):** todas as linhas didáticas com `gpg --list-secret-keys --with-colons` para `FP` / `KEYGRIP` / verificação `ssb` usam **filtro por UID ou e-mail**; exceções aceites e documentadas: contagem `^sec:` no **health-check**; `gpg-import-subkeys.sh` com **`UID_IMPORT` vazio** (só laboratório). Repetir esta verificação ao **acrescentar** qualquer script novo no `.md`.
 
+**Rodada estática 2026-05-IV (feito, PQ):** Módulo 11 — nota **mantenedor/aluno** sobre nomes de algoritmo na CLI (`--quick-generate-key` / build GnuPG); SPHINCS+ — lembrete de validar string quando houver suporte; anexo **Antes de commitar** — bullet **strings PQ na CLI**.
+
 ---
 
 ## Backlog técnico (verificar / melhorar)
@@ -39,7 +41,7 @@
 
 ### Média
 
-- [ ] **Blocos Kyber / migração 2028–2030:** alinhar comentários se a CLI experimental do `gpg` mudar (nomes de algoritmo, `quick-generate-key`). URLs HEAD já cobertos na rodada anterior; repetir após mudanças grandes no `.md`.
+- [x] **Blocos Kyber / migração 2028–2030:** nota defensiva **2026-05-IV** no Módulo 11 (validar strings na CLI real + manual); repetir sempre que o **GnuPG** subir de série experimental ou mudarem nomes `kyber*` / PQC no `gpg`.
 - [x] **Thunderbird:** linha de **Ajuda** + caminho EN **Edit → Settings → End-to-End Encryption** no **Módulo 12**; repetir screenshot só se a UI mudar de novo de forma relevante.
 - [x] **Glossário (trecho Sequoia + rede):** entradas `sq cert export`, `sq key export`, `sq decrypt` / `--recipient-file` (Módulo 12); mais **HKP** vs HKPS e remissão no glossário rápido (expandir se novos comandos `sq` ou políticas de rede entrarem no curso).
 

@@ -3069,6 +3069,8 @@ Computadores quânticos suficientemente grandes (milhões de qubits) quebrarão:
 
 **Status em GnuPG 2.5.19+:** ⚠️ **EXPERIMENTAL** – use apenas em laboratório.
 
+> 📎 **Mantenedor / aluno avançado:** os **nomes de algoritmo** passados a `--quick-generate-key` / `--expert` (`kyber768+cv25519`, `kyber768`, `sphincsplus`, etc.) **variam com a pré-release** do GnuPG. Antes de automatizar ou de alterar este bloco, confirme na **sua** versão: `gpg --quick-generate-key --help` e o [manual *OpenPGP Key Management*](https://www.gnupg.org/documentation/manuals/gnupg/OpenPGP-Key-Management.html) correspondente. O guia **«Migração 2028–2030»** abaixo inclui linhas comentadas ou com aviso de época por esse motivo.
+
 ```sh
 # 🔵 EXPERIMENTAL - Gerando chave híbrida (Kyber + cv25519)
 UID_PQ="Aluno Lab (PQ) <pq@lab>"
@@ -3102,7 +3104,7 @@ gpg --export "$FP" 2>/dev/null | gpg --list-packets 2>/dev/null | grep -i kyber
 *   Stateless (diferente de XMSS e LMS)
 *   Resistente a quânticos
 
-**Status:** Ainda não suportado nativamente no GPG mainstream (2026).
+**Status:** Ainda não suportado nativamente no GPG mainstream (2026). Quando existir suporte, a **string** na CLI pode não ser literalmente `sphincsplus` — valide com `gpg --quick-generate-key --help` na sua build (como no aviso do bloco Kyber acima).
 
 * * *
 
@@ -3912,6 +3914,7 @@ O ficheiro **`.cursorrules`** na raiz do repo define quando o agente deve correr
 ### Antes de commitar (sanidade rápida)
 
 - **Título do Módulo 11 (PQ):** alguns editores substituem **ã** por **â** em «quântica». Procure por `QUÂNTICA` (U+00C2) e deixe **`PÓS-QUÃNTICA`** (U+00C3), como no mapa e no restante do texto em PT‑BR.
+- **Módulo 11 — strings PQ na CLI:** ao atualizar exemplos Kyber/SPHINCS+ ou a versão mínima do GnuPG no cabeçalho, rode na VM **`gpg --quick-generate-key --help`** (e, se possível, um teste real) para alinhar nomes de algoritmo ao binário — ver nota 📎 antes do primeiro bloco `sh` do Kyber.
 - **`$FP` / `$FP_MASTER`:** fingerprint pela linha `fpr:` (campo 10) só **depois** de filtrar identidade (`LAB_EMAIL`, `UID_MASTER`, `"$EMAIL"` no script bônus, etc.). Evite reintroduzir `gpg --list-secret-keys --with-colons | awk …` sem esse filtro se houver risco de mais de uma mestra.
 - **Bônus `gpg-import-subkeys.sh` (Módulo 6):** defina **`UID_IMPORT`** igual ao **`UID_MASTER`** do Tails para a verificação **`ssb`** não misturar outra mestra; sem isso o script assume chaveiro inteiro (didática de VM só).
 - **Versões e URLs:** alterou Tails, imagem de download (**.img** para pendrive; **.iso** só DVD/VM) ou ramo experimental do GnuPG? Atualize **cabeçalho**, **checklist de ferramentas**, **matriz Tails**, **`README.md`** na raiz do repo e blocos `wget` / `gpg --verify` correspondentes — **um único** número de série (ex.: `tails-amd64-7.7.1` em toda a cadeia). Em links novos, confirme com **HEAD** (`curl -I` no Linux; no Windows, `Invoke-WebRequest -Method Head`): o índice `…/sequoia-sq/man/` devolve **404** — use `…/man/sq.1.html` ou a [raiz do `sequoia-sq`](https://sequoia-pgp.gitlab.io/sequoia-sq/). Rodadas recentes verificaram os **URLs HTTPS únicos** então listados no arquivo (ordem do **HEAD em lote**); repita sempre que acrescentar hiperlinks (tabela de referências, novo repositório Git no texto, etc.).
