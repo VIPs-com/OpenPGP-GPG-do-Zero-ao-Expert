@@ -196,7 +196,7 @@ Ao final deste curso, você será capaz de:
 | **WKD** | Web Key Directory | Seu site oficial de contato |
 | **Kyber** | Algoritmo pós-quântico (futuro) | Cadeado quântico |
 
-> 📎 **Mais termos** (WoT, HKPS, HKP, keygrip, LUKS, `age`, air-gapped…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
+> 📎 **Mais termos** (WoT, HKPS, HKP, UID, keygrip, LUKS, `age`, air-gapped…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
 
 * * *
 
@@ -3438,6 +3438,7 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | **HKPS** | Acesso a servidor de chaves sobre TLS (`hkps://`), reduzindo exposição em relação a HKP simples ou infraestruturas SKS legadas. |
 | **HKP** | *HTTP Key Protocol* — keyserver clássico **sem** TLS (`hkps://` é a variante segura). Hoje prefira **HKPS**, **WKD** ou publicação direta; trate HKP “nu” como legado / laboratório. |
 | **Fingerprint** | Identificador longo e estável da chave — compare **fora da banda** com o interlocutor antes de marcar confiança ou assinar a chave de terceiros. |
+| **UID** | *User ID* — bloco **nome + e-mail** (e por vezes comentário) associado à chave no OpenPGP; aparece em `gpg --list-keys` e nas linhas `uid:` do `--with-colons`. Não confundir com *username* de sistema operacional. |
 | **`--with-colons`** | Saída máquina-legível (`pub:`, `sec:`, `sub:`/`ssb:`, `fpr:`, `grp:`…). Em **`fpr:`**, o campo **10** costuma ser a fingerprint completa; em **`sec:`**/`pub:`**, o campo **5** é em geral o KeyID longo (vários formatos funcionam como seletor no `gpg`). Ver scripts dos Módulos 3–6 e anexo do mantenedor. |
 | **Keygrip** | Identificador que o `gpg-agent` usa para mapear material criptográfico (ligação ao SSH via `[A]`, `sshcontrol`, etc.). Ver Módulo 5. |
 | **pinentry** | Programa que solicita passphrase ou PIN ao agente (`pinentry-tty`, `pinentry-gnome`, …). Fundamental para não treinar **maus hábitos**, como guardar passphrase em variável de ambiente. |
@@ -3459,12 +3460,12 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | --- | --- | --- | --- |
 | 1   | `gpg: signing failed: No secret key` | Não tem subchave \[S\] | `gpg --quick-add-key "$FP" ed25519 sign 1y` |
 | 2   | `gpg: decryption failed: No secret key` | Não tem subchave \[E\] | `gpg --quick-add-key "$FP" cv25519 encr 1y` |
-| 3   | `gpg: key ... not found` | Fingerprint errado | `gpg --list-keys` |
+| 3   | `gpg: key ... not found` | Fingerprint ou seletor errado | `gpg --list-keys --keyid-format long` ou filtre por e-mail/UID; confira `fpr:` no `--with-colons` |
 | 4   | `gpg: Sorry, we are in batchmode...` | Pinentry não configurado | `sudo apt install pinentry-tty` |
 | 5   | `gpg: WARNING: unsafe permissions` | Permissões erradas | `chmod 700 ~/.gnupg` |
 | 6   | `gpg: keyserver receive failed` | Keyserver offline | Tente `hkps://keys.openpgp.org` ou prefira WKD |
 | 7   | `gpg: decryption failed: Bad session key` | Senha errada | Verifique passphrase |
-| 8   | `gpg: Can't check signature: No public key` | Sem chave pública | `gpg --recv-keys FINGERPRINT` |
+| 8   | `gpg: Can't check signature: No public key` | Sem certificado público no chaveiro | `gpg --keyserver hkps://keys.openpgp.org --recv-keys FPR` (ou importe o `.asc` de quem assinou) |
 | 9   | `gpg: signing failed: Inappropriate ioctl` | Terminal não interativo | `export GPG_TTY=$(tty)` |
 | 10  | `ssh-add -L` vazio | SSH via GPG não configurado | Verifique `~/.gnupg/sshcontrol` |
 | 11  | `gpg: agent refused operation` | Agent travou | `gpgconf --kill gpg-agent` |
