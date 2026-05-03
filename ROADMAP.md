@@ -24,6 +24,8 @@
 
 **`.vscode/` e `scripts/` (2026-05):** deixam de ser versionados — **`.gitignore`** + remoção do índice no remoto; mantenedor mantém cópias **só no clone local** (task / `push-curso.bat` se quiser).
 
+**Rodada estática 2026-05-III (feito, grep):** todas as linhas didáticas com `gpg --list-secret-keys --with-colons` para `FP` / `KEYGRIP` / verificação `ssb` usam **filtro por UID ou e-mail**; exceções aceites e documentadas: contagem `^sec:` no **health-check**; `gpg-import-subkeys.sh` com **`UID_IMPORT` vazio** (só laboratório). Repetir esta verificação ao **acrescentar** qualquer script novo no `.md`.
+
 ---
 
 ## Backlog técnico (verificar / melhorar)
@@ -33,7 +35,7 @@
 - [ ] **Spot-check na VM Ubuntu do curso** dos COMANDOs mais sensíveis: `dd` + caminho do pendrive, `gpg --verify` da `.img`, `quick-add-key`, export/import subchaves, health-check completo.
 - [x] **Varredura de URLs:** URLs HTTPS únicos do `.md` canônico verificados por **HEAD** na última rodada completa; **200** ou redirecionamentos esperados (**302** mirror Tails `.img`; **302** raiz `sequoia-sq/`; **308** guia `user-documentation/`). Sem **404**. Repetir **HEAD em lote** após novos links (ex.: GitHub do curso na nota editorial / tabela de referências).
 - [x] **Grep preventivo (parcial):** sem `grep -oP` nem `|| echo "0"` problemático nos scripts revistos; `list-secret-keys --with-colons |` só no anexo (advertência).
-- [ ] **Grep preventivo completo:** novo script no `.md` → rever filtro UID/`fpr:` sempre.
+- [x] **Grep preventivo completo:** rodada **2026-05-III** no `.md` canónico; ao **novo** bloco script no curso → rever de novo `list-secret-keys` + `fpr:` + `UID_IMPORT` / `LAB_EMAIL`.
 
 ### Média
 

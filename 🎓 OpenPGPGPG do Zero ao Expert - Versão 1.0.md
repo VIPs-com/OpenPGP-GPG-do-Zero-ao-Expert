@@ -2058,6 +2058,10 @@ lsblk -p | grep "disk"
 # Saída exemplo:
 # /dev/sda ... (seu HD principal – NUNCA TOQUE!)
 # /dev/sdb ... (seu pendrive – é este)
+#
+# 📎 Imagem .img bruta: o alvo do dd deve ser o DISCO INTEIRO (ex.: /dev/sdb),
+#    não uma partição (/dev/sdb1). Partição errada = risco de gravar no lugar
+#    errado ou fluxo inconsistente com a imagem USB oficial do Tails.
 
 # 5. CONFIRME DUAS VEZES (para não destruir o HD errado)
 read -p "DIGITE O CAMINHO DO PENDRIVE (ex: /dev/sdb): " PENDRIVE
@@ -2621,6 +2625,8 @@ fi
 0 4 * * * /home/aluno/scripts/gpg-health-check.sh | grep -E "✗|⚠" && \
     echo "ALERTA: GPG Health Check" | mail -s "GPG Alert" aluno@local
 ```
+
+> 📎 **Cron + e-mail:** o pipe final usa `mail` (pacote típico **`mailutils`** no Ubuntu do curso). Sem MTA local, o comando falha em silêncio ou gera erro no log — em **laboratório**, comente a linha do `mail` ou redirecione só para ficheiro (`>> …/gpg-health.log`).
 
 * * *
 
@@ -3894,6 +3900,12 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 ### Harmonização com `.cursorrules` (Git no agente Cursor)
 
 O ficheiro **`.cursorrules`** na raiz do repo define quando o agente deve correr **`git add` / `commit` / `push`** após editar material versionado. Para **eliminar ambiguidade** entre «salvo o utilizador pedir o contrário» e exceções concretas, as regras usam **uma única lista canónica de quatro exceções explícitas**: *só no disco* · *sem push* · *rascunho* · *não commits*. O bullet **Manter o remoto alinhado** enumera e delimita essa lista; o bullet **Git após entregar trabalho** remete **somente** a ela — **sem** ampliar por interpretação vaga. **Registo:** harmonização **2026-05** (mantenedor + agente).
+
+### Grep preventivo `list-secret-keys` / `fpr:` (rodada 2026-05-III)
+
+- **Regra:** em **scripts** do curso, `gpg --list-secret-keys --with-colons` que alimenta **`FP`**, **`FP_MASTER`**, **`KEYGRIP`** ou verificação **`ssb`** deve incluir **sempre** o seletor (`"$LAB_EMAIL"`, `"$UID_MASTER"`, `"$UID_IMPORT"` quando aplicável, etc.) **antes** do `awk`/`grep`, salvo exceção abaixo.
+- **Exceções aceites:** (1) **health-check** — contagem global `grep -c '^sec:'` (métrica, não escolha de mestra); (2) **`gpg-import-subkeys.sh`** — `COLON_FILTER` sem argumento **só** quando `UID_IMPORT` está vazio (VM de laboratório; ver nota imediata ao script).
+- **Ao acrescentar** novo bloco `sh` no `.md`, repetir `grep` por `list-secret-keys` e validar.
 
 * * *
 
