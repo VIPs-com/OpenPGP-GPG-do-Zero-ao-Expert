@@ -2,7 +2,7 @@
 
 **Objetivo:** continuidade entre sessões. O Cursor carrega `.cursorrules` + este repo; **este arquivo** e o **histórico Git** são a “memória” estável.
 
-**Repositório remoto:** [github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert) — antes de editar noutra máquina: `git pull origin main`.
+**Repositório remoto:** [github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert) — antes de editar em outra máquina: `git pull origin main`.
 
 **Última ideia geral:** curso canônico num só `.md`; já há Tails `.img`, tabela Sequoia, `UID_IMPORT`, `FP`/`fpr:`, health-check, Módulo 12, política de idioma no `.cursorrules`.
 
@@ -23,8 +23,7 @@
 ### Alta utilidade
 
 - [ ] **Spot-check na VM Ubuntu do curso** dos COMANDOs mais sensíveis: `dd` + caminho do pendrive, `gpg --verify` da `.img`, `quick-add-key`, export/import subchaves, health-check completo.
-- [x] **Varredura de URLs (amostra):** cabeçalho — GnuPG download, página Tails, `sq.1.html` → **200**; `user-documentation` → **308** para Pages (esperado; browser segue).
-- [ ] **Varredura de URLs completa:** restantes links no `.md` (tabelas de referência, apêndices).
+- [x] **Varredura de URLs:** todos os **19 URLs HTTPS únicos** no `.md` canônico verificados por **HEAD** (`curl.exe -sI`): **200** ou redirecionamentos esperados (**302** mirror Tails `.img`; **302** raiz `sequoia-sq/`; **308** guia `user-documentation/`). Sem **404** nos links atuais.
 - [x] **Grep preventivo (parcial):** sem `grep -oP` nem `|| echo "0"` problemático nos scripts revistos; `list-secret-keys --with-colons |` só no anexo (advertência).
 - [ ] **Grep preventivo completo:** novo script no `.md` → rever filtro UID/`fpr:` sempre.
 
@@ -32,7 +31,7 @@
 
 - [ ] **Blocos Kyber / migração 2028–2030:** alinhar comentários se a CLI experimental do `gpg` mudar (nomes de algoritmo, `quick-generate-key`).
 - [ ] **Thunderbird:** quando menus mudarem de novo, uma linha “confira ajuda integrada” + eventual screenshot/descrição mínima.
-- [ ] **Glossário:** entradas que faltam ou remissões cruzadas (`sq cert` vs `sq key`, `--recipient-file`, etc.).
+- [x] **Glossário (trecho Sequoia):** entradas `sq cert export`, `sq key export`, `sq decrypt` / `--recipient-file` com remissão ao Módulo 12 (expandir se novos comandos `sq` entrarem no curso).
 
 ### Baixa / decisão de produto
 
