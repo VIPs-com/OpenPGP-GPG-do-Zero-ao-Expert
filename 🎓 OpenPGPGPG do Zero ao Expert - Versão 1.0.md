@@ -54,7 +54,7 @@ Ao final deste curso, você será capaz de:
 | --- | --- | :---: |
 | 1   | Criar identidades digitais robustas e impenetráveis | 🟢  |
 | 2   | Cifrar e assinar qualquer tipo de dado com GPG | 🟢  |
-| 3   | Gerenciar toda a sua vida criptográfica sem depender de nuvens | 🟡  |
+| 3   | Organizar toda a sua vida criptográfica sem depender de nuvens | 🟡  |
 | 4   | Integrar OpenPGP com Git, SSH e serviços modernos | 🟡  |
 | 5   | Recuperar-se de qualquer desastre (perda de máquina, roubo, corrupção) | 🔴  |
 | 6   | Planejar sua transição para criptografia pós-quântica (2026 em diante) | ⚫   |
@@ -196,7 +196,7 @@ Ao final deste curso, você será capaz de:
 | **WKD** | Web Key Directory | Seu site oficial de contato |
 | **Kyber** | Algoritmo pós-quântico (futuro) | Cadeado quântico |
 
-> 📎 **Mais termos** (WoT, HKPS, keygrip, LUKS, `age`, air-gapped…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
+> 📎 **Mais termos** (WoT, HKPS, HKP, keygrip, LUKS, `age`, air-gapped…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
 
 * * *
 
@@ -3436,11 +3436,12 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | **WKD** | *Web Key Directory* — forma padrão de publicar a chave pública via HTTPS no domínio do email (`.well-known/openpgpkey/` ou subdomínio `openpgpkey`). Ver Módulo 10. |
 | **WoT** | *Web of Trust* — confiança derivada de assinaturas mútuas e níveis de confiança no chaveiro (não confundir com “confiar cegamente” em keyserver). Ver Módulo 10 / apêndices de política. |
 | **HKPS** | Acesso a servidor de chaves sobre TLS (`hkps://`), reduzindo exposição em relação a HKP simples ou infraestruturas SKS legadas. |
+| **HKP** | *HTTP Key Protocol* — keyserver clássico **sem** TLS (`hkps://` é a variante segura). Hoje prefira **HKPS**, **WKD** ou publicação direta; trate HKP “nu” como legado / laboratório. |
 | **Fingerprint** | Identificador longo e estável da chave — compare **fora da banda** com o interlocutor antes de marcar confiança ou assinar a chave de terceiros. |
 | **`--with-colons`** | Saída máquina-legível (`pub:`, `sec:`, `sub:`/`ssb:`, `fpr:`, `grp:`…). Em **`fpr:`**, o campo **10** costuma ser a fingerprint completa; em **`sec:`**/`pub:`**, o campo **5** é em geral o KeyID longo (vários formatos funcionam como seletor no `gpg`). Ver scripts dos Módulos 3–6 e anexo do mantenedor. |
 | **Keygrip** | Identificador que o `gpg-agent` usa para mapear material criptográfico (ligação ao SSH via `[A]`, `sshcontrol`, etc.). Ver Módulo 5. |
 | **pinentry** | Programa que solicita passphrase ou PIN ao agente (`pinentry-tty`, `pinentry-gnome`, …). Fundamental para não treinar **maus hábitos**, como guardar passphrase em variável de ambiente. |
-| **Air-gapped / offline** | Operação sem rede no momento sensível (ex.: gerir mestra no Tails sem Internet). Objetivo: reduzir superfície de vazamento. |
+| **Air-gapped / offline** | Operação sem rede no momento sensível (ex.: operar a mestra no Tails sem Internet). Objetivo: reduzir superfície de vazamento. |
 | **LUKS** | Criptografia de disco/partição no Linux — uso típico para proteger mídia física onde você guarda backups ou cofres. |
 | **age** | Ferramenta simples para cifrar arquivos com chave ou passphrase — usada nos roteiros de backup com `gpg` + arquivos `.age`. |
 | **`sq cert export`** | No **Sequoia**, exporta só material **público** (certificado OpenPGP sem segredo no cofre). Comparar com `sq key export`. Ver **Módulo 12** e tabela GnuPG × Sequoia. |

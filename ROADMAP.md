@@ -31,7 +31,7 @@
 
 - [ ] **Blocos Kyber / migração 2028–2030:** alinhar comentários se a CLI experimental do `gpg` mudar (nomes de algoritmo, `quick-generate-key`). URLs HEAD já cobertos na rodada anterior; repetir após mudanças grandes no `.md`.
 - [ ] **Thunderbird:** quando menus mudarem de novo, uma linha “confira ajuda integrada” + eventual screenshot/descrição mínima.
-- [x] **Glossário (trecho Sequoia):** entradas `sq cert export`, `sq key export`, `sq decrypt` / `--recipient-file` com remissão ao Módulo 12 (expandir se novos comandos `sq` entrarem no curso).
+- [x] **Glossário (trecho Sequoia + rede):** entradas `sq cert export`, `sq key export`, `sq decrypt` / `--recipient-file` (Módulo 12); mais **HKP** vs HKPS e remissão no glossário rápido (expandir se novos comandos `sq` ou políticas de rede entrarem no curso).
 
 ### Baixa / decisão de produto
 
