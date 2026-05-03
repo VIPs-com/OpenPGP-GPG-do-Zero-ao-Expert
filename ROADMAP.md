@@ -14,7 +14,7 @@ Ordem acordada com o **plano «Auditoria pré-roadmap»** (e auditoria técnica 
 
 1. **Auditoria de conteúdo** no `.md` canónico (precisão GnuPG/Sequoia, rubricas, exemplos) — fechar **P1 → P2 → P3** quando possível.
 2. **Auditoria estática do trunk** — checklist das **seis camadas** abaixo; preencher a **tabela de resultado** na secção seguinte.
-3. **Novas linhas datadas** neste ficheiro (ex.: «Rodada estática 2026-05-VII») só **depois** de lacunas reais (FAIL/WARN) ou decisão explícita do mantenedor.
+3. **Novas linhas datadas** neste ficheiro (ex.: «Rodada estática 2026-05-VIII») só **depois** de lacunas reais (FAIL/WARN) ou decisão explícita do mantenedor.
 
 A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática; o fecho formal do spot-check atualiza a tabela e o backlog.
 
@@ -27,11 +27,11 @@ A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática; o 
 | Git / trunk | — | `git remote -v`, `main`, `.vscode/` e `scripts/` fora do índice |
 | Versões (Tails / GnuPG / `sq`) | — | Cruzar cabeçalho, Módulo 0, `README`, notas aqui |
 | URLs (HEAD HTTPS únicos) | — | 200 ou redirects **esperados**; sem **404** |
-| Grep scripts + PQ (`list-secret-keys`, `fpr:`, sem `grep -oP`, `QUÂNTICA` indevido) | — | Ver anexo mantenedor + `.cursorrules` |
-| VM (spot-check) | — | Ver **§ Spot-check VM Ubuntu** |
+| Grep scripts + PQ (`list-secret-keys`, `fpr:`, sem `grep -oP`, `QUÂNTICA` indevido) | **PASS** 2026-05-03 | Rodada VII: `QUÂNTICA` só no anexo (instrução grep); título **`PÓS-QUÃNTICA`** preservado |
+| VM (spot-check) | **PENDENTE** | Ver **§ Spot-check VM Ubuntu** |
 | Governança (`.cursorrules`, `.mdc`, formato entrega) | — | Ponte MDC; trunk = MD + meta |
 
-*Substituir «—» por PASS / WARN / FAIL + data quando fechar a rodada.*
+*Substituir «—» por PASS / WARN / FAIL + data quando fechar a rodada completa; esta tabela pode atualizar-se **por linha** à medida que cada camada corre.*
 
 ---
 
@@ -56,7 +56,7 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 | --- | --- | --- |
 | 1 | Colar ou abrir este `ROADMAP.md` + `.cursorrules` | Contexto estável para o agente |
 | 2 | `git pull` / `git status` / `git remote -v` | Em `E:\pgp` ou `/e/pgp` |
-| 3 | **P1** no `.md` canónico (se ainda aberto) | Ver **§ Pendências ativas — P1** |
+| 3 | **P2** no `.md` canónico (próxima rodada de conteúdo) | Ver **§ Pendências ativas — P2** |
 | 4 | Checklist **camadas 1–2–4** (e **3** se houver rede) | Atualizar **tabela de auditoria** |
 | 5 | **Spot-check VM** | **§ Spot-check VM Ubuntu**; único passo que exige Ubuntu real |
 
@@ -68,10 +68,10 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 
 *Origem: auditoria técnica 2026-05-03 + plano aprovado. **Não** alterar o título PQ para «â» — política do anexo: manter **`PÓS-QUÃNTICA`** (ã); grep por corrupção **`QUÂNTICA`**.*
 
-- [ ] **T2:** Remover ou substituir `agent-timeout` em `gpg-agent.conf` (COMANDO 0.8 e tabela de perfis); confirmar com `man gpg-agent` / VM — opções válidas incluem `default-cache-ttl`, `max-cache-ttl`; para timeout de pinentry ver `pinentry-timeout` se for o objetivo.
-- [ ] **T6:** Ajustar texto/exemplo de `gpg --generate-key` vs comentário (2.4.x não pede comentário como em `--full-generate-key`).
-- [ ] **SEC1:** Alinhar exemplo de passphrase (COMANDO 1.1) com Mandamento 6 (mínimo 6 palavras em produção) ou nota explícita «laboratório».
-- [ ] **Validação PQ (camada 4):** confirmar zero `QUÂNTICA` indevido no título/corpo; título canónico com **ã**.
+- [x] **T2:** Remover ou substituir `agent-timeout` em `gpg-agent.conf` (COMANDO 0.8 e tabela de perfis); confirmar com `man gpg-agent` / VM — opções válidas incluem `default-cache-ttl`, `max-cache-ttl`; para timeout de pinentry ver `pinentry-timeout` se for o objetivo.
+- [x] **T6:** Ajustar texto/exemplo de `gpg --generate-key` vs comentário (2.4.x não pede comentário como em `--full-generate-key`).
+- [x] **SEC1:** Alinhar exemplo de passphrase (COMANDO 1.1) com Mandamento 6 (mínimo 6 palavras em produção) ou nota explícita «laboratório».
+- [x] **Validação PQ (camada 4):** confirmar zero `QUÂNTICA` indevido no título/corpo; título canónico com **ã**.
 
 ### P2 — Precisão e clareza didática
 
@@ -130,6 +130,7 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-IV** | Módulo 11 PQ / strings CLI; SPHINCS+; anexo pré-commit PQ |
 | **2026-05-V** | Secção spot-check VM; `README`; grep corrupção **`QUÂNTICA`** |
 | **2026-05-VI** | Formato entrega trunk; **`.cursor/rules/openpgp-course-pointer.mdc`** |
+| **2026-05-VII** | **P1** no `.md`: remover `agent-timeout` + nota `pinentry-timeout`; COMANDO **1.1–1.3** alinhados a `--generate-key` sem comentário obrigatório; passphrase exemplo **6** segmentos (Mandamento 6); grep **`QUÂNTICA`** só no anexo |
 | **Repo** | `.vscode/` e `scripts/` só locais (`.gitignore` + fora do remoto) |
 
 **Manutenção recorrente:** ao **novo** bloco shell no `.md` canónico → rever `list-secret-keys` + `fpr:` + `UID_IMPORT` / `LAB_EMAIL`; ao **novo** link HTTPS → repetir **HEAD** em lote; ao subir **GnuPG** experimental → rever nomes PQ na CLI (Módulo 11).

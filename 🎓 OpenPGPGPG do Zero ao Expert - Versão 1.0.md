@@ -666,7 +666,6 @@ chmod 600 ~/.gnupg/gpg.conf
 
 ```sh
 cat > ~/.gnupg/gpg-agent.conf << 'EOF'
-agent-timeout 600
 default-cache-ttl 3600
 max-cache-ttl 7200
 enable-ssh-support
@@ -675,6 +674,8 @@ EOF
 chmod 600 ~/.gnupg/gpg-agent.conf
 gpgconf --kill gpg-agent && gpgconf --launch gpg-agent
 ```
+
+> 📎 **`agent-timeout`:** não consta como opção válida em `gpg-agent.conf` nos manuais do GnuPG — o agente pode **ignorar** a linha. Use **`default-cache-ttl`** / **`max-cache-ttl`** para o cache de passphrase. Se precisar limitar o tempo do diálogo do Pinentry, veja **`pinentry-timeout`** (segundos) em `man gpg-agent` na sua máquina.
 
 > ✅ **Resultado esperado:** assinatura, cifragem e SSH via GPG ficam previsíveis e mais estáveis.
 
@@ -685,7 +686,7 @@ O COMANDO 0.8 acima já implementa um perfil **equilibrado** com SSH ativo para 
 | Perfil | TTL / timeouts | SSH | Observação |
 | --- | --- | --- | --- |
 | Conveniente | `default-cache-ttl 7200`, `max-cache-ttl 86400` | `enable-ssh-support` | Menos prompts; só em máquina **sua** e controlada |
-| Equilibrado / curso | `agent-timeout 600`, `default-cache-ttl 3600`, `max-cache-ttl 7200` | `enable-ssh-support` ou comentado até o Módulo 5 | Bom equilíbrio uso × risco |
+| Equilibrado / curso | `default-cache-ttl 3600`, `max-cache-ttl 7200` | `enable-ssh-support` ou comentado até o Módulo 5 | Bom equilíbrio uso × risco |
 | Didático | Igual ao equilibrado, com linhas comentadas explicando cada opção | Ative SSH quando chegar no Módulo 5 | Ideal para anotações e aulas |
 
 **Cartão rápido:** editar → `nano ~/.gnupg/gpg-agent.conf` → `chmod 600 ~/.gnupg/gpg-agent.conf` → `gpgconf --kill gpg-agent && gpgconf --launch gpg-agent` → `export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)` quando usar SSH via GPG.
@@ -856,19 +857,20 @@ gpg --quick-generate-key "Aluno Lab (TRAINING 2026) <aluno.training@openpgp-lab.
 gpg --generate-key
 ```
 
-**O GPG vai perguntar:**
+**O GPG vai perguntar** (GnuPG **2.4.x**, assistente curto de `--generate-key`):
 
 ```
 Nome real: Aluno Lab
 Endereço de e-mail: aluno.training@openpgp-lab.local
-Comentário: TRAINING 2026
 ```
 
-> Use EXATAMENTE esses dados. O comentário ajuda a identificar que é uma chave de laboratório.
+> Em muitas builds **não** aparece o campo **«Comentário»** aqui — isso é **normal**: o assistente curto só pede nome e e-mail. O UID fica como `Aluno Lab <aluno.training@openpgp-lab.local>`. Se o seu `gpg` ainda perguntar comentário, pode deixar em branco ou preencher `TRAINING 2026`; se quiser **sempre** o fluxo completo (tipo de chave, comentário, etc.), use **`gpg --full-generate-key`** (Módulo 1, forma verbosa).
+
+> Use **exatamente** o nome e o e-mail acima (identidade de laboratório).
 
 ```
 Você selecionou este identificador de usuário:
-    "Aluno Lab (TRAINING 2026) <aluno.training@openpgp-lab.local>"
+    "Aluno Lab <aluno.training@openpgp-lab.local>"
 ```
 
 **Digite** `O` **(OK)** quando o GnuPG pedir confirmação do identificador.
@@ -877,7 +879,7 @@ Você selecionou este identificador de usuário:
 Vai pedir uma senha (passphrase).
 ```
 
-> ⚠️ **Use uma senha forte, mas que você consiga lembrar para os exercícios.** Exemplo: `cadeado$trovão&lago#castelo` (sim, isso é uma senha forte — 4 palavras aleatórias)
+> ⚠️ **Use uma senha forte, mas que você consiga lembrar para os exercícios.** O **Mandamento 6** pede Diceware com **mínimo de 6 palavras** em produção; neste laboratório o exemplo segue esse mínimo: `cadeado$trovão&lago#castelo&rio#nuvem` (6 segmentos aleatórios — misture com separadores fortes e **não** copie este exemplo literal para vida real).
 
 **Saída esperada (final):**
 
@@ -910,9 +912,11 @@ gpg --list-keys --keyid-format long
 ```
 pub   ed25519/3A4B5C6D7E8F9A0B 2026-04-30 [C] [expires: 2027-04-30]
       Impressão digital = 3A4B 5C6D 7E8F 9A0B 1C2D 3E4F 5A6B 7C8D 9E0F
-uid                 [ultimate] Aluno Lab (TRAINING 2026) <aluno.training@openpgp-lab.local>
+uid                 [ultimate] Aluno Lab <aluno.training@openpgp-lab.local>
 sub   cv25519/7E8F9A0B1C2D3E4F 2026-04-30 [E] [expires: 2027-04-30]
 ```
+
+> 💡 Se tiver criado a chave com **comentário** (ex.: `--full-generate-key`), o `uid` pode aparecer como `Aluno Lab (TRAINING 2026) <…>` — é equivalente para o curso.
 
 > 💡 O campo `[ultimate]` é a marca de **confiança absoluta** na sua própria chave (traduções ou locales podem mudar o texto — não confunda com a palavra “ultimamente”).
 
@@ -943,7 +947,7 @@ gpg --fingerprint "aluno.training@openpgp-lab.local"
 ```
 pub   ed25519 2026-04-30 [C] [expires: 2027-04-30]
       Impressão digital = 3A4B 5C6D 7E8F 9A0B 1C2D 3E4F 5A6B 7C8D 9E0F
-uid           Aluno Lab (TRAINING 2026) <aluno.training@openpgp-lab.local>
+uid           Aluno Lab <aluno.training@openpgp-lab.local>
 ```
 
 > 🔴 **Essa sequência de letras e números é sua identidade digital.** Para verificar que uma chave é realmente sua, você compara esse código com outra pessoa por telefone, WhatsApp ou outro canal seguro.
