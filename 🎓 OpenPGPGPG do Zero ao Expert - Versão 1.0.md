@@ -196,7 +196,7 @@ Ao final deste curso, você será capaz de:
 | **WKD** | Web Key Directory | Seu site oficial de contato |
 | **Kyber** | Algoritmo pós-quântico (futuro) | Cadeado quântico |
 
-> 📎 **Mais termos** (WoT, HKPS, HKP, UID, keygrip, LUKS, `age`, air-gapped…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
+> 📎 **Mais termos** (WoT, HKPS, HKP, UID, ASCII armor, keygrip, LUKS, `age`, air-gapped…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
 
 * * *
 
@@ -3439,6 +3439,7 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | **HKP** | *HTTP Key Protocol* — keyserver clássico **sem** TLS (`hkps://` é a variante segura). Hoje prefira **HKPS**, **WKD** ou publicação direta; trate HKP “nu” como legado / laboratório. |
 | **Fingerprint** | Identificador longo e estável da chave — compare **fora da banda** com o interlocutor antes de marcar confiança ou assinar a chave de terceiros. |
 | **UID** | *User ID* — bloco **nome + e-mail** (e por vezes comentário) associado à chave no OpenPGP; aparece em `gpg --list-keys` e nas linhas `uid:` do `--with-colons`. Não confundir com *username* de sistema operacional. |
+| **ASCII armor** | Blocos texto **`-----BEGIN PGP...-----`** para transportar chaves e mensagens OpenPGP (e-mail, *paste*, anexos `.asc`). No `gpg`, **`--armor`** / **`-a`**; alternativa ao pacote binário “nu”. |
 | **`--with-colons`** | Saída máquina-legível (`pub:`, `sec:`, `sub:`/`ssb:`, `fpr:`, `grp:`…). Em **`fpr:`**, o campo **10** costuma ser a fingerprint completa; em **`sec:`**/`pub:`**, o campo **5** é em geral o KeyID longo (vários formatos funcionam como seletor no `gpg`). Ver scripts dos Módulos 3–6 e anexo do mantenedor. |
 | **Keygrip** | Identificador que o `gpg-agent` usa para mapear material criptográfico (ligação ao SSH via `[A]`, `sshcontrol`, etc.). Ver Módulo 5. |
 | **pinentry** | Programa que solicita passphrase ou PIN ao agente (`pinentry-tty`, `pinentry-gnome`, …). Fundamental para não treinar **maus hábitos**, como guardar passphrase em variável de ambiente. |
@@ -3471,7 +3472,7 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | 11  | `gpg: agent refused operation` | Agent travou | `gpgconf --kill gpg-agent` |
 | 12  | `gpg: no valid OpenPGP data found` | Arquivo corrompido | Reexporte a chave |
 | 13  | `gpg: Sorry, no terminal at all requested` | Sem pinentry gráfico | `sudo apt install pinentry-gtk2` |
-| 14  | `gpg: key ... has been revoked` | Chave revogada | Baixe chave atualizada |
+| 14  | `gpg: key ... has been revoked` | Chave revogada ou substituída | `gpg --keyserver hkps://keys.openpgp.org --recv-keys FPR` ou novo `.asc` do autor; leia o pacote de revogação se tiver |
 | 15  | `gpg: Can't connect to agent` | Agent não rodando | `gpgconf --launch gpg-agent` |
 
 * * *
@@ -3568,6 +3569,7 @@ set -euo pipefail
 
 ```sh
 # pipeline stage: verify-signature
+# A chave pública importada deve ser a de release já auditada (fingerprint fora da banda / política interna).
 gpg --import team-release-public.asc
 gpg --verify artifact.sig artifact.tar.gz
 ```
