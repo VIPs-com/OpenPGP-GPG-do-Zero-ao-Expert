@@ -1,18 +1,20 @@
 # Roadmap — próximas sessões (`pgp`)
 
-**Objetivo:** continuidade quando voltar ao projeto. O Cursor carrega `.cursorrules` + este repo; **este arquivo** e o **histórico Git** são a “memória” estável entre dias.
+**Objetivo:** continuidade entre sessões. O Cursor carrega `.cursorrules` + este repo; **este arquivo** e o **histórico Git** são a “memória” estável.
 
-**Última ideia geral:** curso canônico num só `.md`, revisões incrementais já cobriram Tails `.img`, tabela Sequoia, `UID_IMPORT`, `FP`/`fpr:`, health-check, Módulo 12, política de idioma no `.cursorrules`.
+**Repositório remoto:** [github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert) — antes de editar noutra máquina: `git pull origin main`.
+
+**Última ideia geral:** curso canônico num só `.md`; já há Tails `.img`, tabela Sequoia, `UID_IMPORT`, `FP`/`fpr:`, health-check, Módulo 12, política de idioma no `.cursorrules`.
 
 ---
 
-## Amanhã (sessão curta — ~1 h)
+## Próxima sessão (passagem rápida — ~30–60 min)
 
 | # | Tarefa | Notas |
 |---|--------|--------|
-| 1 | Abrir o chat e dizer **«continuar roadmap»** ou colar o link deste `ROADMAP.md` | O agente alinha com `.cursorrules`. |
-| 2 | `git pull` / `git status` | Ver se há alterações locais por fechar. |
-| 3 | **Uma** passagem no **anexo do mantenedor** + cabeçalho | Versões Tails / GnuPG / `sq` ainda batem com `wget` e links? |
+| 1 | «Continuar roadmap» ou colar este arquivo | Alinha com `.cursorrules`. |
+| 2 | `git pull` / `git status` | Trabalhar em cima do `main`. |
+| 3 | **Anexo do mantenedor** + cabeçalho | Versões Tails / GnuPG / `sq` vs blocos `wget` / links? |
 
 ---
 
@@ -21,8 +23,10 @@
 ### Alta utilidade
 
 - [ ] **Spot-check na VM Ubuntu do curso** dos COMANDOs mais sensíveis: `dd` + caminho do pendrive, `gpg --verify` da `.img`, `quick-add-key`, export/import subchaves, health-check completo.
-- [ ] **Varredura de URLs:** `curl -I` / `Invoke-WebRequest -Method Head` em links que mudam (Tails, GnuPG, GitLab Pages do Sequoia, `user-documentation` com redirect 308).
-- [ ] **Grep preventivo:** `list-secret-keys --with-colons` **sem** filtro de UID/email em **scripts** (não no anexo didático); `grep -oP`; `|| echo "0"` em contagens.
+- [x] **Varredura de URLs (amostra):** cabeçalho — GnuPG download, página Tails, `sq.1.html` → **200**; `user-documentation` → **308** para Pages (esperado; browser segue).
+- [ ] **Varredura de URLs completa:** restantes links no `.md` (tabelas de referência, apêndices).
+- [x] **Grep preventivo (parcial):** sem `grep -oP` nem `|| echo "0"` problemático nos scripts revistos; `list-secret-keys --with-colons |` só no anexo (advertência).
+- [ ] **Grep preventivo completo:** novo script no `.md` → rever filtro UID/`fpr:` sempre.
 
 ### Média
 
@@ -37,9 +41,7 @@
 
 ---
 
-## “Vai lembrar amanhã?”
+## “Vai lembrar na próxima sessão?”
 
 - **Sim, no sentido prático:** o próximo agente vê **este repositório**, **`.cursorrules`** e **`ROADMAP.md`**.
-- **Não** no sentido de “memória de conversa infinita”: se precisar de contexto fino de uma decisão, está no **Git** (`git log -p`) ou numa **nota** aqui no roadmap.
-
-Bom descanso — até à próxima rodada.
+- **Não** no sentido de chat infinito: decisões finas ficam no **Git** (`git log -p`) ou em notas aqui no roadmap.

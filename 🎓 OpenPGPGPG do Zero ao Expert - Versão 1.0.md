@@ -3441,6 +3441,9 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | **Air-gapped / offline** | Operação sem rede no momento sensível (ex.: gerir mestra no Tails sem Internet). Objetivo: reduzir superfície de vazamento. |
 | **LUKS** | Criptografia de disco/partição no Linux — uso típico para proteger mídia física onde você guarda backups ou cofres. |
 | **age** | Ferramenta simples para cifrar arquivos com chave ou passphrase — usada nos roteiros de backup com `gpg` + arquivos `.age`. |
+| **`sq cert export`** | No **Sequoia**, exporta só material **público** (certificado OpenPGP sem segredo no cofre). Comparar com `sq key export`. Ver **Módulo 12** e tabela GnuPG × Sequoia. |
+| **`sq key export`** | No **Sequoia**, exporta pacote com **material secreto** disponível no cofre local (fluxo análogo a backup mestra com `gpg --export-secret-keys`). O filtro **`--cert=FPR`** escolhe a identidade. Ver **Módulo 12**. |
+| **`sq decrypt` / `--recipient-file`** | Decifrar com cofre Sequoia já povoado costuma ser só `sq decrypt arquivo`; se o segredo estiver **só** em um arquivo exportado, use **`--recipient-file=`**. Ver nota após a tabela no **Módulo 12**. |
 | **Backup 3-2-1** | Três cópias dos dados importantes, em **dois** tipos de mídia diferentes, com **uma** cópia fora do local principal (ex.: fora de casa ou data center distinto). |
 
 * * *
