@@ -3442,7 +3442,7 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | **ASCII armor** | Blocos texto **`-----BEGIN PGP...-----`** para transportar chaves e mensagens OpenPGP (e-mail, *paste*, anexos `.asc`). No `gpg`, **`--armor`** / **`-a`**; alternativa ao pacote binário “nu”. |
 | **`--with-colons`** | Saída máquina-legível (`pub:`, `sec:`, `sub:`/`ssb:`, `fpr:`, `grp:`…). Em **`fpr:`**, o campo **10** costuma ser a fingerprint completa; em **`sec:`**/`pub:`**, o campo **5** é em geral o KeyID longo (vários formatos funcionam como seletor no `gpg`). Ver scripts dos Módulos 3–6 e anexo do mantenedor. |
 | **Keygrip** | Identificador que o `gpg-agent` usa para mapear material criptográfico (ligação ao SSH via `[A]`, `sshcontrol`, etc.). Ver Módulo 5. |
-| **pinentry** | Programa que solicita passphrase ou PIN ao agente (`pinentry-tty`, `pinentry-gnome`, …). Fundamental para não treinar **maus hábitos**, como guardar passphrase em variável de ambiente. |
+| **pinentry** | Programa que solicita passphrase ou PIN ao agente (`pinentry-tty` em servidor/SSH só texto; `pinentry-gnome3` típico no Ubuntu Desktop 24.x GNOME). Fundamental para não treinar **maus hábitos**, como guardar passphrase em variável de ambiente. |
 | **Air-gapped / offline** | Operação sem rede no momento sensível (ex.: operar a mestra no Tails sem Internet). Objetivo: reduzir superfície de vazamento. |
 | **LUKS** | Criptografia de disco/partição no Linux — uso típico para proteger mídia física onde você guarda backups ou cofres. |
 | **age** | Ferramenta simples para cifrar arquivos com chave ou passphrase — usada nos roteiros de backup com `gpg` + arquivos `.age`. |
@@ -3471,7 +3471,7 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | 10  | `ssh-add -L` vazio | SSH via GPG não configurado | Verifique `~/.gnupg/sshcontrol` |
 | 11  | `gpg: agent refused operation` | Agent travou | `gpgconf --kill gpg-agent` |
 | 12  | `gpg: no valid OpenPGP data found` | Arquivo corrompido | Reexporte a chave |
-| 13  | `gpg: Sorry, no terminal at all requested` | Sem pinentry gráfico | `sudo apt install pinentry-gtk2` |
+| 13  | `gpg: Sorry, no terminal at all requested` | Sem **TTY** ou GUI disponível para o pinentry | SSH/só texto: `export GPG_TTY=$(tty)` + `pinentry-tty`; desktop GNOME: `sudo apt install pinentry-gnome3` |
 | 14  | `gpg: key ... has been revoked` | Chave revogada ou substituída | `gpg --keyserver hkps://keys.openpgp.org --recv-keys FPR` ou novo `.asc` do autor; leia o pacote de revogação se tiver |
 | 15  | `gpg: Can't connect to agent` | Agent não rodando | `gpgconf --launch gpg-agent` |
 
