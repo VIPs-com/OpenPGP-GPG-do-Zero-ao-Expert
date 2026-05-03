@@ -9,7 +9,7 @@
 
 > 📌 **Nota editorial:** **`🎓 OpenPGPGPG do Zero ao Expert - Versão 1.0.md`** é o curso oficial (**VERSÃO 1.0 canônica**), arquivo único no projeto. O cabeçalho usa **OpenPGP/GPG** como nome didático do curso.
 
-> 📎 **Repositório Git (opcional):** histórico público em **https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert** — útil para `git clone`, *pull* e *issues*; estudar só com este `.md` local ou cópia ZIP continua válido.
+> 📎 **Repositório Git (opcional):** histórico público em [github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert) — útil para `git clone`, *pull* e *issues*; estudar só com este `.md` local ou cópia ZIP continua válido.
 
 * * *
 
@@ -1838,15 +1838,19 @@ cat ~/.gnupg/sshcontrol
 **O que faz:** Ativa o suporte a SSH no gpg-agent e configura o ambiente.
 
 ```sh
-# Habilita suporte SSH no gpg-agent
-echo "enable-ssh-support" >> ~/.gnupg/gpg-agent.conf
+# Habilita suporte SSH no gpg-agent (idempotente — não duplica se o Módulo 0 já acrescentou)
+if ! grep -q "enable-ssh-support" ~/.gnupg/gpg-agent.conf 2>/dev/null; then
+  echo "enable-ssh-support" >> ~/.gnupg/gpg-agent.conf
+fi
 
 # Reinicia o agente
 gpgconf --kill gpg-agent
 gpgconf --launch gpg-agent
 
 # Configura a variável de ambiente SSH_AUTH_SOCK
-echo 'export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)' >> ~/.bashrc
+if ! grep -q "SSH_AUTH_SOCK" ~/.bashrc 2>/dev/null; then
+  echo 'export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)' >> ~/.bashrc
+fi
 source ~/.bashrc
 ```
 

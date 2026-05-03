@@ -14,7 +14,7 @@ Ordem acordada com o **plano «Auditoria pré-roadmap»** (e auditoria técnica 
 
 1. **Auditoria de conteúdo** no `.md` canónico (precisão GnuPG/Sequoia, rubricas, exemplos) — fechar **P1 → P2 → P3** quando possível.
 2. **Auditoria estática do trunk** — checklist das **seis camadas** abaixo; preencher a **tabela de resultado** na secção seguinte.
-3. **Novas linhas datadas** neste ficheiro (ex.: «Rodada estática 2026-05-IX») só **depois** de lacunas reais (FAIL/WARN) ou decisão explícita do mantenedor.
+3. **Novas linhas datadas** neste ficheiro (ex.: «Rodada estática 2026-05-X») só **depois** de lacunas reais (FAIL/WARN) ou decisão explícita do mantenedor.
 
 A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática; o fecho formal do spot-check atualiza a tabela e o backlog.
 
@@ -22,16 +22,19 @@ A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática; o 
 
 ## Última auditoria estática (preencher após cada rodada completa)
 
+**Rodada de fecho:** **2026-05-02** — plano «Auditoria pré-roadmap» (camadas 1, 2, 4, 3, 6; **5** = VM continua manual).
+
 | Área | Resultado | Notas / próximo passo |
 | --- | --- | --- |
-| Git / trunk | — | `git remote -v`, `main`, `.vscode/` e `scripts/` fora do índice |
-| Versões (Tails / GnuPG / `sq`) | — | Cruzar cabeçalho, Módulo 0, `README`, notas aqui |
-| URLs (HEAD HTTPS únicos) | — | 200 ou redirects **esperados**; sem **404** |
-| Grep scripts + PQ (`list-secret-keys`, `fpr:`, sem `grep -oP`, `QUÂNTICA` indevido) | **PASS** 2026-05-03 | Rodada VII: `QUÂNTICA` só no anexo (instrução grep); título **`PÓS-QUÃNTICA`** preservado |
-| VM (spot-check) | **PENDENTE** | Ver **§ Spot-check VM Ubuntu** |
-| Governança (`.cursorrules`, `.mdc`, formato entrega) | — | Ponte MDC; trunk = MD + meta |
+| Git / trunk | **PASS** 2026-05-02 | `main` alinhado com `origin/main`; `git remote -v` = **OpenPGP-GPG-do-Zero-ao-Expert**; working tree limpo; `git ls-files` sem `.vscode/` nem `scripts/` (política `.gitignore`) |
+| Versões (Tails / GnuPG / `sq`) | **PASS** 2026-05-02 | Cabeçalho + Módulo 0 + `README.md`: Tails **7.7.1+**, GnuPG **2.4.x** / **2.5.19+** (Kyber), **sequoia-sq ~1.3.x** — sem divergência relevante |
+| URLs (HEAD HTTPS únicos) | **PASS** 2026-05-02 | **21** URLs únicos no `.md` canónico; `urllib` **HEAD** → **200** em todos após corrigir link GitHub (evitar `**` colado ao URL no Markdown); `https://SEU_DOMINIO/...` (exemplo WKD) **fora** do lote automático |
+| Grep scripts + PQ (`list-secret-keys`, `fpr:`, sem `grep -oP`, `QUÂNTICA` indevido) | **PASS** 2026-05-02 | Sem `grep -oP`; `QUÂNTICA` só no anexo; exceções aceites: contagem `^sec:` no health-check; `gpg-import-subkeys` com `UID_IMPORT` vazio **só** com comentário de laboratório no script |
+| VM (spot-check) | **PENDENTE** | Roteiro **§ Spot-check VM Ubuntu** — única lacuna que exige Ubuntu real |
+| Governança (`.cursorrules`, `.mdc`, formato entrega) | **PASS** 2026-05-02 | `openpgp-course-pointer.mdc` → `.cursorrules`, `alwaysApply: true`; README coerente com trunk = MD + meta |
+| `LICENSE` (opcional) | **WARN** leve | Ainda ausente no remoto — decisão editorial; README já documenta fallback |
 
-*Substituir «—» por PASS / WARN / FAIL + data quando fechar a rodada completa; esta tabela pode atualizar-se **por linha** à medida que cada camada corre.*
+*Substituir células conforme novas rodadas; VM passa a **PASS** quando o roteiro for executado ou desvio for documentado.*
 
 ---
 
@@ -56,7 +59,7 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 | --- | --- | --- |
 | 1 | Colar ou abrir este `ROADMAP.md` + `.cursorrules` | Contexto estável para o agente |
 | 2 | `git pull` / `git status` / `git remote -v` | Em `E:\pgp` ou `/e/pgp` |
-| 3 | **P3** no repo / `.md` (próxima rodada) | Ver **§ Pendências ativas — P3** |
+| 3 | **P3** — **LICENSE** se aplicável; **spot-check VM** (R2) | Ver **§ Pendências ativas — P3** e § VM |
 | 4 | Checklist **camadas 1–2–4** (e **3** se houver rede) | Atualizar **tabela de auditoria** |
 | 5 | **Spot-check VM** | **§ Spot-check VM Ubuntu**; único passo que exige Ubuntu real |
 
@@ -84,9 +87,9 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 ### P3 — Ecossistema e robustez
 
 - [ ] **R2:** Spot-check VM (espelha P1 operacional no SO real).
-- [ ] **T5:** Idempotência COMANDO 5.3 (`grep -q` antes de `echo >>` em `enable-ssh-support`).
+- [x] **T5:** Idempotência COMANDO 5.3 (`grep -q` antes de `echo >>` em `enable-ssh-support`).
 - [ ] **R1:** Ficheiro `LICENSE` no repositório (decisão editorial; README já menciona fallback).
-- [ ] **R3:** Rever ponta a ponta `openpgp-course-pointer.mdc` ↔ `.cursorrules`.
+- [x] **R3:** Rever ponta a ponta `openpgp-course-pointer.mdc` ↔ `.cursorrules`.
 
 ### Outras (alta utilidade, fora P1–P3)
 
@@ -132,6 +135,7 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-VI** | Formato entrega trunk; **`.cursor/rules/openpgp-course-pointer.mdc`** |
 | **2026-05-VII** | **P1** no `.md`: remover `agent-timeout` + nota `pinentry-timeout`; COMANDO **1.1–1.3** alinhados a `--generate-key` sem comentário obrigatório; passphrase exemplo **6** segmentos (Mandamento 6); grep **`QUÂNTICA`** só no anexo |
 | **2026-05-VIII** | **P2:** `--gen-key` como legado/alias (T1); nota `openpgp-revocs.d` vs `--gen-revoke` (T7); «Resultados esperados» + legenda **⚫** e níveis 🔵 (E2/E3); rubrica CP1 `.asc`/clearsign/`.sig` (C1); cronograma quântico + NIST + incerteza (S1); mapa Módulo 1 |
+| **2026-05-IX** | **Auditoria estática trunk** (plano pré-roadmap): Git, versões, **HEAD** em URLs do `.md` canónico, grep preventivo, governança **R3**; correção URL GitHub sem `**` no Markdown; **T5** idempotência COMANDO 5.3; **VM** e **LICENSE** pendentes de decisão/execução |
 | **Repo** | `.vscode/` e `scripts/` só locais (`.gitignore` + fora do remoto) |
 
 **Manutenção recorrente:** ao **novo** bloco shell no `.md` canónico → rever `list-secret-keys` + `fpr:` + `UID_IMPORT` / `LAB_EMAIL`; ao **novo** link HTTPS → repetir **HEAD** em lote; ao subir **GnuPG** experimental → rever nomes PQ na CLI (Módulo 11).
