@@ -2844,6 +2844,8 @@ Mapa rápido (útil ao revisar política com times de segurança — mesmo vocab
 
 * * *
 
+<a id="comando-10-1"></a>
+
 #### ▸ COMANDO 10.1: Atualizando chaves de keyservers
 
 ```sh
@@ -3455,7 +3457,7 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | **Keygrip** | Identificador que o `gpg-agent` usa para mapear material criptográfico (ligação ao SSH via `[A]`, `sshcontrol`, etc.). Ver Módulo 5. |
 | **pinentry** | Programa que solicita passphrase ou PIN ao agente (`pinentry-tty` em servidor/SSH só texto; `pinentry-gnome3` típico no Ubuntu Desktop 24.x GNOME). Fundamental para não treinar **maus hábitos**, como guardar passphrase em variável de ambiente. |
 | **RNP** | Biblioteca OpenPGP usada pelo **Thunderbird** (série 78+) na criptografia integrada da aplicação — **não** substitui o fluxo pedagógico do curso com **`gpg`** na linha de comando nem o projeto **Sequoia**; serve para contextualizar o cliente de e-mail. Ver **Módulo 12** (Thunderbird). |
-| **dirmngr** | Componente do GnuPG que trata de **HTTPS/TLS** e pedidos HTTP em nome do `gpg` (ex.: **HKPS**, descoberta WKD). Se **`--recv-keys`** ou **`--refresh-keys`** falharem com erro de rede ou TLS “congelado”, tente `gpgconf --kill dirmngr && gpgconf --launch dirmngr` antes de culpar só o keyserver (ver **Módulo 7** e Apêndice A nº 6). |
+| **dirmngr** | Componente do GnuPG que trata de **HTTPS/TLS** e pedidos HTTP em nome do `gpg` (ex.: **HKPS**, descoberta WKD). Se **`--recv-keys`** ou **`--refresh-keys`** falharem com erro de rede ou TLS “congelado”, tente `gpgconf --kill dirmngr && gpgconf --launch dirmngr` antes de culpar só o keyserver (ver **Módulo 7**, [Apêndice A](#apendice-a) nº 6 e [COMANDO 10.1](#comando-10-1)). |
 | **Air-gapped / offline** | Operação sem rede no momento sensível (ex.: operar a mestra no Tails sem Internet). Objetivo: reduzir superfície de vazamento. |
 | **LUKS** | Criptografia de disco/partição no Linux — uso típico para proteger mídia física onde você guarda backups ou cofres. |
 | **age** | Ferramenta simples para cifrar arquivos com chave ou passphrase — usada nos roteiros de backup com `gpg` + arquivos `.age`. |
@@ -3481,7 +3483,7 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | 3   | `gpg: key ... not found` | Fingerprint ou seletor errado | `gpg --list-keys --keyid-format long` ou filtre por e-mail/UID; confira `fpr:` no `--with-colons` |
 | 4   | `gpg: Sorry, we are in batchmode...` | Modo não interativo sem pinentry/TTY adequado | `sudo apt install pinentry-tty` (desktop GNOME: `pinentry-gnome3`); em **SSH** também: `export GPG_TTY=$(tty)` |
 | 5   | `gpg: WARNING: unsafe permissions` | Permissões erradas | `chmod 700 ~/.gnupg` |
-| 6   | `gpg: keyserver receive failed` | Keyserver offline, limite, **FPR**/seletor incorreto ou **dirmngr**/TLS presos | FPR completo; `hkps://keys.openpgp.org` ou `hkps://keyserver.ubuntu.com`; prefira **WKD** ou `.asc`; se rede/TLS suspeitos: `gpgconf --kill dirmngr && gpgconf --launch dirmngr` |
+| 6   | `gpg: keyserver receive failed` | Keyserver offline, limite, **FPR**/seletor incorreto ou **dirmngr**/TLS presos | FPR completo; `hkps://keys.openpgp.org` ou `hkps://keyserver.ubuntu.com`; prefira **WKD** ou `.asc`; se rede/TLS suspeitos: `gpgconf --kill dirmngr && gpgconf --launch dirmngr`; [COMANDO 10.1](#comando-10-1) (`keyserver` em `gpg.conf`) |
 | 7   | `gpg: decryption failed: Bad session key` | Senha errada | Verifique passphrase |
 | 8   | `gpg: Can't check signature: No public key` | Sem certificado público no chaveiro | `gpg --keyserver hkps://keys.openpgp.org --recv-keys FPR` (ou importe o `.asc` de quem assinou) |
 | 9   | `gpg: signing failed: Inappropriate ioctl` | Terminal não interativo | `export GPG_TTY=$(tty)` |
@@ -3502,7 +3504,7 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 
 - Erro de assinatura: valide subchave `[S]`, `GPG_TTY`, `gpg-agent`, coerência de **`GNUPGHOME`** (se usar chaveiro alternativo).
 - Erro de decifração: confirme subchave `[E]` e import correto de subchaves.
-- Erro de keyserver / `recv-keys` / `refresh-keys`: FPR **completo**, HKPS (`keys.openpgp.org` / `keyserver.ubuntu.com`), preferir **WKD** ou `.asc`; se rede/TLS “travou”, **dirmngr** — ver [glossário](#glossario-referencia) e [Apêndice A](#apendice-a) nº 6 + **COMANDO 10.1** (keyserver em `gpg.conf`).
+- Erro de keyserver / `recv-keys` / `refresh-keys`: FPR **completo**, HKPS (`keys.openpgp.org` / `keyserver.ubuntu.com`), preferir **WKD** ou `.asc`; se rede/TLS “travou”, **dirmngr** — ver [glossário](#glossario-referencia), [Apêndice A](#apendice-a) nº 6 e [COMANDO 10.1](#comando-10-1) (`keyserver` em `gpg.conf`).
 - Erro de SSH: revise `sshcontrol`, keygrip, `SSH_AUTH_SOCK`.
 - Erro de trust/chave pública: atualize chaveiro e revalide fingerprint.
 
