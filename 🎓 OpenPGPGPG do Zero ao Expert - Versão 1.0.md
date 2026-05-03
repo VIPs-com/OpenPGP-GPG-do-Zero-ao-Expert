@@ -56,10 +56,12 @@ Ao final deste curso, você será capaz de:
 | 2   | Cifrar e assinar qualquer tipo de dado com GPG | 🟢  |
 | 3   | Organizar toda a sua vida criptográfica sem depender de nuvens | 🟡  |
 | 4   | Integrar OpenPGP com Git, SSH e serviços modernos | 🟡  |
-| 5   | Recuperar-se de qualquer desastre (perda de máquina, roubo, corrupção) | 🔴  |
-| 6   | Planejar sua transição para criptografia pós-quântica (2026 em diante) | ⚫   |
-| 7   | Validar e corrigir chaves PGP com confiança absoluta | 🔴  |
-| 8   | Configurar ambientes air-gapped, virtuais e de produção | ⚫   |
+| 5   | Recuperar-se de qualquer desastre (perda de máquina, roubo, corrupção) | 🔵  |
+| 6   | Planejar sua transição para criptografia pós-quântica (2026 em diante) | ⚫  |
+| 7   | Validar e corrigir chaves PGP com confiança absoluta | 🔵  |
+| 8   | Configurar ambientes air-gapped, virtuais e de produção | ⚫  |
+
+> 📎 **Coluna «Nível»:** 🔴/🟡/🟢/🔵 seguem a **legenda do curso** (abaixo, «Legenda de cores»). **⚫** = **horizonte / expert+** (longo prazo ou planeamento) — **não** significa «obsoleto».
 
 * * *
 
@@ -242,7 +244,7 @@ Ao final deste curso, você será capaz de:
 │   │   └── 🚀 Bônus: Script de instalação automatizada
 │   │
 │   ├── 📋 Módulo 1: Sua Primeira Chave
-│   │   ├── 🔴 OBSOLETO: gpg --gen-key
+│   │   ├── 🟡 LEGADO (tutoriais): gpg --gen-key — prefira --generate-key
 │   │   ├── 🟡 FUNCIONA: gpg --full-generate-key
 │   │   ├── 🟢 PADRÃO: gpg --generate-key
 │   │   ├── 🔵 EXPERT: gpg --quick-generate-key
@@ -372,7 +374,8 @@ Ao final deste curso, você será capaz de:
 | 🔴  | **OBSOLETO** | Não use. Já foi substituído ou tem falhas de segurança |
 | 🟡  | **FUNCIONA** | Ainda funciona, mas é verboso ou tem alternativas melhores |
 | 🟢  | **PADRÃO ATUAL** | Recomendado para o dia a dia. Use sempre que possível |
-| 🔵  | **NÍVEL EXPERT** | O método mais correto. Use depois de entender o básico |
+| 🔵  | **NÍVEL EXPERT** | O método mais correto ou competência avançada — use depois de entender o básico |
+| ⚫  | **HORIZONTE / EXPERT+** | Planeamento de longo prazo ou cenários exigentes — **não** é «obsoleto» (ver também «Resultados esperados» no início) |
 
 > 💰 **DICA DO PROFESSOR:** Guarde esta legenda. Você vai usá-la o tempo todo durante o curso.
 
@@ -766,13 +769,13 @@ gpg --quick-add-key "$FP" ed25519 auth 1y
 
 #### Três formas de criar uma chave (e por que uma é melhor)
 
-**🔴 FORMA OBSOLETA (NÃO USE):**
+**🟡 FORMA LEGADA — `gpg --gen-key` (tutoriais antigos):**
 
 ```sh
 gpg --gen-key
 ```
 
-**O que tem de errado?** O comportamento muda entre versões do GPG. Você vai encontrar isso em tutoriais antigos. **IGNORE.**
+**O que acontece hoje (GnuPG ≥2.2)?** Em muitas builds, `--gen-key` é **alias** do mesmo assistente simplificado que **`--generate-key`** — o `man gpg` pode listar os dois. O **problema** para o curso não é «comando morto», e sim **ambiguidade:** material velho mistura versões (1.x, 2.0, 2.4) e passos que já não batem com o seu ecrã. **Para aprender e para scripts:** use sempre **`gpg --generate-key`** ou **`gpg --quick-generate-key`** — fica explícito no histórico e evita confusão com textos antigos.
 
 * * *
 
@@ -835,9 +838,10 @@ gpg --quick-generate-key "Aluno Lab (TRAINING 2026) <aluno.training@openpgp-lab.
 
 | Período | Criação típica | Subchaves típicas | Status |
 | --- | --- | --- | --- |
-| 1999–2016 | `gpg --gen-key` | `edit-key` + `addkey` | 🔴 Obsoleto |
+| 1999–~2016 | `gpg --gen-key` (diálogos e defaults que mudavam por série) | `edit-key` + `addkey` | 🔴 Legado histórico — não reproduza como «fonte da verdade» |
 | 2017–2022 | `gpg --full-generate-key` | idem | 🟡 Transição |
 | 2023–2026 | `gpg --generate-key` ou `--quick-generate-key` | `--quick-add-key` | 🟢 Atual |
+| (qualquer) | `--gen-key` ainda aparece em tutoriais | — (na prática, mesmo wizard curto que `--generate-key` em muitos 2.2+) | 🟡 Alias / nome velho — **prefira** `--generate-key` por clareza |
 
 > ⚠️ Tutoriais velhos também sugerem `gpg --trust-model always` (quase sempre inadequado fora de laboratório) e export da chave secreta **inteira** sem necessidade — para backup operacional use `--export-secret-subkeys` (Módulo 3).
 
@@ -1366,7 +1370,7 @@ echo "✓ Backup: $BACKUP_DIR/subkeys-${TIMESTAMP}.age"
 | Chave funcional | `gpg -K` mostra `[C]`, `[S]`, `[E]`, `[A]` | [ ] |
 | Cifragem | Arquivo `.gpg` criado com sucesso | [ ] |
 | Decifragem | Conteúdo original recuperado sem erro | [ ] |
-| Assinatura | `.sig` ou clearsign gerado sem erro | [ ] |
+| Assinatura | `.asc` (armor), **clearsign** ou `.sig` (binário, sem `--armor`) gerado sem erro | [ ] |
 | Verificação | Assinatura válida no arquivo íntegro | [ ] |
 | Integridade | Após alterar arquivo, retorna BAD signature | [ ] |
 
@@ -1432,6 +1436,8 @@ Confirme que deseja criar este certificado? (s/N) s
 ```
 Revocation certificate created.
 ```
+
+> 📎 **Revogação automática vs. este ficheiro:** desde o GnuPG **2.1**, ao criar uma mestra o instalador costuma guardar um certificado de revogação **automático** em `~/.gnupg/openpgp-revocs.d/<KeyId>.rev`. O **`--gen-revoke` deste COMANDO** gera **outra** cópia (`.asc`) para **mídia ou cofre que você controla** (offline, 3-2-1), com o **motivo** e a **documentação** do laboratório. Não substitui o ficheiro automático no PC — **complementa** o plano de recuperação se perder a máquina ou o diretório `~/.gnupg`.
 
 **Agora guarde em um local seguro:**
 
@@ -3057,13 +3063,15 @@ Computadores quânticos suficientemente grandes (milhões de qubits) quebrarão:
 *   **RSA** (fatoração) → algoritmo de Shor
 *   **ECC** (logaritmo discreto elíptico) → algoritmo de Shor também se aplica
 
-**Cronograma estimado (2026-2035):**
+**Cronograma estimado (2026-2035) — cenários, não datas exatas:**
 
 | Ano | Marco | Impacto |
 | --- | --- | --- |
-| **2026** | Computadores quânticos de ~1000 qubits (NISQ) | Ameaça teórica |
-| **2030-2035** | Ameaça real ao RSA-2048 | RSA começa a ficar inseguro |
-| **2040+** | ECC pode estar comprometido | ECC precisa ser substituído |
+| **2026** | Computadores quânticos de ~1000 qubits (NISQ) | Ameaça teórica; criptografia clássica ainda é padrão operacional |
+| **2030-2035** | Risco crescente a **RSA** de tamanhos modestos se computadores quânticos **escaláveis** existirem (Shor) | Planeamento de migração e chaves híbridas |
+| **2040+** | Horizonte: curvas clássicas (ECC) e RSA deixam de ser «para sempre» em arquivos de **muito** longo prazo | Depende de progresso real de hardware e da criptanálise — siga NIST/NSA, fornecedores e a sua política de risco |
+
+> 📎 **Incerteza:** ordens de grandeza em **anos** (qual algoritmo «cai primeiro» sob Shor) dependem de **premissas** sobre qubits, correção de erros e novos ataques. Use a tabela como **mapa de conversa** e para **priorizar rotação de chaves** — não como calendário exacto. Referências úteis: [NIST Post-Quantum Cryptography](https://csrc.nist.gov/projects/post-quantum-cryptography) e relatórios do seu setor.
 
 * * *
 
@@ -3415,7 +3423,7 @@ Use esta página como **referência rápida** antes de encerrar cada fase do cur
 | Chave funcional | `gpg -K` mostra `[C]`, `[S]`, `[E]`, `[A]` | [ ] |
 | Cifragem | Arquivo `.gpg` criado com sucesso | [ ] |
 | Decifragem | Conteúdo original recuperado sem erro | [ ] |
-| Assinatura | `.sig` ou clearsign gerado sem erro | [ ] |
+| Assinatura | `.asc` (armor), **clearsign** ou `.sig` (binário, sem `--armor`) gerado sem erro | [ ] |
 | Verificação | Assinatura válida no arquivo íntegro | [ ] |
 | Integridade | Após alterar o arquivo, verificação retorna BAD signature | [ ] |
 

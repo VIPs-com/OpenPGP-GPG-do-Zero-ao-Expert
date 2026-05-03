@@ -14,7 +14,7 @@ Ordem acordada com o **plano «Auditoria pré-roadmap»** (e auditoria técnica 
 
 1. **Auditoria de conteúdo** no `.md` canónico (precisão GnuPG/Sequoia, rubricas, exemplos) — fechar **P1 → P2 → P3** quando possível.
 2. **Auditoria estática do trunk** — checklist das **seis camadas** abaixo; preencher a **tabela de resultado** na secção seguinte.
-3. **Novas linhas datadas** neste ficheiro (ex.: «Rodada estática 2026-05-VIII») só **depois** de lacunas reais (FAIL/WARN) ou decisão explícita do mantenedor.
+3. **Novas linhas datadas** neste ficheiro (ex.: «Rodada estática 2026-05-IX») só **depois** de lacunas reais (FAIL/WARN) ou decisão explícita do mantenedor.
 
 A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática; o fecho formal do spot-check atualiza a tabela e o backlog.
 
@@ -56,7 +56,7 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 | --- | --- | --- |
 | 1 | Colar ou abrir este `ROADMAP.md` + `.cursorrules` | Contexto estável para o agente |
 | 2 | `git pull` / `git status` / `git remote -v` | Em `E:\pgp` ou `/e/pgp` |
-| 3 | **P2** no `.md` canónico (próxima rodada de conteúdo) | Ver **§ Pendências ativas — P2** |
+| 3 | **P3** no repo / `.md` (próxima rodada) | Ver **§ Pendências ativas — P3** |
 | 4 | Checklist **camadas 1–2–4** (e **3** se houver rede) | Atualizar **tabela de auditoria** |
 | 5 | **Spot-check VM** | **§ Spot-check VM Ubuntu**; único passo que exige Ubuntu real |
 
@@ -75,11 +75,11 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 
 ### P2 — Precisão e clareza didática
 
-- [ ] **T1:** Reformular `--gen-key` vs alias moderno de `--generate-key` (evitar «obsoleto» enganoso).
-- [ ] **T7:** Nota sobre cert de revogação automático em `~/.gnupg/openpgp-revocs.d/` vs revogação manual exportada.
-- [ ] **E2 / E3:** Tabela «Resultados esperados» / legenda — coerência 🔴🟡🟢🔵 e ⚫ vs legenda.
-- [ ] **C1:** Rubrica checkpoint 1 — `.asc` (armor) vs `.sig` (binário).
-- [ ] **S1 (opcional):** Texto ECC/RSA 2030–2040 vs estimativas NIST/NSA, com ressalva de incerteza.
+- [x] **T1:** Reformular `--gen-key` vs alias moderno de `--generate-key` (evitar «obsoleto» enganoso).
+- [x] **T7:** Nota sobre cert de revogação automático em `~/.gnupg/openpgp-revocs.d/` vs revogação manual exportada.
+- [x] **E2 / E3:** Tabela «Resultados esperados» / legenda — coerência 🔴🟡🟢🔵 e ⚫ vs legenda.
+- [x] **C1:** Rubrica checkpoint 1 — `.asc` (armor) vs `.sig` (binário).
+- [x] **S1 (opcional):** Texto ECC/RSA 2030–2040 vs estimativas NIST/NSA, com ressalva de incerteza.
 
 ### P3 — Ecossistema e robustez
 
@@ -131,6 +131,7 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-V** | Secção spot-check VM; `README`; grep corrupção **`QUÂNTICA`** |
 | **2026-05-VI** | Formato entrega trunk; **`.cursor/rules/openpgp-course-pointer.mdc`** |
 | **2026-05-VII** | **P1** no `.md`: remover `agent-timeout` + nota `pinentry-timeout`; COMANDO **1.1–1.3** alinhados a `--generate-key` sem comentário obrigatório; passphrase exemplo **6** segmentos (Mandamento 6); grep **`QUÂNTICA`** só no anexo |
+| **2026-05-VIII** | **P2:** `--gen-key` como legado/alias (T1); nota `openpgp-revocs.d` vs `--gen-revoke` (T7); «Resultados esperados» + legenda **⚫** e níveis 🔵 (E2/E3); rubrica CP1 `.asc`/clearsign/`.sig` (C1); cronograma quântico + NIST + incerteza (S1); mapa Módulo 1 |
 | **Repo** | `.vscode/` e `scripts/` só locais (`.gitignore` + fora do remoto) |
 
 **Manutenção recorrente:** ao **novo** bloco shell no `.md` canónico → rever `list-secret-keys` + `fpr:` + `UID_IMPORT` / `LAB_EMAIL`; ao **novo** link HTTPS → repetir **HEAD** em lote; ao subir **GnuPG** experimental → rever nomes PQ na CLI (Módulo 11).
