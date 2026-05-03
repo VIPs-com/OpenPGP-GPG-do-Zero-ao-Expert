@@ -196,7 +196,7 @@ Ao final deste curso, você será capaz de:
 | **WKD** | Web Key Directory | Seu site oficial de contato |
 | **Kyber** | Algoritmo pós-quântico (futuro) | Cadeado quântico |
 
-> 📎 **Mais termos** (WoT, HKPS, HKP, UID, ASCII armor, entropia, keygrip, LUKS, `age`, air-gapped…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
+> 📎 **Mais termos** (WoT, HKPS, HKP, UID, ASCII armor, assinatura destacada, entropia, keygrip, LUKS, `age`, air-gapped…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
 
 * * *
 
@@ -3439,6 +3439,7 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | **Fingerprint** | Identificador longo e estável da chave — compare **fora da banda** com o interlocutor antes de marcar confiança ou assinar a chave de terceiros. |
 | **UID** | *User ID* — bloco **nome + e-mail** (e por vezes comentário) associado à chave no OpenPGP; aparece em `gpg --list-keys` e nas linhas `uid:` do `--with-colons`. Não confundir com *username* de sistema operacional. |
 | **ASCII armor** | Blocos texto **`-----BEGIN PGP...-----`** para transportar chaves e mensagens OpenPGP (e-mail, *paste*, anexos `.asc`). No `gpg`, **`--armor`** / **`-a`**; alternativa ao pacote binário “nu”. |
+| **Assinatura destacada** (*detached*) | Arquivo de assinatura **separado** do conteúdo (`.sig` / `.asc`); verificação típica `gpg --verify arquivo.sig arquivo`. Contrastar com **clearsign** e com assinatura **inline** (ver Módulo 12 e COMANDO de assinatura no Módulo 2). |
 | **Entropia** | Aleatoriedade de qualidade que o SO alimenta ao crypto stack — ver **`/proc/sys/kernel/random/entropy_avail`**. Geração de chaves longa pode **esperar** se o pool estiver baixo; **`rng-tools`** (COMANDO 0.3) ajuda sobretudo em **VM minimal/antiga** ou hosts fracos; desktop físico Ubuntu 24.x moderno costuma repor rápido sem drama. |
 | **`--with-colons`** | Saída máquina-legível (`pub:`, `sec:`, `sub:`/`ssb:`, `fpr:`, `grp:`…). Em **`fpr:`**, o campo **10** costuma ser a fingerprint completa; em **`sec:`**/`pub:`**, o campo **5** é em geral o KeyID longo (vários formatos funcionam como seletor no `gpg`). Ver scripts dos Módulos 3–6 e anexo do mantenedor. |
 | **Keygrip** | Identificador que o `gpg-agent` usa para mapear material criptográfico (ligação ao SSH via `[A]`, `sshcontrol`, etc.). Ver Módulo 5. |
@@ -3597,6 +3598,8 @@ jobs:
           echo "$PASSPHRASE" | gpg --batch --passphrase-fd 0 \
             --detach-sign --armor --output artifact.tgz.asc artifact.tgz
 ```
+
+> 📎 **Produção:** trate este YAML como **rascunho** — *pin* de ações por **SHA** (ex.: `actions/checkout@…`), rotação de secrets, e onde possível **OIDC**/cofre em vez de passphrase longa só em variável estática.
 
 #### Kubernetes e Sealed Secrets (visão geral)
 
