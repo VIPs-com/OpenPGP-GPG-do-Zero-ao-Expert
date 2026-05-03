@@ -20,24 +20,21 @@ Curso em **um único Markdown** (versão canônica **1.0**), com orientações p
 
 Defina a licença no GitHub (repositório → **Add file** → **Create new file** → `LICENSE`) conforme a sua decisão editorial. Até lá, assume-se **todos os direitos reservados** pelo autor, salvo indicação explícita no repositório.
 
-## Publicar este clone no GitHub (primeira vez)
+## Repositório no GitHub
 
-1. No GitHub: **New repository** — nome sugerido, por exemplo `openpgp-do-zero-ao-expert`. **Sem** README, `.gitignore` ou licença gerados pelo site (o histórico local já existe).
-2. No PowerShell, na pasta do projeto (ajuste `SEU_USUARIO` e `NOME_DO_REPO`):
+**Remoto canônico:** [https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert)
 
-```powershell
-Set-Location E:\pgp
-git remote add origin https://github.com/SEU_USUARIO/NOME_DO_REPO.git
-git push -u origin main
+```text
+https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert.git
 ```
 
-Se preferir **SSH**:
+Atualizações habituais (depois de `git commit`):
 
 ```powershell
-git remote add origin git@github.com:SEU_USUARIO/NOME_DO_REPO.git
-git push -u origin main
+Set-Location E:\pgp   # ou o caminho do teu clone
+git push origin main
 ```
 
-Se `remote origin` já existir de um teste anterior: `git remote remove origin` e repita o `add`.
+Noutra máquina: `git clone https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert.git`
 
-Depois do primeiro `push`, ative **Description**, **Topics** (`openpgp`, `gnupg`, `tails`, `pgp`) e visibilidade (**Public** / **Private**) nas definições do repositório.
+Nas definições do repositório no GitHub, convém preencher **Description**, **Topics** (`openpgp`, `gnupg`, `tails`, `pgp`) e, se quiseres, **Add file → LICENSE**.
