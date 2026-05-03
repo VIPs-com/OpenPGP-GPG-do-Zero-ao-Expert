@@ -3871,7 +3871,7 @@ gpg --export --armor "$FP_NOVO" > nova-chave-ecc.asc
 | Recuperação real | Simulação de desastre validada | [ ] |
 | Futuro tecnológico | Pós-quântico e Sequoia com plano de transição | [ ] |
 | Multiplataforma | Linux, Windows, Android e iPhone cobertos | [ ] |
-| **Versões externas** (Tails / GnuPG / `sq`) | Cabeçalho, tabela de ferramentas (Módulo 0), **`README.md`** do repo, **matriz Tails** e blocos `wget` / `gpg --verify` do **COMANDO 6.1** com o **mesmo** número de série que a [página oficial](https://tails.net/install/download/index.en.html) (rodada mantenedor: conferir sempre antes de publicar) | [ ] |
+| **Versões externas** (Tails / GnuPG / `sq`) | Cabeçalho, tabela de ferramentas (Módulo 0), **`README.md`**, **`LICENSE`**, **matriz Tails** e blocos `wget` / `gpg --verify` do **COMANDO 6.1** com o **mesmo** número de série que a [página oficial](https://tails.net/install/download/index.en.html) (rodada mantenedor: conferir sempre antes de publicar) | [ ] |
 | Apêndices completos | A a F com uso real | [ ] |
 | Pronto para aluno | Linguagem clara, exercícios e rubricas em cada etapa | [ ] |
 
@@ -3898,6 +3898,7 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 | SafeCurves (Bernstein) | https://safecurves.cr.yp.to |
 | Diceware / dados — guia EFF | https://www.eff.org/dice |
 | Tails | https://tails.net |
+| Licença do material (`LICENSE` no repo) | https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/blob/main/LICENSE |
 
 * * *
 
@@ -3929,6 +3930,7 @@ O ficheiro **`.cursorrules`** na raiz do repo define quando o agente deve correr
 
 ### Antes de commitar (sanidade rápida)
 
+- **`LICENSE` / `README`:** mudou a política de uso (aberta vs. reservada)? Mantenha o ficheiro **`LICENSE`** na raiz do repo e a secção **«Licença e uso»** do **`README.md`** alinhados (substitua ambos se adoptar, por exemplo, **CC BY-SA 4.0**).
 - **Título do Módulo 11 (PQ):** alguns editores substituem **ã** por **â** em «quântica». Procure por `QUÂNTICA` (U+00C2) e deixe **`PÓS-QUÃNTICA`** (U+00C3), como no mapa e no restante do texto em PT‑BR.
 - **Módulo 11 — strings PQ na CLI:** ao atualizar exemplos Kyber/SPHINCS+ ou a versão mínima do GnuPG no cabeçalho, rode na VM **`gpg --quick-generate-key --help`** (e, se possível, um teste real) para alinhar nomes de algoritmo ao binário — ver nota 📎 antes do primeiro bloco `sh` do Kyber.
 - **`$FP` / `$FP_MASTER`:** fingerprint pela linha `fpr:` (campo 10) só **depois** de filtrar identidade (`LAB_EMAIL`, `UID_MASTER`, `"$EMAIL"` no script bônus, etc.). Evite reintroduzir `gpg --list-secret-keys --with-colons | awk …` sem esse filtro se houver risco de mais de uma mestra.

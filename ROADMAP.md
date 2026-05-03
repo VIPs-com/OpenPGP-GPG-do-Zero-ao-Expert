@@ -113,11 +113,13 @@ VM alinhada ao curso (**Ubuntu 24.04**, `gnupg2`, rede para `wget`/`apt` onde ne
 
 **Critério de fecho:** checklist sem erro bloqueante **ou** desvio documentado com comando e saída.
 
+**Ao fechar o spot-check na VM:** (1) na tabela **«Última auditoria estática»**, linha **VM**, passe a **PASS** com data e uma linha de nota (ou **WARN** com comando + saída); (2) marque **[x]** em **R2** e em **Spot-check na VM Ubuntu** abaixo; (3) `git commit` descrevendo o roteiro ou anexe nota em issue.
+
 ---
 
 ## Formato de entrega (decisão trunk 1.x)
 
-**Até nova decisão explícita do mantenedor:** entrega principal no Git = **Markdown canónico** do curso + meta-repo (`README`, `ROADMAP`, `.cursorrules`, `.cursor/rules`). **Não** há obrigação no trunk de PDF, HTML estático nem site gerado — fase posterior se/quando houver ferramenta e tempo.
+**Até nova decisão explícita do mantenedor:** entrega principal no Git = **Markdown canónico** do curso + meta-repo (`README`, `ROADMAP`, **`LICENSE`**, `.cursorrules`, `.cursor/rules`). **Não** há obrigação no trunk de PDF, HTML estático nem site gerado — fase posterior se/quando houver ferramenta e tempo.
 
 ---
 
@@ -137,6 +139,7 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-VIII** | **P2:** `--gen-key` como legado/alias (T1); nota `openpgp-revocs.d` vs `--gen-revoke` (T7); «Resultados esperados» + legenda **⚫** e níveis 🔵 (E2/E3); rubrica CP1 `.asc`/clearsign/`.sig` (C1); cronograma quântico + NIST + incerteza (S1); mapa Módulo 1 |
 | **2026-05-IX** | **Auditoria estática trunk** (plano pré-roadmap): Git, versões, **HEAD** em URLs do `.md` canónico, grep preventivo, governança **R3**; correção URL GitHub sem `**` no Markdown; **T5** idempotência COMANDO 5.3; **VM** pendente de execução |
 | **2026-05-03** | **R1:** ficheiro **`LICENSE`** (todos os direitos reservados); **README** — secção licença; tabela de auditoria — linha `LICENSE` **PASS** |
+| **2026-05-04** | **Anexo + ROADMAP:** checklist **Versões externas** inclui `LICENSE`; tabela de referências + bullet pré-commit `LICENSE`/`README`; **formato de entrega** lista `LICENSE`; nota **«Ao fechar o spot-check na VM»** (tabela R2 + commit) |
 | **Repo** | `.vscode/` e `scripts/` só locais (`.gitignore` + fora do remoto) |
 
 **Manutenção recorrente:** ao **novo** bloco shell no `.md` canónico → rever `list-secret-keys` + `fpr:` + `UID_IMPORT` / `LAB_EMAIL`; ao **novo** link HTTPS → repetir **HEAD** em lote; ao subir **GnuPG** experimental → rever nomes PQ na CLI (Módulo 11).
