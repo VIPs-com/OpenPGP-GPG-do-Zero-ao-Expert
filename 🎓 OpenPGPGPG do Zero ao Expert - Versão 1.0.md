@@ -196,7 +196,7 @@ Ao final deste curso, você será capaz de:
 | **WKD** | Web Key Directory | Seu site oficial de contato |
 | **Kyber** | Algoritmo pós-quântico (futuro) | Cadeado quântico |
 
-> 📎 **Mais termos** (WoT, HKPS, HKP, UID, ASCII armor, assinatura destacada, entropia, keygrip, LUKS, `age`, air-gapped…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
+> 📎 **Mais termos** (WoT, HKPS, HKP, SKS, UID, ASCII armor, assinatura destacada, clearsign, entropia, keygrip, `GNUPGHOME`, dirmngr, LUKS, `age`, certificado de revogação, air-gapped…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
 
 * * *
 
@@ -655,6 +655,8 @@ EOF
 
 chmod 600 ~/.gnupg/gpg.conf
 ```
+
+> 📎 **Opcional (rede / Módulo 10):** se for usar **`gpg --refresh-keys`** sem passar **`--keyserver`** em toda chamada, acrescente **uma** linha ao final do mesmo arquivo, por exemplo `keyserver hkps://keys.openpgp.org` — o `dirmngr` precisa de um destino HKPS explícito quando não há política de rede em outro arquivo de configuração.
 
 * * *
 
@@ -2357,6 +2359,8 @@ agent-socket:/run/user/1000/gnupg/S.gpg-agent
 agent-ssh-socket:/run/user/1000/gnupg/S.gpg-agent.ssh
 ```
 
+> 📎 O **homedir** mostrado costuma ser `~/.gnupg` — a menos que **`GNUPGHOME`** esteja definido nesse shell (então todo o cofre, inclusive sockets listados, segue esse caminho). Erros do tipo *Can't connect to agent* ou `gpg -K` sem chaves em um terminal e com chaves em outro quase sempre são **variável de ambiente** incoerente; veja o [glossário `GNUPGHOME`](#glossario-referencia) e o **Apêndice A, erro nº 15**.
+
 ```sh
 gpgconf --check-programs
 ```
@@ -2395,6 +2399,7 @@ gpg -K --with-keygrip --with-subkey-fingerprints
 | --- | --- | --- |
 | `No secret key` | Fingerprint errado ou chave não importada | `gpg -K` e reimportar backup |
 | `BAD signature` em arquivo íntegro | Arquivo/chave errada ou corrupção | Verificar fingerprint do signatário e recifrar/reassinar |
+| `Can't connect to agent` / IPC ao agente | Agente parado, socket antigo ou **`GNUPGHOME`** diferente entre processos | `gpgconf --launch gpg-agent`; se persistir `gpgconf --kill gpg-agent && gpgconf --launch gpg-agent`; confira `echo "$GNUPGHOME"` (Apêndice A nº 15) |
 | `Agent refused operation` | `gpg-agent` inconsistente | Reiniciar agente e validar sockets |
 | `Permission denied (publickey)` no SSH | `sshcontrol`/`authorized_keys` incorreto | Revisar keygrip, export SSH e arquivo remoto |
 | Commit não assina no Git | `gpg.program` ou `signingkey` errado | Reaplicar configuração Git e testar `--show-signature` |
@@ -2848,6 +2853,8 @@ gpg --refresh-keys
 **O que faz:** Busca atualizações de todas as chaves no seu chaveiro (expirações, revogações, novas subchaves).
 
 **Por que é importante:** Se você nunca rodar este comando, seu chaveiro vai acumular chaves expiradas.
+
+> 📎 Se **nada** atualizar ou o `dirmngr` indicar falta de *keyserver*, defina um padrão **HKPS** em `~/.gnupg/gpg.conf` (ex.: linha `keyserver hkps://keys.openpgp.org`) **ou** rode explicitamente `gpg --keyserver hkps://keys.openpgp.org --refresh-keys` — alinhado ao *alias* comentado **`gpg-refresh-ks`** nos **Aliases opcionais** do **Módulo 10** (logo após o COMANDO 10.6).
 
 **Keyservers em 2026 (fallback quando não há WKD)**
 
@@ -3436,17 +3443,22 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | **WoT** | *Web of Trust* — confiança derivada de assinaturas mútuas e níveis de confiança no chaveiro (não confundir com “confiar cegamente” em keyserver). Ver Módulo 10 / apêndices de política. |
 | **HKPS** | Acesso a servidor de chaves sobre TLS (`hkps://`), reduzindo exposição em relação a HKP simples ou infraestruturas SKS legadas. |
 | **HKP** | *HTTP Key Protocol* — keyserver clássico **sem** TLS (`hkps://` é a variante segura). Hoje prefira **HKPS**, **WKD** ou publicação direta; trate HKP “nu” como legado / laboratório. |
+| **SKS** | *Synchronizing Key Server* — rede federada **antiga** de keyservers (sincronização em massa). Hoje é **legado**: superfície para *key flooding*, metadados e confusão de chaves. Não a trate como fonte primária; use **WKD**, **keys.openpgp.org** ou **HKPS** pontual com **FPR** confirmado. |
 | **Fingerprint** | Identificador longo e estável da chave — compare **fora da banda** com o interlocutor antes de marcar confiança ou assinar a chave de terceiros. |
 | **UID** | *User ID* — bloco **nome + e-mail** (e por vezes comentário) associado à chave no OpenPGP; aparece em `gpg --list-keys` e nas linhas `uid:` do `--with-colons`. Não confundir com *username* de sistema operacional. |
 | **ASCII armor** | Blocos texto **`-----BEGIN PGP...-----`** para transportar chaves e mensagens OpenPGP (e-mail, *paste*, anexos `.asc`). No `gpg`, **`--armor`** / **`-a`**; alternativa ao pacote binário “nu”. |
 | **Assinatura destacada** (*detached*) | Arquivo de assinatura **separado** do conteúdo (`.sig` / `.asc`); verificação típica `gpg --verify arquivo.sig arquivo`. Contrastar com **clearsign** e com assinatura **inline** — fluxo `gpg` no **COMANDO 2.4** (Módulo 2); paralelos `sq` no **Módulo 12**. |
+| **Clearsign** | Assinatura **no próprio texto legível** (`gpg --clearsign`): bloco `BEGIN PGP SIGNED MESSAGE` + conteúdo + assinatura ASCII. Comum em e-mail e fóruns; contrastar com **assinatura destacada**. Ver **COMANDO 2.4** e tabela GnuPG × Sequoia no **Módulo 12**. |
 | **Entropia** | Aleatoriedade de qualidade que o SO alimenta ao crypto stack — ver **`/proc/sys/kernel/random/entropy_avail`**. Geração de chaves longa pode **esperar** se o pool estiver baixo; **`rng-tools`** (COMANDO 0.3) ajuda sobretudo em **VM minimal/antiga** ou hosts fracos; desktop físico Ubuntu 24.x moderno costuma repor rápido sem drama. |
+| **`GNUPGHOME`** | Se definido, `gpg` e `gpg-agent` usam **esse** diretório em vez de `~/.gnupg`. Um shell com `GNUPGHOME` e outro sem (ou serviço com valor diferente) gera “Can't connect to agent”, chaveiro vazio ou socket errado — alinhe a variável ou `unset GNUPGHOME` no laboratório clássico. |
 | **`--with-colons`** | Saída máquina-legível (`pub:`, `sec:`, `sub:`/`ssb:`, `fpr:`, `grp:`…). Em **`fpr:`**, o campo **10** costuma ser a fingerprint completa; em **`sec:`**/`pub:`**, o campo **5** é em geral o KeyID longo (vários formatos funcionam como seletor no `gpg`). Ver scripts dos Módulos 3–6 e anexo do mantenedor. |
 | **Keygrip** | Identificador que o `gpg-agent` usa para mapear material criptográfico (ligação ao SSH via `[A]`, `sshcontrol`, etc.). Ver Módulo 5. |
 | **pinentry** | Programa que solicita passphrase ou PIN ao agente (`pinentry-tty` em servidor/SSH só texto; `pinentry-gnome3` típico no Ubuntu Desktop 24.x GNOME). Fundamental para não treinar **maus hábitos**, como guardar passphrase em variável de ambiente. |
+| **dirmngr** | Componente do GnuPG que trata de **HTTPS/TLS** e pedidos HTTP em nome do `gpg` (ex.: **HKPS**, descoberta WKD). Se **`--recv-keys`** ou **`--refresh-keys`** falharem com erro de rede ou TLS “congelado”, tente `gpgconf --kill dirmngr && gpgconf --launch dirmngr` antes de culpar só o keyserver (ver **Módulo 7** e Apêndice A nº 6). |
 | **Air-gapped / offline** | Operação sem rede no momento sensível (ex.: operar a mestra no Tails sem Internet). Objetivo: reduzir superfície de vazamento. |
 | **LUKS** | Criptografia de disco/partição no Linux — uso típico para proteger mídia física onde você guarda backups ou cofres. |
 | **age** | Ferramenta simples para cifrar arquivos com chave ou passphrase — usada nos roteiros de backup com `gpg` + arquivos `.age`. |
+| **Certificado de revogação** | Saída de **`gpg --gen-revoke`** (COMANDO 3.1): arquivo **sem** passphrase que, **se publicado**, invalida a chave alvo — trate como segredo físico/offline (quem o tiver pode destruir a reputação operacional da identidade). |
 | **`sq cert export`** | No **Sequoia**, exporta só material **público** (certificado OpenPGP sem segredo no cofre). Comparar com `sq key export`. Ver **Módulo 12** e tabela GnuPG × Sequoia. |
 | **`sq key export`** | No **Sequoia**, exporta pacote com **material secreto** disponível no cofre local (fluxo análogo a backup mestra com `gpg --export-secret-keys`). O filtro **`--cert=FPR`** escolhe a identidade. Ver **Módulo 12**. |
 | **`sq decrypt` / `--recipient-file`** | Decifrar com cofre Sequoia já povoado costuma ser só `sq decrypt arquivo`; se o segredo estiver **só** em um arquivo exportado, use **`--recipient-file=`**. Ver nota após a tabela no **Módulo 12**. |
@@ -3457,24 +3469,25 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 ### APÊNDICE A: TABELA DE ERROS RÁPIDOS (TOP 15)
 
 > 📎 Várias linhas abaixo usam **`"$FP"`** — deve ser o identificador da **mestra certa** (fingerprint na linha **`fpr:`**, campo **10**, após filtrar por `LAB_EMAIL`/UID). Se `FP` estiver errado ou vazio, os `quick-add-key` falham; ver **Módulo 3** e glossário **`--with-colons`**.
+> 📎 Em **`gpg --recv-keys`**, prefira **fingerprint completo** (40 hex, sem ambiguidade) em vez de KeyID curto — reduz colisões documentadas e falhas “silenciosas” ao puxar a chave errada.
 
 | #   | Mensagem de Erro | Causa | Solução Rápida |
 | --- | --- | --- | --- |
 | 1   | `gpg: signing failed: No secret key` | Não tem subchave \[S\] | `gpg --quick-add-key "$FP" ed25519 sign 1y` |
 | 2   | `gpg: decryption failed: No secret key` | Não tem subchave \[E\] | `gpg --quick-add-key "$FP" cv25519 encr 1y` |
 | 3   | `gpg: key ... not found` | Fingerprint ou seletor errado | `gpg --list-keys --keyid-format long` ou filtre por e-mail/UID; confira `fpr:` no `--with-colons` |
-| 4   | `gpg: Sorry, we are in batchmode...` | Pinentry não configurado | `sudo apt install pinentry-tty` |
+| 4   | `gpg: Sorry, we are in batchmode...` | Modo não interativo sem pinentry/TTY adequado | `sudo apt install pinentry-tty` (desktop GNOME: `pinentry-gnome3`); em **SSH** também: `export GPG_TTY=$(tty)` |
 | 5   | `gpg: WARNING: unsafe permissions` | Permissões erradas | `chmod 700 ~/.gnupg` |
-| 6   | `gpg: keyserver receive failed` | Keyserver offline | Tente `hkps://keys.openpgp.org` ou prefira WKD |
+| 6   | `gpg: keyserver receive failed` | Keyserver offline, limite, **FPR**/seletor incorreto ou **dirmngr**/TLS presos | FPR completo; `hkps://keys.openpgp.org` ou `hkps://keyserver.ubuntu.com`; prefira **WKD** ou `.asc`; se rede/TLS suspeitos: `gpgconf --kill dirmngr && gpgconf --launch dirmngr` |
 | 7   | `gpg: decryption failed: Bad session key` | Senha errada | Verifique passphrase |
 | 8   | `gpg: Can't check signature: No public key` | Sem certificado público no chaveiro | `gpg --keyserver hkps://keys.openpgp.org --recv-keys FPR` (ou importe o `.asc` de quem assinou) |
 | 9   | `gpg: signing failed: Inappropriate ioctl` | Terminal não interativo | `export GPG_TTY=$(tty)` |
 | 10  | `ssh-add -L` vazio | SSH via GPG não configurado | Verifique `~/.gnupg/sshcontrol` |
-| 11  | `gpg: agent refused operation` | Agent travou | `gpgconf --kill gpg-agent` |
+| 11  | `gpg: agent refused operation` | Agent travou ou estado inconsistente | `gpgconf --kill gpg-agent && gpgconf --launch gpg-agent` |
 | 12  | `gpg: no valid OpenPGP data found` | Caminho errado, truncado ou não é OpenPGP | `file` no arquivo; confira *path*; obtenha de novo o `.asc`/`.gpg` íntegro ou regenere o export |
 | 13  | `gpg: Sorry, no terminal at all requested` | Sem **TTY** ou GUI disponível para o pinentry | SSH/só texto: `export GPG_TTY=$(tty)` + `pinentry-tty`; desktop GNOME: `sudo apt install pinentry-gnome3` |
 | 14  | `gpg: key ... has been revoked` | Chave revogada ou substituída | `gpg --keyserver hkps://keys.openpgp.org --recv-keys FPR` ou novo `.asc` do autor; leia o pacote de revogação se tiver |
-| 15  | `gpg: Can't connect to agent` | Agent não rodando | `gpgconf --launch gpg-agent` |
+| 15  | `gpg: Can't connect to agent` | Agent parado, socket antigo ou **`GNUPGHOME`** incoerente entre processos | `gpgconf --launch gpg-agent`; se persistir: `gpgconf --kill gpg-agent && gpgconf --launch gpg-agent`; confira `echo "$GNUPGHOME"` (em setup clássico costuma estar vazio) |
 
 * * *
 
@@ -3484,8 +3497,9 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 
 **Decisão rápida por tipo de erro:**
 
-- Erro de assinatura: valide subchave `[S]`, `GPG_TTY`, `gpg-agent`.
+- Erro de assinatura: valide subchave `[S]`, `GPG_TTY`, `gpg-agent`, coerência de **`GNUPGHOME`** (se usar chaveiro alternativo).
 - Erro de decifração: confirme subchave `[E]` e import correto de subchaves.
+- Erro de keyserver / `recv-keys` / `refresh-keys`: FPR **completo**, HKPS (`keys.openpgp.org` / `keyserver.ubuntu.com`), preferir **WKD** ou `.asc`; se rede/TLS “travou”, **dirmngr** — ver glossário e **Apêndice A nº 6** + **COMANDO 10.1** (keyserver em `gpg.conf`).
 - Erro de SSH: revise `sshcontrol`, keygrip, `SSH_AUTH_SOCK`.
 - Erro de trust/chave pública: atualize chaveiro e revalide fingerprint.
 
