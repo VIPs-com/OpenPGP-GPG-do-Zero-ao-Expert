@@ -1,7 +1,7 @@
 # 🎓 OpenPGP/GPG do Zero ao Expert – **VERSÃO 1.0 (canônica)**
 
 **Autor:** Professor Especialista em Criptografia Aplicada no Linux, Windows, Android, iPhone  
-**GnuPG:** ~**2.4.x** no Ubuntu 24.04 do curso (`apt`) · **2.5.19+** nas seções Kyber/ML‑KEM experimental (consulte [download](https://www.gnupg.org/download/index.en.html))  
+**GnuPG:** ~**2.4.x** no Ubuntu 24.04 do curso (`apt`) · **2.5.19+** só para **ML‑KEM** experimental (rótulos **«Kyber»** na CLI; **não** vem no `apt` LTS — [download](https://www.gnupg.org/download/index.en.html) oficial ou VM dedicada)  
 **Tails:** 7.7.1+ (confira sempre em [tails.net/install/download](https://tails.net/install/download/index.en.html))  
 **Sequoia (`sq`):** exemplos do curso alinhados a **sequoia-sq ~1.3.x** ([manual `sq(1)`](https://sequoia-pgp.gitlab.io/sequoia-sq/man/sq.1.html) · [páginas do projeto](https://sequoia-pgp.gitlab.io/sequoia-sq/) · depois de instalar, use `sq version`)  
 **Metodologia:** 🔴🟡🟢🔵 + COMANDO A COMANDO + Checkpoints  
@@ -89,12 +89,12 @@ Ao final deste curso, você será capaz de:
 | **VirtualBox** | [virtualbox.org](https://www.virtualbox.org/) | Criar máquina virtual isolada |
 | **Ubuntu 24.04 LTS** | [ubuntu.com](https://ubuntu.com/download/desktop) | Sistema operacional do curso |
 | **Tails 7.7.1+** | [tails.net/install/download](https://tails.net/install/download/index.en.html) | Geração de chave mestra offline |
-| **GnuPG** (`gnupg2`) | `sudo apt install gnupg2` | **Ubuntu 24.04:** costuma ser série **2.4.x** (adequado ao curso). Trechos **2.5.19+** (Kyber experimental): veja [gnupg.org/download](https://www.gnupg.org/download/index.en.html) |
+| **GnuPG** (`gnupg2`) | `sudo apt install gnupg2` | **Ubuntu 24.04:** costuma ser série **2.4.x** (adequado ao curso). Trechos **2.5.19+** (ML‑KEM experimental): veja [gnupg.org/download](https://www.gnupg.org/download/index.en.html) |
 | **age** | `sudo apt install age` | Backup criptografado |
 | **KeePassXC** (Windows) | [keepassxc.org](https://keepassxc.org/) | SSH Agent alternativo |
 | **Syncthing** | [syncthing.net](https://syncthing.net/) | Sincronização local sem nuvem |
 
-> 💡 **Versões empacotadas:** no Ubuntu **24.04 LTS**, `gnupg2` instalado pelo `apt` normalmente é **2.4.x** — cobre quase todo o curso. Onde o texto pede **GnuPG 2.5.19+** (por exemplo Kyber/ML-KEM em laboratório), use pacote mais novo ou build a partir do site oficial do projeto.
+> 💡 **Versões empacotadas:** no Ubuntu **24.04 LTS**, `gnupg2` instalado pelo `apt` normalmente é **2.4.x** — cobre quase todo o curso. O **2.5.19+** (**ML-KEM** / `pqc`) **não** está no repositório padrão da distro: exige *build* ou binário do [projeto GnuPG](https://www.gnupg.org/download/index.en.html), ou **VM** só para laboratório. **PPA** ou pacotes de terceiros na máquina principal = risco de supply-chain — evite salvo política explícita da sua organização.
 
 > 📎 **Conferência dos comandos `gpg`:** os exemplos foram revisados contra o manual oficial do projeto ([gestão OpenPGP / opções principais](https://www.gnupg.org/documentation/manuals/gnupg/OpenPGP-Key-Management.html)) para as séries **2.4.x** e **2.5.x**. Na máquina do curso, confirme sempre com `gpg --version`; em caso de divergência de distro, use `gpg OPÇÃO --help` ou `man gpg`.
 
@@ -126,7 +126,7 @@ Ao final deste curso, você será capaz de:
 │     - Cifragem de arquivos e mensagens                                      │
 │     - Backup 3-2-1 com age e LUKS                                           │
 │     - Recuperação de desastres                                              │
-│     - Pós-quântico (Kyber) e preparação para 2030                           │
+│     - Pós-quântico (ML-KEM / «Kyber» na CLI) e preparação para 2030         │
 │   • Ideal para: SysAdmins, SecOps, entusiastas de segurança                 │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
@@ -175,7 +175,7 @@ Ao final deste curso, você será capaz de:
 | --- | --- | --- |
 | 17  | Use GPG como agente SSH sempre que possível | Centraliza identidade |
 | 18  | Mantenha gpg-agent e pinentry atualizados | Evita travamentos |
-| 19  | Planeje a migração para pós-quântico desde já | Kyber será padrão em 2028-2030 |
+| 19  | Planeje a migração para pós-quântico desde já | **ML-KEM** (FIPS 203) integra-se ao OpenPGP em trilho IETF; em **2028–2030** deve dominar a cifragem híbrida com ECC |
 | 20  | Sua identidade digital é um ativo de longo prazo | Cuide como seus documentos mais importantes |
 
 * * *
@@ -196,9 +196,9 @@ Ao final deste curso, você será capaz de:
 | **Assinar** | Provar que VOCÊ criou | Sua rubrica |
 | **Revogar** | Invalidar uma chave comprometida | Cancelar um documento |
 | **WKD** | Web Key Directory | Seu site oficial de contato |
-| **Kyber** | Algoritmo pós-quântico (futuro) | Cadeado quântico |
+| **ML-KEM (Kyber)** | KEM pós-quântico padronizado pelo NIST (**FIPS 203**, 2024); «Kyber» = nome do projeto CRYSTALS | Cadeado quântico |
 
-> 📎 **Mais termos** (WoT, **TOFU**, HKPS, HKP, SKS, **Hagrid**, UID, ASCII armor, assinatura destacada, clearsign, entropia, keygrip, `GNUPGHOME`, dirmngr, RNP, LUKS, `age`, certificado de revogação, air-gapped, **CI/CD**, *pipeline*, *tooling*, **pinentry**…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
+> 📎 **Mais termos** (WoT, **TOFU**, HKPS, HKP, SKS, **Hagrid**, **RFC 9580**, UID, ASCII armor, assinatura destacada, clearsign, entropia, keygrip, `GNUPGHOME`, dirmngr, RNP, LUKS, `age`, certificado de revogação, air-gapped, **CI/CD**, *pipeline*, *tooling*, **pinentry**…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
 
 * * *
 
@@ -210,7 +210,7 @@ Ao final deste curso, você será capaz de:
 | **2025** | ECC mainstream, endurecimento de práticas | 🟢 Transição |
 | **2026** | Estado da arte documentado neste material (referência atual) | 🟢 **ATUAL** |
 | **2027–2028** | Era Sequoia-PGP (Rust) + adoção em **CI/CD** (*integração e entrega contínuas* — automação de build/teste/publicação) | ⚠️ Preparação |
-| **2029–2030** | Salto Pós-Quântico (Kyber, SPHINCS+) | 🔮 Futuro |
+| **2029–2030** | Salto pós-quântico (**ML-KEM** + ECC; assinaturas **ML-DSA** / **SLH-DSA** — ex-Dilithium / ex-SPHINCS+) | 🔮 Futuro |
 
 * * *
 
@@ -329,15 +329,16 @@ Ao final deste curso, você será capaz de:
 │   │
 │   ├── 📋 Módulo 10: Comandos de Manutenção
 │   │   ├── Panorama 2026 (SKS ↓, WKD, Hagrid, WoT vs TOFU)
+│   │   ├── dirmngr (TLS / HKPS / descoberta WKD — avançado)
 │   │   ├── ▸ COMANDO 10.1: gpg --refresh-keys (+ keyservers HKPS / WKD)
 │   │   ├── ▸ COMANDO 10.2: gpg --check-trustdb
 │   │   ├── ▸ COMANDO 10.3: gpg --update-trustdb
 │   │   ├── ▸ COMANDO 10.4: export minimal (sem metadados)
-│   │   ├── ▸ COMANDO 10.5: publicação via WKD
+│   │   ├── ▸ COMANDO 10.5: publicação via WKD (+ passo a passo domínio próprio)
 │   │   └── ▸ COMANDO 10.6: WoT — assinar chave de terceiro (+ adduid/addphoto)
 │   │
 │   ├── 📋 Módulo 11: Criptografia Pós-Quântica
-│   │   ├── 🔵 Kyber/ML-KEM (experimental)
+│   │   ├── 🔵 ML-KEM / «Kyber» na CLI (experimental)
 │   │   ├── 🔵 SPHINCS+ (assinatura)
 │   │   └── 🚀 Guia de migração para 2028-2030
 │   │
@@ -354,8 +355,9 @@ Ao final deste curso, você será capaz de:
     ├── Apêndice A: TABELA DE ERROS RÁPIDOS (Top 15)
     ├── Apêndice B: SCRIPTS EVOLUTIVOS (simples → fingerprint → completo)
     ├── Apêndice C: HARDWARE WALLETS + SMARTCARDS
-    ├── Apêndice D: GPG EM PRODUÇÃO (Docker, CI/CD, K8s)
-    ├── Apêndice E: GUIA MULTIPLATAFORMA (Win/Android/iPhone + SSH sem YubiKey: FIDO2/sk, ssh-add -c, cofres)
+    ├── Apêndice D: GPG EM PRODUÇÃO (Docker, CI/CD, K8s, *headless* / GPG_TTY)
+    ├── Apêndice E: GUIA MULTIPLATAFORMA (Win/Android/iPhone + SSH sem YubiKey: FIDO2/sk, ssh-add -c, cofres; OpenKeychain = manutenção limitada)
+    ├── **v1.1 (planejado):** WSL2 + GPG — `gpg-agent`, `SSH_AUTH_SOCK`, *boundary* WSL/Win32, conflito com Gpg4win (ver `ROADMAP.md`)
     ├── Apêndice F: MIGRAÇÃO RSA → ECC (Legado para Moderno)
     ├── ⚖️ Qualidade, ética e referências (checklist mantenedor + ética + URLs)
     ├── ☑️ Opcional — Spot-check VM (camada 5 do `ROADMAP`; validar comandos no Ubuntu 24.04)
@@ -1097,12 +1099,12 @@ echo "💰 Não se esqueça: gere o certificado de revogação!"
 
 #### ▸ COMANDO 2.1: Criando um arquivo de teste
 
-**O que faz:** Cria um arquivo com uma "mensagem secreta".
+**O que faz:** Cria um arquivo com texto de **laboratório** (não use frases que imitem senhas reais — evita associar «exemplo» a «credencial»).
 
 **Digite agora:**
 
 ```sh
-echo "Minha senha secreta é 123456" > segredo.txt
+echo "Mensagem confidencial de laboratório — texto de exemplo (não é senha real)." > segredo.txt
 ```
 
 **O que significa:** `echo` escreve o texto. `>` redireciona para um arquivo (cria ou sobrescreve).
@@ -1116,7 +1118,7 @@ cat segredo.txt
 **Saída esperada:**
 
 ```
-Minha senha secreta é 123456
+Mensagem confidencial de laboratório — texto de exemplo (não é senha real).
 ```
 
 * * *
@@ -1172,7 +1174,7 @@ gpg --decrypt segredo.txt.gpg
 
 ```
 gpg: cifrado com chave de 256 bits, ID BBBBBBBBBBBBBBBB, criada em 2026-04-30
-Minha senha secreta é 123456
+Mensagem confidencial de laboratório — texto de exemplo (não é senha real).
 ```
 
 > ✅ **Pronto! Você decifrou a mensagem.**
@@ -2072,20 +2074,25 @@ echo "💻 Adicione o conteúdo de gpg-ssh-key.pub ao ~/.ssh/authorized_keys do 
 
 > 💡 **Como o Tails recomenda verificar:** na [página oficial de download](https://tails.net/install/download/index.en.html), a equipe prioriza verificação **no navegador** (assistida por JavaScript ou comparação manual com checksum). Isso é totalmente válido para uso real. Os passos **2–3** abaixo fazem uma verificação **OpenPGP na linha de comando** — boa para o laboratório e para exercitar o mesmo tipo de garantia que você já usa no curso.
 
-> 📎 **Pendrive físico (7.7+):** use a **imagem USB** (`.img`) — o projeto deixou de posicionar a **ISO** em pendrive (DVD/VM continuam com `.iso`). Ajuste `7.7.1` se a página oficial listar versão mais nova.
+> 📎 **Pendrive físico (7.7+):** use a **imagem USB** (`.img`) — o projeto deixou de posicionar a **ISO** em pendrive (DVD/VM continuam com `.iso`). **Antes de copiar/colar:** abra a [página oficial de download](https://tails.net/install/download/index.en.html), confira o **número de versão** publicado e defina **`TAILS_VER`** abaixo — **não** siga URLs antigas literalmente.
 
 ```sh
-# 1. Baixe a imagem USB do Tails (.img) — ajuste o número se a página oficial tiver versão mais nova
+# 0. Versão alinhada à página oficial (ex.: 7.7.1 — SUBSTITUA pelo valor que o site listar hoje)
+TAILS_VER="7.7.1"
+TAILS_IMG="tails-amd64-${TAILS_VER}.img"
+TAILS_SIG="${TAILS_IMG}.sig"
+
+# 1. Baixe a imagem USB do Tails (.img)
 #    Página oficial: https://tails.net/install/download/index.en.html
-wget https://download.tails.net/tails/stable/tails-amd64-7.7.1/tails-amd64-7.7.1.img
+wget "https://download.tails.net/tails/stable/tails-amd64-${TAILS_VER}/${TAILS_IMG}"
 
 # 2. Baixe a assinatura OpenPGP e a chave de assinatura oficial do projeto (uma vez por máquina de trabalho)
-wget https://tails.net/torrents/files/tails-amd64-7.7.1.img.sig
+wget "https://tails.net/torrents/files/${TAILS_SIG}"
 wget https://tails.net/tails-signing.key
 gpg --import tails-signing.key
 
 # 3. Verifique a imagem (esperado: "Good signature"; aviso de confiança na chave é comum no primeiro uso)
-gpg --verify tails-amd64-7.7.1.img.sig tails-amd64-7.7.1.img
+gpg --verify "$TAILS_SIG" "$TAILS_IMG"
 
 # 4. IDENTIFIQUE seu pendrive (PASSO CRÍTICO!)
 lsblk -p | grep "disk"
@@ -2106,7 +2113,7 @@ if [ "$CONFIRMA" != "SIM" ]; then
 fi
 
 # 6. Grave a imagem USB no pendrive (com status de progresso)
-sudo dd if=tails-amd64-7.7.1.img of=$PENDRIVE bs=4M status=progress
+sudo dd if="$TAILS_IMG" of=$PENDRIVE bs=4M status=progress
 sync
 
 echo "✅ Pendrive Tails criado com sucesso!"
@@ -2605,7 +2612,7 @@ gpg --verify /tmp/gpg-smoke.asc
 
 #### 🚀 BÔNUS: Script de health-check completo
 
-> 💡 Este script usa **`grep -oE`** (primeiro par **M.N** na linha da versão) e **`bc`** para comparar versões — no Ubuntu do curso: `sudo apt install bc`. Sem `bc`, o script apenas **avisa** e mostra o **M.N** detectado; confira sempre com `gpg --version | head -n1`. Os passos **7–8** (*token* / `pcscd` / grupos) são **heurísticos**: em **cron** sem sessão interativa, `gpg --card-status` pode dar **falso negativo** — interprete com contexto ou rode o mesmo script **no terminal** do usuário.
+> 💡 Este script usa **`grep -oE`** (primeiro par **M.N** na linha da versão) e **`bc`** para comparar versões — no Ubuntu do curso: `sudo apt install bc`. Sem `bc`, o script apenas **avisa** e mostra o **M.N** detectado; confira sempre com `gpg --version | head -n1`. Os passos **7–8** (*token* / `pcscd` / grupos) são **heurísticos**: em **cron** sem sessão interativa, `gpg --card-status` pode dar **falso negativo** — interprete com contexto ou rode o mesmo script **no terminal** do usuário. **`HEALTHCHECK_AUTO_RESET=1`** (opt-in, **Apêndice D**) mata **só** o `scdaemon` e relança o `gpg-agent` quando o token aparece no `lsusb` mas o `card-status` falha — **não** use em *desktop* partilhado sem política; em **CI/servidor de assinatura** pode recuperar disponibilidade sem reboot.
 
 ```sh
 #!/bin/bash
@@ -2707,6 +2714,18 @@ if [ -n "$USB_HINT" ]; then
     else
         echo -e "${YELLOW}⚠ Token visível no lsusb, mas gpg --card-status não mostrou cartão OpenPGP como esperado${NC}"
         echo -e "${YELLOW}  → Ver Módulo 7 (pcscd, scdaemon, udev). Teste manual: gpgconf --kill scdaemon && gpg --card-status${NC}"
+        if [ "${HEALTHCHECK_AUTO_RESET:-0}" = "1" ]; then
+            echo -e "${YELLOW}⚠ HEALTHCHECK_AUTO_RESET=1 — tentando reinício controlado de scdaemon + gpg-agent (ver Apêndice D)${NC}"
+            gpgconf --kill scdaemon 2>/dev/null || true
+            gpgconf --kill gpg-agent 2>/dev/null || true
+            gpgconf --launch gpg-agent 2>/dev/null || true
+            CARD_OUT=$(gpg --card-status 2>&1 || true)
+            if echo "$CARD_OUT" | grep -qiE 'Application ID|Application identifier|OpenPGP card no\.:'; then
+                echo -e "${GREEN}✓ gpg --card-status OK após reset (modo auto)${NC}"
+            else
+                echo -e "${RED}✗ gpg --card-status ainda falhou após reset — investigue pcscd/udev/USB (Módulo 7)${NC}"
+            fi
+        fi
     fi
     if command -v systemctl >/dev/null 2>&1; then
         if systemctl --no-pager list-unit-files pcscd.service 2>/dev/null | awk '$1=="pcscd.service"{found=1} END{exit !found}'; then
@@ -2965,6 +2984,8 @@ echo "recuperei" | gpg --clearsign > /dev/null 2>&1 && echo "✓ Recuperação O
 
 > ⏱️ **Tempo estimado:** 30 minutos
 
+> 📎 **Por que tanto rigor com tokens / Tails / `keytocard`?** No modelo de ameaças do **endpoint**, malware ou operador com acesso ao disco pode **copiar** `~/.gnupg/private-keys-v1.d/` com muito menos atrito do que extrair segredo **não exportável** do chip + **PIN** no token — ou seja: **cartão + cofre offline + COMANDO 6.4 + Módulo 7 + health-check** compram **redução de *blast radius*** quando o portátil já está comprometido. Nada disso elimina engenharia social ou perda física do token; por isso a tabela abaixo inclui também **USB/leitor** e **perda do hardware**.
+
 * * *
 
 #### O que é Threat Modeling?
@@ -2985,11 +3006,13 @@ echo "recuperei" | gpg --clearsign > /dev/null 2>&1 && echo "✓ Recuperação O
 | **Roubo do laptop** | Média | Alto | Subchaves com expiração curta (1 ano) |
 | **Malware capturando chaves** | Alta | Crítico | Chave mestra OFFLINE (Tails) |
 | **Perda do backup** | Baixa | Crítico | Backup 3-2-1 (3 cópias, 2 mídias, 1 offline) |
-| **Ataque quântico (2030+)** | Média | Crítico | Planejar migração para Kyber |
+| **Ataque quântico (2030+)** | Média | Crítico | Planejar migração para **ML-KEM** + ECC (híbrido) |
 | **Interceptação de chave pública** | Baixa | Médio | Verificar fingerprint OFFLINE |
 | **Engenharia social** | Média | Alto | NUNCA compartilhar chave privada |
 | **Senha fraca na mestra** | Média | Crítico | Diceware com 6+ palavras |
 | **Keyserver com chave falsa** | Baixa | Médio | Preferir WKD (Web Key Directory) |
+| **Token/leitor USB mal configurado** (`pcscd`, `udev`, VM) | Média | Médio | [Módulo 7 — Token USB](#modulo-7-token-usb) + passos **7–8** do `gpg-health-check.sh` |
+| **Perda ou roubo do token** | Baixa | Alto | PIN forte + contingência de **revogação** + **subchaves** de reserva (política interna) |
 
 * * *
 
@@ -3020,8 +3043,9 @@ echo "recuperei" | gpg --clearsign > /dev/null 2>&1 && echo "✓ Recuperação O
 | Malware | Chave mestra offline | Verificar assinaturas de software |
 | Roubo | Subchaves expiram em 1 ano | Backup 3-2-1 |
 | Senha fraca | Diceware 6+ palavras | Gerenciador de senhas |
-| Ataque quântico | Usar ECC (ed25519/cv25519) | Migrar para Kyber em 2028 |
+| Ataque quântico | Usar ECC (ed25519/cv25519) | Migrar para **ML-KEM** + ECC (híbrido) a partir de ~2028, conforme política |
 | Engenharia social | NUNCA compartilhar chave privada | Treinamento de segurança |
+| Token/leitor USB | [Módulo 7](#modulo-7-token-usb) (`pcscd`, `udev`, grupos) | Health-check passos **7–8**; em CI, `HEALTHCHECK_AUTO_RESET=1` só com política (**Apêndice D**) |
 
 * * *
 
@@ -3157,6 +3181,23 @@ Leia como uma árvore de decisão — sempre com **HKPS** e fingerprint confirma
 
 * * *
 
+<a id="dirmngr-avancado"></a>
+
+#### dirmngr (avançado): TLS, keyservers e descoberta WKD
+
+O **`dirmngr`** é o componente do GnuPG que fala **HTTP/HTTPS** por si — pedidos a **HKPS** (*keyservers* com TLS), **SRV** de descoberta e **WKD** (baixar `https://…/.well-known/openpgpkey/…`) saem por ele, **não** pelo binário `gpg` diretamente. Sem `dirmngr` ativo ou com estado corrompido, sintomas típicos são **`keyserver receive failed`**, timeouts silenciosos ou erros de certificado TLS.
+
+| Situação | O que tentar (ordem prática) |
+| --- | --- |
+| Rede «congelada» após várias tentativas | `gpgconf --kill dirmngr && gpgconf --launch dirmngr` (equivalente a «reiniciar só a pilha de rede» do GnuPG). |
+| TLS / certificado / proxy corporativo | Confirmar **data/hora** do SO, *trust store* e regras de **proxy** (`https_proxy`); em ambientes bloqueados, prefira **WKD** ou `.asc` em canal oficial em vez de insistir no HKPS. |
+| Diagnóstico | `gpg --recv-keys …` com **`--verbose`** (ou `journalctl --user -u gpg-agent` / logs do SO, conforme instalação) para ver **qual** URL falhou. |
+| Política | Manter **uma** linha `keyserver hkps://…` coerente em `~/.gnupg/gpg.conf` quando usar `gpg --refresh-keys` sem `--keyserver` explícito — alinhado ao [COMANDO 10.1](#comando-10-1). |
+
+> 📎 **Não confundir:** problemas de **`gpg-agent`** / **pinentry** (passphrase) são **outra** camada — ver [Apêndice D — *Headless* / CI](#apendice-d-headless-gpg-agent).
+
+* * *
+
 #### ▸ COMANDO 10.2: Verificando integridade do trustdb
 
 ```sh
@@ -3189,6 +3230,8 @@ gpg --export --armor --export-options export-minimal "$FP" > chave-minima.asc
 
 * * *
 
+<a id="comando-10-5"></a>
+
 #### ▸ COMANDO 10.5: Publicação de chave via WKD (prática recomendada)
 
 **O que faz:** Publica chave pública no seu domínio com HTTPS, reduzindo dependência de keyservers.
@@ -3208,6 +3251,43 @@ gpg --export --armor "$FP" > pubkey.asc
 - O domínio responde em HTTPS sem erro.
 - Cliente consegue descobrir sua chave por e-mail/domínio.
 - Fingerprint publicado bate com seu fingerprint oficial.
+
+<a id="wkd-passo-a-passo"></a>
+
+##### WKD no seu domínio — passo a passo (*direct method*)
+
+Objetivo: servir a chave pública em **`https://SEU_DOMINIO/.well-known/openpgpkey/hu/…`** (método **direct**; o método **advanced** usa o subdomínio `openpgpkey.` + DNS — ver [Wiki WKD](https://wiki.gnupg.org/WKD)).
+
+1. **Instale** a ferramenta (Ubuntu do laboratório): `sudo apt install -y gpg-wks-client`
+2. **Obtenha o *hash* WKD** do endereço que aparece no UID da chave (ex.: `voce@seudominio.example`):
+
+```sh
+gpg-wks-client --print-wkd-hash "voce@seudominio.example"
+# Saída típica: <hash-z-base-32>   voce@seudominio.example
+```
+
+3. **Exporte** a chave pública (idealmente **minimal**, como no COMANDO 10.4) para um **arquivo** cujo **nome** seja exatamente o **hash** da primeira coluna (sem sufixo `.asc` no nome do arquivo publicado — o conteúdo costuma ser o **pacote OpenPGP** em binário; alguns servidores aceitam o mesmo material que `gpg --export` produz):
+
+```sh
+FP="COLOQUE_SEU_FPR_AQUI"
+H="$(gpg-wks-client --print-wkd-hash "voce@seudominio.example" | awk '{print $1; exit}')"
+install -d -m 0755 -p hu
+gpg --export --export-options export-minimal "$FP" > "hu/$H"
+```
+
+4. **Publique** no *webroot* HTTPS do domínio do e-mail (não do subdomínio aleatório): copie a pasta `hu/` para  
+   **`/var/www/html/.well-known/openpgpkey/hu/`** (nginx/Apache) **ou** equivalente no seu alojamento — mantendo o caminho **`.well-known/openpgpkey/`** visível na Internet.
+
+5. **TLS válido** (certificado não expirado; cadeia completa). Alguns alojamentos exigem tipo MIME `application/octet-stream` para o arquivo do *hash*; se a descoberta falhar, confira cabeçalhos com `curl -I "https://seudominio.example/.well-known/openpgpkey/hu/$H"`.
+
+6. **Teste** a partir de **outra** máquina ou `GNUPGHOME` limpo:
+
+```sh
+gpg-wks-client --check "voce@seudominio.example"
+gpg --auto-key-locate=wkd --locate-keys "voce@seudominio.example"
+```
+
+> 📎 **Domínio ≠ e-mail gratuito:** o WKD *direct* exige que o **domínio do UID** seja aquele onde controla o HTTPS (ex.: `voce@empresa.com` em `empresa.com`). E-mails em domínios de terceiros (fornecedor sem *hosting* do `.well-known`) exigem outro mecanismo (subdomínio `openpgpkey`, alojamento delegado, ou distribuir `.asc` + FPR).
 
 * * *
 
@@ -3313,33 +3393,65 @@ Computadores quânticos suficientemente grandes (milhões de qubits) quebrarão:
 
 * * *
 
-#### 🔵 Kyber/ML-KEM (NIST Padronizado)
+#### 🔵 ML-KEM (FIPS 203) e o nome «Kyber» no GnuPG
 
-**O que é:** Algoritmo de encapsulamento de chaves baseado em reticulados (lattices). Escolhido pelo NIST em 2024 como padrão pós-quântico para troca de chaves.
+**O que é (nome oficial):** **ML-KEM** (*Module-Lattice-Based Key-Encapsulation Mechanism*) — família **ML-KEM-512 / ML-KEM-768 / ML-KEM-1024** publicada no **[FIPS 203](https://csrc.nist.gov/publications/detail/fips/203/final)** (agosto de 2024). O projeto que originou o padrão chamava-se **CRYSTALS-Kyber**; por isso **documentação, mensagens de erro e strings da CLI** do GnuPG ainda costumam dizer **«Kyber»** ou **`kyber768`** — é **o mesmo algoritmo** sob rótulos diferentes.
 
-**Status em GnuPG 2.5.19+:** ⚠️ **EXPERIMENTAL** – use apenas em laboratório.
+**Onde isto entra no OpenPGP:** o formato de mensagens moderno está no **[RFC 9580](https://www.rfc-editor.org/rfc/rfc9580)** (*OpenPGP*, 2024). As extensões **pós-quânticas** (chaves compostas **ML-KEM + ECC**, assinaturas **ML-DSA + ECC**, **SLH-DSA** / ex-SPHINCS+) seguem o documento de trabalho **[draft-ietf-openpgp-pqc](https://datatracker.ietf.org/doc/draft-ietf-openpgp-pqc/)** — em **2026** costuma estar **aprovado pelo IESG e em fila no RFC Editor**; até sair o número **RFC** definitivo, trate o *draft* como **referência viva** (verifique o rótulo *RFC Editor* / *Published* no [datatracker](https://datatracker.ietf.org/doc/draft-ietf-openpgp-pqc/)).
 
-> 📎 **Mantenedor / aluno avançado:** os **nomes de algoritmo** passados a `--quick-generate-key` / `--expert` (`kyber768+cv25519`, `kyber768`, `sphincsplus`, etc.) **variam com a pré-release** do GnuPG. Antes de automatizar ou de alterar este bloco, confirme na **sua** versão: `gpg --quick-generate-key --help` e o [manual *OpenPGP Key Management*](https://www.gnupg.org/documentation/manuals/gnupg/OpenPGP-Key-Management.html) correspondente. O guia **«Migração 2028–2030»** abaixo inclui linhas comentadas ou com aviso de época por esse motivo.
+**Produção (hoje) vs preparação (laboratório):**
+
+| Faixa | Algoritmo típico | Papel |
+| --- | --- | --- |
+| **Produção em 2026** | **ed25519** / **cv25519** (ECC) | Padrão estável do curso e do Ubuntu **24.04** (`apt`) |
+| **Preparação** | **ML-KEM + ECC** (composto, experimental no `gpg`) | Ensaiar interoperabilidade e *tooling* antes da janela 2028–2030 |
+
+**Status em GnuPG 2.5.19+:** ⚠️ **EXPERIMENTAL** — use só em **VM / chaveiro de laboratório** (`GNUPGHOME` dedicado).
+
+> 📎 **Mantenedor / aluno avançado:** strings como **`pqc`**, **`kyber768+cv25519`**, **`mlkem768`** (se existir na sua *build*) **mudam entre versões**. Antes de automatizar: `gpg --version` e `gpg --quick-generate-key --help` + [manual *OpenPGP Key Management*](https://www.gnupg.org/documentation/manuals/gnupg/OpenPGP-Key-Management.html) da **mesma** série do binário.
+
+##### Laboratório — roteiro mínimo (GnuPG **2.5.19+**)
+
+Objetivo: provar que o ambiente cifra e decifra com material **ML-KEM** (rótulo **Kyber** na saída) antes de confiar em qualquer *pipeline*.
 
 ```sh
-# 🔵 EXPERIMENTAL - Gerando chave híbrida (Kyber + cv25519)
-UID_PQ="Aluno Lab (PQ) <pq@lab>"
-gpg --quick-generate-key --expert "$UID_PQ" kyber768+cv25519 cert 1y
+# Pré-requisito: binário recente do projeto GnuPG (não confunda com o 2.4.x do apt do Ubuntu 24.04).
+gpg --version | head -n 2
 
-# Fingerprint da identidade PQ (evita pegar outra mestra no mesmo chaveiro)
+# Chaveiro só para este ensaio (evita misturar com LAB_EMAIL do resto do curso)
+export GNUPGHOME="${GNUPGHOME:-$HOME/.gnupg-pq-lab}"
+install -d -m 700 "$GNUPGHOME"
+
+# --- Caminho B (recomendado — alinhado ao manual upstream): algo "pqc" + usage "default" ---
+# Cria certificado com subchave de cifragem resistente a quântico segundo os defaults da sua build.
+UID_PQ="Aluno Lab (PQ) <pq@lab>"
+# Se falhar o pinentry em loopback, no MESMO GNUPGHOME: printf '%s\n' 'allow-loopback-pinentry' >> "$GNUPGHOME/gpg-agent.conf" && gpgconf --kill gpg-agent
+gpg --batch --yes --pinentry-mode loopback --passphrase '' \
+  --quick-generate-key "$UID_PQ" pqc default 1y
+
+# --- Caminho A (alternativa explícita): mestra só certificação composta Kyber/ML-KEM + cv25519 ---
+# gpg --batch --yes --pinentry-mode loopback --passphrase '' \
+#   --quick-generate-key --expert "$UID_PQ" kyber768+cv25519 cert 1y
+
 FP=$(gpg --list-secret-keys --with-colons "$UID_PQ" | awk -F: '/^fpr:/ {print $10; exit}')
 
-# Verificando se o material da chave menciona Kyber
-gpg --export "$FP" 2>/dev/null | gpg --list-packets 2>/dev/null | grep -i kyber
+# Inspeção: procure por Kyber, ML-KEM, KEM ou IDs numéricos conforme a versão
+gpg --export "$FP" 2>/dev/null | gpg --list-packets 2>/dev/null | grep -iE 'kyber|ml-kem|kem|composite'
 
-# ⚠️ NÃO use em produção crítica - experimental!
+# Cifragem / decifragem local (valida subchave [E] e *stack* experimental)
+printf '%s\n' 'Mensagem secreta do laboratório ML-KEM.' > /tmp/pq-lab-plain.txt
+gpg --yes --encrypt --armor --recipient "$UID_PQ" --output /tmp/pq-lab-plain.txt.asc /tmp/pq-lab-plain.txt
+gpg --yes --decrypt /tmp/pq-lab-plain.txt.asc
+# Esperado: o plaintext na saída. Se falhar, confira --version, GNUPGHOME e a ajuda de --quick-generate-key.
+
+# ⚠️ NÃO use em produção crítica — experimental; apague o diretório GNUPGHOME de teste quando terminar.
 ```
 
-**Por que Kyber?**
+**Por que investir tempo em ML-KEM agora?**
 
-*   Resistente a ataques de computadores quânticos conhecidos
-*   Padronizado pelo NIST (National Institute of Standards and Technology)
-*   Já implementado no GnuPG 2.5.19+ (experimental)
+*   Reduz o risco de **«capture agora, decifrar depois»** contra curvas clássicas quando computadores quânticos escaláveis existirem.
+*   Base normativa clara: **FIPS 203** + trilho **OpenPGP PQC** no IETF (por cima do **RFC 9580**).
+*   O GnuPG **2.5.x** permite **ensaiar** a mesma *stack* que políticas corporativas vão exigir em **2028+** — ainda com rótulos de CLI em transição (**Kyber** vs **ML-KEM**).
 
 * * *
 
@@ -3354,7 +3466,7 @@ gpg --export "$FP" 2>/dev/null | gpg --list-packets 2>/dev/null | grep -i kyber
 *   Stateless (diferente de XMSS e LMS)
 *   Resistente a quânticos
 
-**Status:** Ainda não suportado nativamente no GPG mainstream (2026). Quando existir suporte, a **string** na CLI pode não ser literalmente `sphincsplus` — valide com `gpg --quick-generate-key --help` na sua build (como no aviso do bloco Kyber acima).
+**Status:** Ainda não suportado de forma **estável** no `gpg` mainstream empacotado (2026). No IETF/NIST o ramo de assinaturas *hash-based* evoluiu para **SLH-DSA** (ex-SPHINCS+). Quando existir suporte nativo, a **string** na CLI pode não ser literalmente `sphincsplus` — valide com `gpg --quick-generate-key --help` na sua build (como no aviso do bloco **ML-KEM** acima).
 
 * * *
 
@@ -3363,9 +3475,9 @@ gpg --export "$FP" 2>/dev/null | gpg --list-packets 2>/dev/null | grep -i kyber
 | Perfil | Ação | Prazo |
 | --- | --- | --- |
 | **Usuário comum** | Continue com ed25519/cv25519. É seguro hoje. | Já  |
-| **Empresa regulada** | Monitore Kyber. Planeje migração. | 2028-2030 |
-| **Dados de longo prazo (30+ anos)** | Considere cifragem híbrida (Kyber + ECC) | Planejar |
-| **Entusiasta** | Teste Kyber em laboratório | 2026 |
+| **Empresa regulada** | Monitore **FIPS 203** / trilho **OpenPGP PQC**; planeje migração híbrida. | 2028-2030 |
+| **Dados de longo prazo (30+ anos)** | Considere cifragem híbrida (**ML-KEM** + ECC) quando política permitir | Planejar |
+| **Entusiasta** | Rode o **roteiro mínimo** `pqc default` com **GnuPG 2.5.19+** | 2026 |
 
 * * *
 
@@ -3376,27 +3488,27 @@ gpg --export "$FP" 2>/dev/null | gpg --list-packets 2>/dev/null | grep -i kyber
 # 2025-2026: PREPARAÇÃO
 # ============================================
 # ✅ Continue usando ed25519/cv25519
-# ✅ Teste Kyber em laboratório
-# ✅ Atualize GPG para 2.5.19+
+# ✅ Teste ML-KEM («Kyber» na CLI) em laboratório
+# ⚠️ Só para lab PQ: GnuPG 2.5.x fora do apt 24.04 (build oficial ou VM; evite PPA não auditado no PC principal)
 # ✅ Configure WKD em vez de keyservers
 
 # ============================================
 # 2027: AVALIAÇÃO
 # ============================================
-# ⚠️ Migre chaves não críticas para Kyber
+# ⚠️ Migre chaves não críticas para híbrido ML-KEM + ECC (só após política + build estáveis)
 # ⚠️ Teste interoperabilidade
 
 # ============================================
 # 2028: TRANSIÇÃO
 # ============================================
 # 🔴 Comece a migração de chaves críticas
-# 🔴 Use chaves híbridas (Kyber + ECC)
+# 🔴 Use chaves híbridas (ML-KEM + ECC)
 
 # ============================================
 # 2029-2030: MATURIDADE
 # ============================================
-# 🟢 Kyber como padrão
-# 🟢 SPHINCS+ para assinaturas
+# 🟢 ML-KEM + ECC como padrão de cifragem de longo prazo
+# 🟢 SLH-DSA (ex-SPHINCS+) / ML-DSA para assinaturas (conforme ecossistema)
 # 🟢 RSA/ECC obsoletos
 ```
 
@@ -3404,14 +3516,14 @@ gpg --export "$FP" 2>/dev/null | gpg --list-packets 2>/dev/null | grep -i kyber
 
 #### Tabela de Evolução de Algoritmos (2025-2030)
 
-| Ano | Algoritmo Padrão | Kyber | RSA | Recomendação |
+| Ano | Algoritmo padrão (operação) | ML-KEM + ECC (híbrido) | RSA | Recomendação |
 | --- | --- | --- | --- | --- |
 | **2025** | ed25519/cv25519 | ⚠️ Experimental | 🟡 Funciona (legado) | Use ECC |
-| **2026** | ed25519/cv25519 | ⚠️ Experimental | 🔴 Evitar | Use ECC, teste Kyber |
-| **2027** | ed25519/cv25519 | 🟡 Estável | 🔴 Evitar | Considere Kyber |
-| **2028** | Kyber + ECC | ✅ Recomendado | ❌ Obsoleto | Use híbrido |
-| **2029** | Kyber + ECC | ✅ Padrão | ❌ Obsoleto | Use Kyber |
-| **2030** | Kyber + SPHINCS+ | ✅ Padrão | ❌ Obsoleto | Use pós-quântico |
+| **2026** | ed25519/cv25519 | ⚠️ Experimental (`gpg` 2.5.x; *strings* «Kyber») | 🔴 Evitar | Use ECC; ensaie ML-KEM só em laboratório |
+| **2027** | ed25519/cv25519 | 🟡 Subindo em *tooling* | 🔴 Evitar | Planeje híbrido conforme setor |
+| **2028** | ML-KEM + ECC (cifragem de arquivo / mensagem) | ✅ Recomendado onde política permitir | ❌ Obsoleto para novo material | Use híbrido |
+| **2029** | ML-KEM + ECC | ✅ Padrão em muitos cenários regulados | ❌ Obsoleto | Migração em curso |
+| **2030** | ML-KEM + ECC + assinaturas PQC (ML-DSA / SLH-DSA) | ✅ Padrão | ❌ Obsoleto | Ecossistema maduro |
 
 * * *
 
@@ -3421,20 +3533,21 @@ gpg --export "$FP" 2>/dev/null | gpg --list-packets 2>/dev/null | grep -i kyber
 # UID único por cenário — não repita --quick-generate-key com o mesmo texto se já existir mestra com esse UID.
 UID_PQ_MIG="Seu Nome (PQ) <seu@dominio>"
 
-# 2028: Comece a usar chaves híbridas em produção não-crítica
-gpg --quick-generate-key --expert "$UID_PQ_MIG" kyber768+cv25519 cert 3y
+# 2028: começar ensaios de produção não-crítica (GnuPG da época + política interna)
+# Preferência: sintaxe documentada no manual da versão — exemplos típicos:
+# gpg --batch --yes --quick-generate-key "$UID_PQ_MIG" pqc default 3y
+# gpg --batch --yes --quick-generate-key --expert "$UID_PQ_MIG" kyber768+cv25519 cert 3y
 FP=$(gpg --list-secret-keys --with-colons "$UID_PQ_MIG" | awk -F: '/^fpr:/ {print $10; exit}')
-# gpg --export "$FP" 2>/dev/null | gpg --list-packets 2>/dev/null | grep -i kyber
+# gpg --export "$FP" 2>/dev/null | gpg --list-packets 2>/dev/null | grep -iE 'kyber|ml-kem|kem'
 
-# 2029: Kyber como padrão para dados de longo prazo (confira sintaxe no manual do gpg da época)
-gpg --quick-generate-key "$UID_PQ_MIG" kyber768 cert 3y
-FP=$(gpg --list-secret-keys --with-colons "$UID_PQ_MIG" | awk -F: '/^fpr:/ {print $10; exit}')
+# 2029–2030: repetir com a sintaxe suportada na data (nomes ML-KEM vs «kyber» tendem a convergir)
+# gpg --batch --yes --quick-generate-key "$UID_PQ_MIG" …
 
-# 2030: SPHINCS+ disponível para assinaturas (quando suportado)
-# gpg --quick-generate-key --expert "$UID_PQ_MIG" sphincsplus cert 3y
+# 2030+: assinaturas PQC (ML-DSA / SLH-DSA) quando a CLI expuser algoritmo estável — validar com --help
+# gpg --quick-generate-key --expert "$UID_PQ_MIG" … cert 3y
 ```
 
-> 📎 Ao exportar para inspecionar (`--export` / `--list-packets`), use **`FP`** obtido com **`--with-colons`** no **mesmo UID** da `quick-generate-key` (como no bloco Kyber laboratorial acima).
+> 📎 Ao exportar para inspecionar (`--export` / `--list-packets`), use **`FP`** obtido com **`--with-colons`** no **mesmo UID** da `quick-generate-key` (como no **roteiro mínimo** ML-KEM acima).
 
 * * *
 
@@ -3442,7 +3555,7 @@ FP=$(gpg --list-secret-keys --with-colons "$UID_PQ_MIG" | awk -F: '/^fpr:/ {prin
 
 | Item | Laboratório | Produção crítica |
 | --- | --- | --- |
-| `kyber768+cv25519` | Recomendado para testes | Somente após validação institucional |
+| `pqc default` / `kyber768+cv25519` (conforme `--help`) | Recomendado para testes | Somente após validação institucional e build estável |
 | Chaves ECC clássicas | Base atual de ensino | Continua padrão em 2026 |
 | SPHINCS+ | Estudo conceitual | Aguardar suporte estável no ecossistema |
 
@@ -3452,7 +3565,7 @@ FP=$(gpg --list-secret-keys --with-colons "$UID_PQ_MIG" | awk -F: '/^fpr:/ {prin
 
 #### Checklist de prontidão pós-quântica
 
-- [ ] GPG atualizado para ramo recente suportado no seu ambiente
+- [ ] `gpg` atualizado para o ramo suportado na **sua** política (produção: **2.4.x** empacotado; laboratório ML-KEM: **2.5.19+** conforme cabeçalho do curso)
 - [ ] Ambiente de laboratório separado para testes PQ
 - [ ] Registro de interoperabilidade (o que funciona e o que quebra)
 - [ ] Estratégia híbrida desenhada para 2028+
@@ -3465,6 +3578,8 @@ FP=$(gpg --list-secret-keys --with-colons "$UID_PQ_MIG" | awk -F: '/^fpr:/ {prin
 > 🎯 **Objetivo:** Conhecer as alternativas modernas ao GPG e se preparar para o futuro
 
 > ⏱️ **Tempo estimado:** 30 minutos
+
+> 📎 **Padrão OpenPGP na IETF:** o formato de mensagens de referência passou a ser o **[RFC 9580](https://www.rfc-editor.org/rfc/rfc9580)** (2024), que **obsoleta** o clássico RFC 4880. **GnuPG** e **Sequoia** evoluem em direcção a esse documento; extensões **pós-quânticas** seguem o trilho *draft* **OpenPGP PQC** (ver **Módulo 11**).
 
 * * *
 
@@ -3559,10 +3674,10 @@ O complemento Enigmail está **descontinuado**; o Thunderbird moderno traz OpenP
 
 | Ano | Marco | O que muda |
 | --- | --- | --- |
-| **2027** | GPG 2.6+ com suporte nativo a chaves híbridas | Kyber se torna estável |
-| **2028** | Chaves híbridas (Kyber + ECC) como padrão | Migração começa |
-| **2029** | Kyber como padrão para dados de longo prazo | RSA/ECC começa a ser descontinuado |
-| **2030** | SPHINCS+ disponível para assinaturas | Pós-quântico maduro |
+| **2027** | GnuPG **2.6+** (previsto) com chaves compostas mais visíveis em *tooling* | ML-KEM + ECC deixa de ser só *early adopter* |
+| **2028** | Cifragem híbrida **ML-KEM + ECC** em políticas de dados sensíveis | Migração em escala |
+| **2029** | Híbrido como padrão de longo prazo em setores regulados | RSA legado em *sunset* |
+| **2030** | Assinaturas **ML-DSA** / **SLH-DSA** maduras no ecossistema | Pós-quântico operacional de ponta a ponta |
 
 * * *
 
@@ -3571,8 +3686,8 @@ O complemento Enigmail está **descontinuado**; o Thunderbird moderno traz OpenP
 | Ação | Prioridade |
 | --- | :---: |
 | ✅ Gere chaves ed25519/cv25519 | Alta |
-| ✅ Atualize GPG para 2.5.19+ | Alta |
-| ⚠️ Teste Kyber em laboratório | Média |
+| ✅ **Produção (Ubuntu 24.04):** mantenha **`gnupg2` do `apt` (~2.4.x)** com atualizações de segurança do SO | Alta |
+| ⚠️ **ML-KEM (`pqc`):** **GnuPG 2.5.19+** só em **VM** ou *build*/binário **oficial** — **fora** do `apt` LTS padrão; PPA não auditado na máquina de trabalho é risco de *supply-chain* | Média |
 | ⚠️ Configure WKD no seu domínio | Média |
 | 🔴 Comece a planejar migração RSA→ECC | Média |
 | 🔴 Leia sobre Sequoia-PGP | Baixa |
@@ -3644,6 +3759,14 @@ Complete este desafio para obter seu certificado:
 
 * * *
 
+### 🏅 Validação de competências (nível Expert)
+
+Se você concluiu todos os módulos e laboratórios, pode usar a **[rubrica de certificação interna](./CERTIFICACAO-INTERNA.md)** — também pensada para **instrutores** em turma corporativa ou **acadêmica** — para auditar o progresso com critérios **objetivos** e evidências práticas. O guia descreve **12 competências** do núcleo (subchaves, backup/revogação, assinatura e verificação, Git, SSH, Tails, token ou chaveiro em arquivo, automação com *health-check*, *threat modeling*, WKD, consciência pós-quântica e leitura do ecossistema **Sequoia `sq`**) e uma **extensão opcional** de prontidão **ML-KEM** / `pqc` com **GnuPG 2.5.19+**, alinhada ao passo **6b** do `ROADMAP.md`.
+
+> 📎 **Não** substitui certificação profissional externa; os limites legais e o modelo de avaliação estão explicitados no próprio guia.
+
+* * *
+
 ## 📚 APÊNDICES
 
 Material de consulta do aluno e tabelas de apoio. **Quem mantém o texto:** o anexo editorial e a Conclusão vêm depois dos apêndices técnicos.
@@ -3699,9 +3822,11 @@ Definições curtas dos termos que mais reaparecem no curso. **Inglês técnico:
 | Termo | Significado |
 | --- | --- |
 | **\[C\] / \[S\] / \[E\] / \[A\]** | Capacidades OpenPGP na chave: **C**ertify (mestra: assinar identidades da própria chave e emitir revogação), **S**ign (assinatura), **E**ncryption (cifragem a terceiros), **A**uthentication (ex.: SSH com `gpg-agent`). |
-| **WKD** | *Web Key Directory* — forma padrão de publicar a chave pública via HTTPS no domínio do e-mail (`.well-known/openpgpkey/` ou subdomínio `openpgpkey`). Ver Módulo 10. |
+| **RFC 9580** | *OpenPGP* moderno (IETF, 2024) — substitui o **RFC 4880** como especificação de formato de mensagem; base para implementações atuais e para extensões (ex.: PQC em tramitação). Contexto **pós-quântico** no **Módulo 11**; **Sequoia** e **GnuPG** alinham-se gradualmente a este documento. |
+| **ML-KEM** | KEM pós-quântico (**FIPS 203**); na CLI experimental do **GnuPG 2.5.x** ainda aparece como **«Kyber»**, `kyber768` ou **`pqc`** — ver **Módulo 11** e [glossário rápido](#glossario-rapido). |
+| **WKD** | *Web Key Directory* — forma padrão de publicar a chave pública via HTTPS no domínio do e-mail (`.well-known/openpgpkey/` ou subdomínio `openpgpkey`). Ver [COMANDO 10.5](#comando-10-5) e [passo a passo no domínio próprio](#wkd-passo-a-passo). |
 | **WoT** | *Web of Trust* — confiança derivada de assinaturas mútuas e níveis de confiança no chaveiro (não confundir com “confiar cegamente” em keyserver). Ver Módulo 10 / apêndices de política. |
-| **TOFU** | *Trust on first use* — modelo em que o software **regista** o fingerprint visto na **primeira** importação «boa» e **avisa** se outro material aparecer depois para o mesmo identificador; no GnuPG, relaciona-se com **`trust-model tofu`**. Complementa (não substitui) verificação **fora da banda** e **WKD**. |
+| **TOFU** | *Trust on first use* — modelo em que o software **registra** o fingerprint visto na **primeira** importação «boa» e **avisa** se outro material aparecer depois para o mesmo identificador; no GnuPG, relaciona-se com **`trust-model tofu`**. Complementa (não substitui) verificação **fora da banda** e **WKD**. |
 | **Hagrid** | *Software* do *keyserver* **`keys.openpgp.org`** (HKPS com verificação de e-mail no UID). **Não** é a rede federada **SKS**; trate como serviço **operado** e moderado — ainda assim exija **FPR** confirmado por canal independente. |
 | **HKPS** | Acesso a servidor de chaves sobre TLS (`hkps://`), reduzindo exposição em relação a HKP simples ou infraestruturas SKS legadas. |
 | **HKP** | *HTTP Key Protocol* — keyserver clássico **sem** TLS (`hkps://` é a variante segura). Hoje prefira **HKPS**, **WKD** ou publicação direta; trate HKP “nu” como legado / laboratório. |
@@ -3716,11 +3841,14 @@ Definições curtas dos termos que mais reaparecem no curso. **Inglês técnico:
 | **`--with-colons`** | Saída máquina-legível (`pub:`, `sec:`, `sub:`/`ssb:`, `fpr:`, `grp:`…). Em **`fpr:`**, o campo **10** costuma ser a fingerprint completa; em **`sec:`**/`pub:`**, o campo **5** é em geral o KeyID longo (vários formatos funcionam como seletor no `gpg`). Ver scripts dos Módulos 3–6 e anexo do mantenedor. |
 | **Keygrip** | Identificador que o `gpg-agent` usa para mapear material criptográfico (ligação ao SSH via `[A]`, `sshcontrol`, etc.). Ver Módulo 5. |
 | **pinentry** | Programa que solicita passphrase ou PIN ao agente (`pinentry-tty` em servidor/SSH só texto; `pinentry-gnome3` típico no Ubuntu Desktop 24.x GNOME). Fundamental para não treinar **maus hábitos**, como guardar passphrase em variável de ambiente. |
+| **`GPG_TTY`** | Diz ao `gpg-agent` **qual TTY** usar para `pinentry` em modo texto. Em **SSH interativo:** `export GPG_TTY=$(tty)` antes de assinar. Ver [Apêndice D — *Headless***](#apendice-d-headless-gpg-agent) e [Apêndice A](#apendice-a). |
 | **RNP** | Biblioteca OpenPGP usada pelo **Thunderbird** (série 78+) na criptografia integrada da aplicação — **não** substitui o fluxo pedagógico do curso com **`gpg`** na linha de comando nem o projeto **Sequoia**; serve para contextualizar o cliente de e-mail. Ver **Módulo 12** (Thunderbird). |
-| **dirmngr** | Componente do GnuPG que trata de **HTTPS/TLS** e pedidos HTTP em nome do `gpg` (ex.: **HKPS**, descoberta WKD). Se **`--recv-keys`** ou **`--refresh-keys`** falharem com erro de rede ou TLS “congelado”, tente `gpgconf --kill dirmngr && gpgconf --launch dirmngr` antes de culpar só o keyserver (ver **Módulo 7**, [Apêndice A](#apendice-a) nº 6 e [COMANDO 10.1](#comando-10-1)). |
+| **OpenKeychain** | *App* Android OpenPGP em **manutenção limitada** (lançamentos irregulares; discussão comunitária sobre *long-term*). Adequado a **exercícios** do **Apêndice E**; para identidade de anos, cruze com a cadência real de atualizações no repositório [**open-keychain/open-keychain**](https://github.com/open-keychain/open-keychain). |
+| **dirmngr** | Componente do GnuPG que trata de **HTTPS/TLS** e pedidos HTTP em nome do `gpg` (ex.: **HKPS**, descoberta WKD). Se **`--recv-keys`** ou **`--refresh-keys`** falharem com erro de rede ou TLS “congelado”, tente `gpgconf --kill dirmngr && gpgconf --launch dirmngr` antes de culpar só o keyserver — ver secção [**dirmngr (avançado)**](#dirmngr-avancado), [Apêndice A](#apendice-a) nº 6 e [COMANDO 10.1](#comando-10-1). Erros de **pinentry** / **TTY** não são do `dirmngr`; ver [Apêndice D — *Headless***](#apendice-d-headless-gpg-agent). |
 | **Air-gapped / offline** | Operação sem rede no momento sensível (ex.: operar a mestra no Tails sem Internet). Objetivo: reduzir superfície de vazamento. |
 | **LUKS** | Criptografia de disco/partição no Linux — uso típico para proteger mídia física onde você guarda backups ou cofres. |
 | **age** | Ferramenta simples para cifrar arquivos com chave ou passphrase — usada nos roteiros de backup com `gpg` + arquivos `.age`. |
+| **`HEALTHCHECK_AUTO_RESET`** | Variável **opt-in** (`=1`) do `gpg-health-check.sh` (**Módulo 8**): reinício controlado de **scdaemon** / **gpg-agent** quando há token no `lsusb` mas `gpg --card-status` falha. **Riscos** e uso em CI: [**Apêndice D** — `HEALTHCHECK_AUTO_RESET`](#apendice-d-healthcheck-auto-reset). |
 | **CI / CD / CI/CD** | *Continuous Integration* (**CI**) — integrar mudanças com testes automatizados; *Continuous Delivery* ou *Deployment* (**CD**) — entregar ou implantar com cadência alta. **CI/CD** resume o par. No curso, pense nisso ao falar de **assinatura de artefatos**, `sq`/`gpg` em robôs de build e modos **não interativos**. |
 | ***Pipeline*** | Sequência automatizada de etapas num sistema de CI (*build*, testes, verificação de assinatura, *deploy*). Em português falado em equipes de software, a palavra costuma ficar em inglês. |
 | ***Tooling*** | *Tooling* — conjunto de ferramentas de apoio ao desenvolvedor (CLI, `sq` em *wrappers*, integrações). Mantemos o termo em inglês por ser vocabulário corrente na indústria. |
@@ -3906,12 +4034,53 @@ RUN install -d -m 700 /root/.gnupg
 # Opcional: COPY gpg.conf /root/.gnupg/gpg.conf
 ```
 
+<a id="apendice-d-headless-gpg-agent"></a>
+
+#### *Headless*, SSH e CI: `gpg-agent`, `GPG_TTY` e pinentry
+
+Em **servidor sem GUI**, **sessão `cron`** ou **CI/CD**, não há janela gráfica — o `pinentry-gtk` / `pinentry-gnome3` pode falhar com *«Inappropriate ioctl for device»* ou *«no terminal at all»*. A pilha separa três ideias:
+
+| Peça | Papel |
+| --- | --- |
+| **`GPG_TTY`** | Diz ao agente **qual TTY** usar para o pinentry **baseado em texto** (`pinentry-tty`, `pinentry-curses`). Em **SSH interativo**, `export GPG_TTY=$(tty)` **antes** de assinar; em **cron** sem TTY, não espere prompt — use desenho não interativo (abaixo). |
+| **`gpg-agent`** | Mantém cache de passphrase e orquestra o pinentry; em *headless* deve existir `allow-loopback-pinentry` **só** se a política permitir **`--pinentry-mode loopback`** (laboratório / CI com segredo injectado). |
+| **`--batch` + loopback** | Padrão típico em **pipeline**: `gpg --batch --yes --pinentry-mode loopback` + passphrase por **`--passphrase-fd`** / arquivo temporário seguro (ver YAML no próprio Apêndice D). **Não** commite passphrase; use segredos do orchestrator. |
+
+**Receitas curtas**
+
+- **SSH interativo** (quer assinar no servidor com PIN/passphrase no terminal): `sudo apt install pinentry-tty`; no *shell* remoto: `export GPG_TTY=$(tty)`; se persistir, `gpgconf --kill gpg-agent && gpgconf --launch gpg-agent`.
+- **CI sem humano:** subchave de assinatura com passphrase em cofre + `echo "$PASS" \| gpg --batch --pinentry-mode loopback --passphrase-fd 0 …` **ou** chave sem passphrase **só** para artefatos não críticos (aceite o risco **na equipe**).
+- **Assinatura com smartcard em servidor:** o pinentry ainda pode ser necessário para PIN — muitas **equipes** usam *forwarding* de `SSH_ASKPASS` / `scdaemon` dedicado ou evitam token em CI (subchave só em arquivo no cofre).
+
+> 📎 **Ligação ao curso:** erros clássicos estão no [Apêndice A](#apendice-a) (TTY / pinentry); o *health-check* do **Módulo 8** avisa dos limites de `gpg --card-status` em *headless*.
+
 #### Checklist de operação segura
 
 - [ ] Chave de produção nunca em máquina pessoal
 - [ ] Logs de assinatura e verificação retidos
 - [ ] Rotação definida com janela e responsável
 - [ ] Procedimento de revogação ensaiado
+
+<a id="apendice-d-healthcheck-auto-reset"></a>
+
+#### `HEALTHCHECK_AUTO_RESET=1` (modo agressivo — CI / *signing server*)
+
+O **`gpg-health-check.sh`** do **Módulo 8** permanece **didático por defeito** (só **avisa** quando `lsusb` vê token mas `gpg --card-status` falha). Em **serviços** onde a **disponibilidade** da assinatura importa mais do que preservar um `scdaemon` indefinidamente, pode ativar:
+
+```sh
+export HEALTHCHECK_AUTO_RESET=1
+/path/gpg-health-check.sh
+```
+
+**O que faz com `=1`:** se houver indício de **YubiKey/Nitrokey** no `lsusb` **e** a primeira leitura de `gpg --card-status` não mostrar material OpenPGP, o script executa **`gpgconf --kill scdaemon`**, **`gpgconf --kill gpg-agent`** e **`gpgconf --launch gpg-agent`**, depois **re-testa** `gpg --card-status` e imprime **✓** ou **✗**.
+
+**Riscos (leia antes de por no `cron`):**
+
+* Sessões **outras** do mesmo utilizador que dependam do agente podem ver o agente **reiniciado** no meio do trabalho.
+* **Não** reinicia **`pcscd`** (exige `sudo` e política própria) — se o middleware estiver morto, o reset do GnuPG **não** substitui `systemctl restart pcscd`.
+* Em **máquina partilhada**, prefira **alerta** (modo padrão) + *runbook* humano.
+
+> 📎 **Ligação ao curso:** o comportamento padrão e os limites *headless* continuam descritos na nota **💡** acima do script no **Módulo 8**; este bloco documenta **só** o *opt-in* de produção.
 
 * * *
 
@@ -3936,13 +4105,20 @@ foreach ($file in $files) {
     if (Test-Path $path) { gpg --import $path }
 }
 
-# Configurar gpg-agent.conf
-$confFile = "$env:APPDATA\gnupg\gpg-agent.conf"
-Add-Content -Path $confFile -Value "enable-ssh-support"
+# Configurar gpg-agent.conf (idempotente — não duplica a linha, como o grep -q no Linux)
+$confDir = "$env:APPDATA\gnupg"
+$confFile = Join-Path $confDir "gpg-agent.conf"
+if (-not (Test-Path $confDir)) { New-Item -ItemType Directory -Path $confDir -Force | Out-Null }
+if (-not (Test-Path $confFile)) { New-Item -ItemType File -Path $confFile -Force | Out-Null }
+if (-not (Select-String -Path $confFile -Pattern "enable-ssh-support" -SimpleMatch -Quiet)) {
+    Add-Content -Path $confFile -Value "enable-ssh-support"
+}
 
 gpgconf --kill gpg-agent
 gpgconf --launch gpg-agent
 ```
+
+> 📎 **Versão 1.1 (planejado — não integrado na 1.0):** em **WSL2**, desenvolvedores misturam **GnuPG dentro do Ubuntu embebido** com **Git/SSH no Windows nativo**. Aí surgem *gaps* típicos: **`SSH_AUTH_SOCK`** do agente no Linux **não** aparece no **Win32** sem *forwarding* (`npiperelay`, `socat` ou política «tudo no WSL»); dois **`gpg-agent`** (WSL + **Gpg4win**) disputam sockets, `pinentry` e qual ferramenta fala com qual chaveiro. O material corporativo pede uma secção dedicada — está registada no **`ROADMAP.md`** (*Backlog v1.1*).
 
 #### Linux (referência rápida de operação)
 
@@ -3957,23 +4133,29 @@ gpg --detach-sign --armor linux-test.txt
 gpg --verify linux-test.txt.asc linux-test.txt
 ```
 
-#### Android (OpenKeychain)
+#### Android (OpenKeychain — manutenção a longo prazo)
+
+O **OpenKeychain** continua a ser a referência **didática** mais comum para OpenPGP no Android, mas o projeto está em **modo de manutenção limitada** há vários anos: **correções de segurança** quando reportadas e trabalho mínimo, **sem** roadmap rico de novas funcionalidades; os lançamentos nas lojas (**F-Droid**, Google Play) podem ser **irregulares**. Há discussão aberta na comunidade sobre **sustentabilidade** e necessidade de novos *maintainers* — antes de **centralizar** identidade crítica no **smartphone**, veja a **última versão** e a atividade no repositório oficial ([**open-keychain/open-keychain**](https://github.com/open-keychain/open-keychain)) e trate o *app* como **ferramenta móvel**, não como substituto do núcleo **Linux / Tails** do curso.
 
 ```text
-1) Instale OpenKeychain
+1) Instale OpenKeychain (confira a data da build na loja antes de confiar em cenário sensível)
 2) Importe chave pública (ou subchaves quando aplicável)
 3) Valide fingerprint por canal separado
 4) Faça teste de assinatura/verificação em mensagem curta
 5) Não use Android para guardar chave mestra
+6) Se a política exigir *long-term support* no **smartphone**, avalie clientes de e-mail com OpenPGP integrado (pilha própria) ou fluxo «assinar no desktop, ler no móvel» — fora do escopo detalhado deste apêndice
 ```
 
-#### iPhone (Secure Enclave)
+> 📎 **Honestidade pedagógica:** o quadro acima **não** é um «não use» categórico — é **aviso de dependência**. Para o **exercício** do curso (importar `.asc`, confirmar **FPR**, testar uma mensagem), OpenKeychain ainda serve; para **produção** de anos, cruze com a política do seu organismo e com a cadência real de atualizações.
+
+#### iPhone (Blink Shell / cofre — leia o *disclaimer*)
+
+No **Blink Shell**, `ssh-keygen -t ed25519` gera um par **OpenSSH** guardado no **espaço do aplicativo** (arquivos do *app*), **não** no **Secure Enclave** da Apple. Chaves realmente ancoradas no Secure Enclave exigem APIs nativas do iOS (ex.: `SecKeyCreateRandomKey` com `kSecAttrTokenIDSecureEnclave`) — **não** é o que o fluxo por defeito do Blink faz.
 
 ```
-# No app Blink Shell:
-blink> ssh-keygen -t ed25519 -C "iphone-seguro"
-# A chave fica presa no Secure Enclave
-# Precisa de FaceID/TouchID para usar
+# No app Blink Shell (chave SSH operacional — NÃO é OpenPGP nem Secure Enclave):
+blink> ssh-keygen -t ed25519 -C "iphone-ssh-lab"
+# Proteja com passphrase forte; trate o telefone como terminal móvel, não como cofre da mestra
 ```
 
 No mesmo espírito (chave **limitada**, sem mestra no telefone), cofres como **Strongbox** podem guardar entradas SSH ou reutilizar um `.kdbx` criado no KeePassXC — avalie **como** sincroniza o arquivo (LAN/Syncthing vs nuvem) antes de confiar no modelo.
@@ -4047,7 +4229,7 @@ Trilha de referência para operações **multi-dispositivo**: pensar em **zonas*
 | --- | --- | --- |
 | 1 — Linux endurecido / airgap | Operações sensíveis, mestra ou SSH via subs `[A]` com política estrita | GPG nativo + disciplina do Módulo 6 |
 | 2 — Windows (escritório) | Dia a dia, cofre + agent SSH quando aplicável | KeePassXC / Gpg4win (trechos acima) |
-| 3 — Smartphone | Acesso pontual de emergência | Chave limitada (Secure Enclave / app); **sem** mestra |
+| 3 — Smartphone | Acesso pontual de emergência | Chave limitada (app / cofre; **não** confunda SSH no Blink com Secure Enclave); **sem** mestra |
 
 **Sincronização sem nuvem comercial:** **Syncthing** (LAN/VPN) pode alinhar cofres ou artefatos entre seus dispositivos — exponha só o necessário e mantenha validação de fingerprints fora da banda principal.
 
@@ -4254,10 +4436,10 @@ O arquivo **`.cursorrules`** na raiz do repo define quando o agente deve correr 
 
 - **`LICENSE` / `README`:** mudou a política de uso (aberta vs. reservada)? Mantenha o arquivo **`LICENSE`** na raiz do repo e a seção **«Licença e uso»** do **`README.md`** alinhados (substitua ambos se adotar, por exemplo, **CC BY-SA 4.0**).
 - **Título do Módulo 11 (PQ):** alguns editores substituem **ã** por **â** em «quântica». Procure por `QUÂNTICA` (U+00C2) e deixe **`PÓS-QUÃNTICA`** (U+00C3), como no mapa e no restante do texto em PT‑BR.
-- **Módulo 11 — strings PQ na CLI:** ao atualizar exemplos Kyber/SPHINCS+ ou a versão mínima do GnuPG no cabeçalho, rode na VM **`gpg --quick-generate-key --help`** (e, se possível, um teste real) para alinhar nomes de algoritmo ao binário — ver nota 📎 antes do primeiro bloco `sh` do Kyber.
+- **Módulo 11 — strings PQ na CLI:** ao atualizar exemplos **ML-KEM** / `pqc` / **SLH-DSA** ou a versão mínima do GnuPG no cabeçalho, rode na VM **`gpg --quick-generate-key --help`** (e o **roteiro mínimo** `pqc default` + cifragem) para alinhar nomes ao binário — ver nota 📎 antes do primeiro bloco `sh` do Módulo 11.
 - **`$FP` / `$FP_MASTER`:** fingerprint pela linha `fpr:` (campo 10) só **depois** de filtrar identidade (`LAB_EMAIL`, `UID_MASTER`, `"$EMAIL"` no script bônus, etc.). Evite reintroduzir `gpg --list-secret-keys --with-colons | awk …` sem esse filtro se houver risco de mais de uma mestra.
 - **Bônus `gpg-import-subkeys.sh` (Módulo 6):** defina **`UID_IMPORT`** igual ao **`UID_MASTER`** do Tails para a verificação **`ssb`** não misturar outra mestra; sem isso o script assume chaveiro inteiro (didática de VM só).
-- **Versões e URLs:** alterou Tails, imagem de download (**.img** para pendrive; **.iso** só DVD/VM) ou ramo experimental do GnuPG? Atualize **cabeçalho**, **checklist de ferramentas**, **matriz Tails**, **`README.md`** na raiz do repo e blocos `wget` / `gpg --verify` correspondentes — **um único** número de série (ex.: `tails-amd64-7.7.1` em toda a cadeia). Em links novos, confirme com **HEAD** (`curl -I` no Linux; no Windows, `Invoke-WebRequest -Method Head`): o índice `…/sequoia-sq/man/` devolve **404** — use `…/man/sq.1.html` ou a [raiz do `sequoia-sq`](https://sequoia-pgp.gitlab.io/sequoia-sq/). Rodadas recentes verificaram os **URLs HTTPS únicos** então listados no arquivo (ordem do **HEAD em lote**); repita sempre que acrescentar hiperlinks (tabela de referências, novo repositório Git no texto, etc.).
+- **Versões e URLs:** alterou Tails, imagem de download (**.img** para pendrive; **.iso** só DVD/VM) ou ramo experimental do GnuPG? Atualize **cabeçalho**, **checklist de ferramentas**, **matriz Tails**, **`README.md`** na raiz do repo e blocos `wget` / `gpg --verify` correspondentes — **um único** número de série (ex.: valor de **`TAILS_VER`** + URLs no **COMANDO 6.1**). Em links novos, confirme com **HEAD** (`curl -I` no Linux; no Windows, `Invoke-WebRequest -Method Head`): o índice `…/sequoia-sq/man/` devolve **404** — use `…/man/sq.1.html` ou a [raiz do `sequoia-sq`](https://sequoia-pgp.gitlab.io/sequoia-sq/). Rodadas recentes verificaram os **URLs HTTPS únicos** então listados no arquivo (ordem do **HEAD em lote**); repita sempre que acrescentar hiperlinks (tabela de referências, novo repositório Git no texto, etc.).
 - **Parsing do `gpg`:** scripts novos devem preferir **`--with-colons` + `awk`** (fingerprint `fpr:`, keygrip `grp:`/`ssb:`, checagens `:s:`/`:e:`/`:a:`). Reserve `gpg -K … | grep` para blocos **didáticos** onde a saída humana for o **objetivo** (ex.: COMANDO 5.1).
 
 * * *
@@ -4273,7 +4455,7 @@ Você acabou de aprender:
 - ✅ Como fazer backup 3-2-1 com age  
 - ✅ Como integrar com Git e SSH  
 - ✅ Como se recuperar de desastres  
-- ✅ O que vem por aí (Kyber, Sequoia-PGP, roadmap 2030)
+- ✅ O que vem por aí (**ML-KEM**, Sequoia-PGP, roadmap 2030)
 
 **📖 Lembre-se:** Você não nasceu sabendo. Todo expert começou como iniciante. A diferença é que um dia eles decidiram aprender.
 
