@@ -6,18 +6,18 @@ Curso em **um único Markdown** (versão canônica **1.0**), com orientações p
 
 | Arquivo | Descrição |
 |---------|-----------|
-| [🎓 OpenPGPGPG do Zero ao Expert - Versão 1.0.md](./🎓%20OpenPGPGPG%20do%20Zero%20ao%20Expert%20-%20Versão%201.0.md) | Curso completo (módulos, comandos, checkpoints) |
-| [ROADMAP.md](./ROADMAP.md) | Fluxo auditoria → roadmap; **spot-check VM** pendente; checklist por camada |
+| [🎓 OpenPGPGPG do Zero ao Expert - Versão 1.0.md](./🎓%20OpenPGPGPG%20do%20Zero%20ao%20Expert%20-%20Versão%201.0.md) | Curso completo (módulos, comandos, checkpoints, apêndices) |
+| [ROADMAP.md](./ROADMAP.md) | Fluxo auditoria → roadmap; **spot-check VM** opcional/pendente; checklist por camada |
 | [CERTIFICACAO-INTERNA.md](./CERTIFICACAO-INTERNA.md) | Rubrica opcional para validar nível **Expert** ao fechar o curso (instrutor/mantenedor) |
 | [`LICENSE`](./LICENSE) | Direitos reservados (por padrão); substituir se mudar a política editorial |
 | [.cursorrules](./.cursorrules) | Contexto e padrões do projeto para IA / equipe |
-| [`.cursor/rules/openpgp-course-pointer.mdc`](./.cursor/rules/openpgp-course-pointer.mdc) | Ponte MDC do Cursor ao `.cursorrules` (regras canônicas) |
+| [`.cursor/rules/openpgp-course-pointer.mdc`](./.cursor/rules/openpgp-course-pointer.mdc) | Ponte MDC do Cursor ao `.cursorrules` (regras canónicas) |
 
 ## Requisitos no leitor
 
 - **GnuPG** ~2.4.x (Ubuntu 24.04 do curso); trechos experimentais **2.5.19+** (**ML-KEM** / `pqc`; rótulo «Kyber» na CLI) onde indicado.
 - **Tails** 7.7.1+ para laboratório offline; imagem **`.img`** para pendrive (ver curso, COMANDO 6.1).
-- **Sequoia `sq`** ~1.3.x onde o módulo 12 referenciar.
+- **Sequoia `sq`** ~1.3.x onde o Módulo 12 referenciar.
 
 ## Licença e uso
 
@@ -41,3 +41,27 @@ git push origin main
 Noutra máquina: `git clone https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert.git`
 
 Nas definições do repositório no GitHub, convém preencher **Description**, **Topics** (`openpgp`, `gnupg`, `tails`, `pgp`) e, se quiseres, **Add file → LICENSE**.
+
+## Estrutura do curso (visão rápida)
+
+No ficheiro canônico, o corpo organiza-se em **quatro partes** (tempos orientativos no próprio curso):
+
+| Parte | Âmbito |
+|-------|--------|
+| **1 — Primeiros passos** | Módulos **0–2**: ambiente, primeira chave, cifrar/decifrar/assinar/verificar; **Checkpoint 1**. |
+| **2 — Fazendo certo** | Módulos **3–4**: backup e revogação; **Git** com assinatura GPG; **Checkpoint 2**. |
+| **3 — Segurança avançada** | Módulos **5–8**: **SSH via GPG**; **Tails** e chave mestra offline; diagnóstico, token/`pcscd`, **automação** (*health-check*); **Checkpoint 3**. |
+| **4 — Expert e futuro** | Módulos **9–12**: *threat modeling*; manutenção (WKD, keyservers, `dirmngr`, export mínimo, WoT); **ML-KEM** / PQ; **Sequoia `sq`**; exame final. |
+
+## WSL2 e fronteira Win32 (sinalização na 1.0)
+
+O desafio **Win32 ↔ WSL2** (dois `gpg-agent`, sockets, `SSH_AUTH_SOCK`) **não** ocupa a Parte 4 como «módulo de futuro criptográfico»: permanece **mapeado** na **1.0** com remissões, sem guia operacional longo duplicado.
+
+- **Módulo 9:** linha de risco **Superfície dupla Win32 + WSL2** e mitigação **«um só mundo»** (política explícita).
+- **Apêndice E:** caixa **v1.1 planejado** + tabela **«onde rever»** (M1–M5, M0/8, Apêndice D, bloco Windows) — mesma sintaxe `gpg`/`git`/`ssh`, outro contexto de agente e *keyring*.
+- **[ROADMAP.md](./ROADMAP.md)** — **Backlog v1.1:** roteiro detalhado quando existir texto dedicado.
+
+## Governança e qualidade
+
+- **[ROADMAP.md](./ROADMAP.md):** tabela **«Última auditoria estática»** (Git/trunk, versões Tails/GnuPG/`sq`, HEAD em URLs do curso, grep preventivo, **VM** opcional, governança, `LICENSE`).
+- Conteúdo didático alinhado ao ecossistema **OpenPGP / GnuPG**; menções à **RFC 9580** e ao plano **pós-quântico** **onde o curso assinala** — material de formação, não substitui auditoria legal ou *compliance* formal da tua organização.
