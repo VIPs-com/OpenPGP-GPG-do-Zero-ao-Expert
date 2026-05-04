@@ -3247,7 +3247,7 @@ FP=$(gpg --list-secret-keys --with-colons "$UID_PQ_MIG" | awk -F: '/^fpr:/ {prin
 
 | Aspecto | GnuPG (GPG) | Sequoia-PGP |
 | --- | --- | --- |
-| **Linguagem** | C   | Rust (memória mais estrita por omissão do compilador) |
+| **Linguagem** | C   | Rust (memória mais estrita por padrão do compilador) |
 | **Maturidade** | 20+ anos | Projeto público desde ~2017; **`sq`** ~1.3.x nas distros do curso |
 | **Adoção** | Ampla | Crescente |
 | **Arquitetura** | Monolítica | Modular (bibliotecas) |
@@ -3291,7 +3291,7 @@ O complemento Enigmail está **descontinuado**; o Thunderbird moderno traz OpenP
 | Cifrar | `gpg --encrypt -r EMAIL arquivo.txt` | `sq encrypt --for-email=EMAIL arquivo.txt` |
 | Decifrar | `gpg --decrypt arquivo.gpg` | `sq decrypt arquivo.gpg` |
 
-> 📎 No Sequoia, **`sq cert export`** é só material **público**; já **`sq key export`** envia o OpenPGP **com segredo** disponível no cofre (como `gpg --export-secret-keys`). O **`--cert=FPR`** em **`sq key export`** só **escolhe** qual identidade exportar — não significa “sem segredo”. Saída OpenPGP costuma vir **ASCII armor por omissão**; confira `sq help` na sua versão.
+> 📎 No Sequoia, **`sq cert export`** é só material **público**; já **`sq key export`** envia o OpenPGP **com segredo** disponível no cofre (como `gpg --export-secret-keys`). O **`--cert=FPR`** em **`sq key export`** só **escolhe** qual identidade exportar — não significa “sem segredo”. Saída OpenPGP costuma vir **ASCII armor por padrão**; confira `sq help` na sua versão.
 
 > 📎 **`sq verify` / `sq decrypt` (~1.3.x):** verificação **destacada** → **`--signature-file=SIG`** + arquivo de dados (como na tabela). Mensagem **inline** assinada → **`sq verify --message`**; **clearsigned** → **`sq verify --cleartext`**. Em **`sq decrypt`**, se o segredo estiver **só** em um arquivo exportado (fora do cofre Sequoia), use **`--recipient-file=chave-secreta.pgp`**; com cofre já povoado, **`sq decrypt arquivo_cifrado.gpg`** costuma bastar (exemplos em `man sq-verify` / `man sq-decrypt`). *Extensão ilustrativa:* no resto do curso os exemplos com `gpg` usam sobretudo **`.gpg`**; **`.pgp`** também aparece em textos Sequoia/OpenPGP — o formato é o mesmo pacote, não o sufixo.
 
@@ -3466,7 +3466,7 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | Termo | Significado |
 | --- | --- |
 | **\[C\] / \[S\] / \[E\] / \[A\]** | Capacidades OpenPGP na chave: **C**ertify (mestra: assinar identidades da própria chave e emitir revogação), **S**ign (assinatura), **E**ncryption (cifragem a terceiros), **A**uthentication (ex.: SSH com `gpg-agent`). |
-| **WKD** | *Web Key Directory* — forma padrão de publicar a chave pública via HTTPS no domínio do email (`.well-known/openpgpkey/` ou subdomínio `openpgpkey`). Ver Módulo 10. |
+| **WKD** | *Web Key Directory* — forma padrão de publicar a chave pública via HTTPS no domínio do e-mail (`.well-known/openpgpkey/` ou subdomínio `openpgpkey`). Ver Módulo 10. |
 | **WoT** | *Web of Trust* — confiança derivada de assinaturas mútuas e níveis de confiança no chaveiro (não confundir com “confiar cegamente” em keyserver). Ver Módulo 10 / apêndices de política. |
 | **HKPS** | Acesso a servidor de chaves sobre TLS (`hkps://`), reduzindo exposição em relação a HKP simples ou infraestruturas SKS legadas. |
 | **HKP** | *HTTP Key Protocol* — keyserver clássico **sem** TLS (`hkps://` é a variante segura). Hoje prefira **HKPS**, **WKD** ou publicação direta; trate HKP “nu” como legado / laboratório. |
