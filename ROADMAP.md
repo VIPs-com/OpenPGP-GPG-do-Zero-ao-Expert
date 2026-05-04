@@ -110,13 +110,13 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 
 | Item | Estado | Notas |
 | --- | --- | --- |
-| **A1** — Nome do ficheiro canónico (`OpenPGPGPG` no nome em disco) | não iniciado | Corrigir o segmento no *filename*; varredura em `README.md`, cabeçalho do `.md` canónico, `CERTIFICACAO-INTERNA.md`, `.cursorrules`, links relativos; decidir **emoji + Versão 1.0** vs nome **ASCII** e registar a decisão num *commit* |
+| **A1** — Nome do ficheiro canônico (`OpenPGPGPG` no nome em disco) | não iniciado | Corrigir o segmento no *filename*; varredura em `README.md`, cabeçalho do `.md` canônico, `CERTIFICACAO-INTERNA.md`, `.cursorrules`, links relativos; decidir **emoji + Versão 1.0** vs nome **ASCII** e registar a decisão num *commit* |
 | **A2** — Camada **5** (spot-check VM Ubuntu) | Pendente (política) | Ver **R2**, tabela **Registro de execução** e linha **VM** na auditoria estática; **PASS** só após corrida real ou desvio documentado |
-| **A3** — Rodada **URLs** (camada 3) + métricas | não iniciado | Após *rename*, trincheiras com novos links ou grandes colagens: HEAD em lote nos HTTPS **únicos** do `.md` canónico; actualizar a célula **URLs** na tabela de auditoria (contagem + data) |
+| **A3** — Rodada **URLs** (camada 3) + métricas | não iniciado | Após *rename*, trincheiras com novos links ou grandes colagens: HEAD em lote nos HTTPS **únicos** do `.md` canônico; actualizar a célula **URLs** na tabela de auditoria (contagem + data) |
 
-### Eixo B — Trincheiras de conteúdo v1.0.x (4.4 → canónico)
+### Eixo B — Trincheiras de conteúdo v1.0.x (4.4 → canônico)
 
-| Trincheira | Destino no canónico | Critério de pronto | Estado |
+| Trincheira | Destino no canônico | Critério de pronto | Estado |
 | --- | --- | --- | --- |
 | Curvas **ed25519** × **cv25519** + tabela de decisão `[S]`/`[E]` | Módulo 1 (subsecções) | Aluno explica em ~60s o papel de `[S]` e `[E]` no curso | não iniciado |
 | Evolução CLI `--gen-key` → `--full-*` / `--generate-key` / `--quick-*` | Módulo 0 ou 1 | Linha do tempo + o que usar no Ubuntu 24.04 do curso | não iniciado |
@@ -229,7 +229,7 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-12** | **Apêndice E (Android):** OpenKeychain — manutenção limitada, lançamentos irregulares, aviso de dependência; glossário + mapa |
 | **2026-05-13** | **v1.1 planejado:** secção **Backlog v1.1** no `ROADMAP` (WSL2 + GPG, `SSH_AUTH_SOCK`, Gpg4win vs agente WSL); nota no Apêndice E + linha no mapa do curso |
 | **2026-05-14** | **Pré-lançamento 1.0:** `curl -I -L` nos URLs do cabeçalho (GnuPG download, Tails, Sequoia `sq`, manual OpenPGP Key Management) — **200** ou **302→200**; glossário — entradas **ML-KEM**, **`GPG_TTY`**, **`HEALTHCHECK_AUTO_RESET`** + âncora `#apendice-d-healthcheck-auto-reset`; **HEAD** na tabela de referências (**SafeCurves**, **EFF Diceware**) — **200**; rubrica certificação (Git **Módulo 4** / SSH **Módulo 5**); nota didática **Apêndice F** (migração RSA→ECC); **pedagogia WSL2:** Módulo 9 — linha **Win32 + WSL2** → **Apêndice E** + `ROADMAP` v1.1; Apêndice E — `#apendice-e`, remissões M1–M5 / M0·8 / D / Windows; `#modulo-9-threat-modeling` (PARTE 4 sem inflação — PQ / Sequoia / WKD) |
-| **2026-05-02** | **ROADMAP:** secção **«Plano definitivo v1.0.x (excelência / nota 9,5)»** — Eixos A (higiene), B (trincheiras 4.4 → canónico), C (cadência); **Backlog v1.1** alargado (**E‑ZT**, **E‑BENCH**, **E‑FLOW**, **E‑CERT**, **E‑K8S**); **README** remete ao plano; **Próxima sessão** — linha 6 |
+| **2026-05-02** | **ROADMAP:** secção **«Plano definitivo v1.0.x (excelência / nota 9,5)»** — Eixos A (higiene), B (trincheiras 4.4 → canônico), C (cadência); **Backlog v1.1** alargado (**E‑ZT**, **E‑BENCH**, **E‑FLOW**, **E‑CERT**, **E‑K8S**); **README** remete ao plano; **Próxima sessão** — linha 6 |
 | **Repo** | `.vscode/` e `scripts/` só locais (`.gitignore` + fora do remoto) |
 
 **Manutenção recorrente:** ao **novo** bloco shell no `.md` canônico → rever `list-secret-keys` + `fpr:` + `UID_IMPORT` / `LAB_EMAIL`; ao **novo** link HTTPS → repetir **HEAD** em lote; ao subir **GnuPG** experimental → rever nomes PQ na CLI (Módulo 11).
