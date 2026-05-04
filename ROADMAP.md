@@ -113,7 +113,23 @@ VM alinhada ao curso (**Ubuntu 24.04**, `gnupg2`, rede para `wget`/`apt` onde ne
 
 **Critério de fecho:** checklist sem erro bloqueante **ou** desvio documentado com comando e saída.
 
-**Ao fechar o spot-check na VM:** (1) na tabela **«Última auditoria estática»**, linha **VM**, passe a **PASS** com data e uma linha de nota (ou **WARN** com comando + saída); (2) marque **[x]** em **R2** e em **Spot-check na VM Ubuntu** abaixo; (3) `git commit` descrevendo o roteiro ou anexe nota em issue.
+### Registo de execução (preencher na VM, depois commitar)
+
+| # | Passo | OK |
+| --- | --- | :---: |
+| 1 | `gpg --version` (+ `sq version` se `sequoia-sq` instalado) | [ ] |
+| 2 | `wget` + `gpg --verify` da `.img` Tails (ou fluxo equivalente) | [ ] |
+| 3 | `lsblk` + `dd`/`sync` em disco **inteiro** (não partição) ou loop | [ ] |
+| 4 | `quick-generate-key` / `quick-add-key` + `FP` de `fpr:` | [ ] |
+| 5 | Import subchaves + `UID_IMPORT` quando >1 `sec:` | [ ] |
+| 6 | `gpg-health-check.sh` com `LAB_EMAIL` | [ ] |
+| 7 | (Opcional) `clearsign` / `verify` | [ ] |
+
+**Data da corrida:** _______________
+
+**Notas / desvios** (comando + saída se **WARN** ou falha): _______________
+
+**Ao fechar o spot-check na VM:** (1) marque os **OK** acima; (2) na tabela **«Última auditoria estática»**, linha **VM**, passe a **PASS** com a **data** e copie ou resuma as **notas**; (3) marque **[x]** em **R2** e em **Spot-check na VM Ubuntu** nas pendências; (4) `git commit` (ex.: `docs(repo): spot-check VM Ubuntu OK`) ou issue com o mesmo conteúdo.
 
 ---
 
@@ -140,6 +156,7 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-IX** | **Auditoria estática trunk** (plano pré-roadmap): Git, versões, **HEAD** em URLs do `.md` canónico, grep preventivo, governança **R3**; correção URL GitHub sem `**` no Markdown; **T5** idempotência COMANDO 5.3; **VM** pendente de execução |
 | **2026-05-03** | **R1:** ficheiro **`LICENSE`** (todos os direitos reservados); **README** — secção licença; tabela de auditoria — linha `LICENSE` **PASS** |
 | **2026-05-04** | **Anexo + ROADMAP:** checklist **Versões externas** inclui `LICENSE`; tabela de referências + bullet pré-commit `LICENSE`/`README`; **formato de entrega** lista `LICENSE`; nota **«Ao fechar o spot-check na VM»** (tabela R2 + commit) |
+| **2026-05-05** | **VM:** tabela **«Registo de execução»** no `ROADMAP` (checkboxes por passo + data/notas) para fechar R2 com commit após a corrida real |
 | **Repo** | `.vscode/` e `scripts/` só locais (`.gitignore` + fora do remoto) |
 
 **Manutenção recorrente:** ao **novo** bloco shell no `.md` canónico → rever `list-secret-keys` + `fpr:` + `UID_IMPORT` / `LAB_EMAIL`; ao **novo** link HTTPS → repetir **HEAD** em lote; ao subir **GnuPG** experimental → rever nomes PQ na CLI (Módulo 11).
