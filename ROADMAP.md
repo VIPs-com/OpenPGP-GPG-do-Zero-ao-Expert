@@ -28,7 +28,7 @@ A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática; o 
 | --- | --- | --- |
 | Git / trunk | **PASS** 2026-05-02 | `main` alinhado com `origin/main`; `git remote -v` = **OpenPGP-GPG-do-Zero-ao-Expert**; working tree limpo; `git ls-files` sem `.vscode/` nem `scripts/` (política `.gitignore`) |
 | Versões (Tails / GnuPG / `sq`) | **PASS** 2026-05-02 | Cabeçalho + Módulo 0 + `README.md`: Tails **7.7.1+**, GnuPG **2.4.x** / **2.5.19+** (Kyber), **sequoia-sq ~1.3.x** — sem divergência relevante |
-| URLs (HEAD HTTPS únicos) | **PASS** 2026-05-02 | **21** URLs únicos no `.md` canónico; `urllib` **HEAD** → **200** em todos após corrigir link GitHub (evitar `**` colado ao URL no Markdown); `https://SEU_DOMINIO/...` (exemplo WKD) **fora** do lote automático |
+| URLs (HEAD HTTPS únicos) | **PASS** 2026-05-03 | **22** URLs únicos no `.md` canónico; **HEAD** (`scripts/head_audit_once.py`, `urllib`) → **200** em todos (incl. `…/blob/main/LICENSE` na tabela de referências); `https://SEU_DOMINIO/...` (exemplo WKD) **fora** do lote |
 | Grep scripts + PQ (`list-secret-keys`, `fpr:`, sem `grep -oP`, `QUÂNTICA` indevido) | **PASS** 2026-05-02 | Sem `grep -oP`; `QUÂNTICA` só no anexo; exceções aceites: contagem `^sec:` no health-check; `gpg-import-subkeys` com `UID_IMPORT` vazio **só** com comentário de laboratório no script |
 | VM (spot-check) | **PENDENTE** | Roteiro **§ Spot-check VM Ubuntu** — **adiado** (mantenedor: não executar agora); permanece **PENDENTE** até corrida real ou nova decisão |
 | Governança (`.cursorrules`, `.mdc`, formato entrega) | **PASS** 2026-05-02 | `openpgp-course-pointer.mdc` → `.cursorrules`, `alwaysApply: true`; README coerente com trunk = MD + meta |
@@ -157,6 +157,7 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-VIII** | **P2:** `--gen-key` como legado/alias (T1); nota `openpgp-revocs.d` vs `--gen-revoke` (T7); «Resultados esperados» + legenda **⚫** e níveis 🔵 (E2/E3); rubrica CP1 `.asc`/clearsign/`.sig` (C1); cronograma quântico + NIST + incerteza (S1); mapa Módulo 1 |
 | **2026-05-IX** | **Auditoria estática trunk** (plano pré-roadmap): Git, versões, **HEAD** em URLs do `.md` canónico, grep preventivo, governança **R3**; correção URL GitHub sem `**` no Markdown; **T5** idempotência COMANDO 5.3; **VM** pendente de execução |
 | **2026-05-03** | **R1:** ficheiro **`LICENSE`** (todos os direitos reservados); **README** — secção licença; tabela de auditoria — linha `LICENSE` **PASS** |
+| **2026-05-03 (camada 3)** | **URLs:** passagem **HEAD** no `.md` canónico — **22** HTTPS únicos, todos **200**; sem **404** |
 | **2026-05-04** | **Anexo + ROADMAP:** checklist **Versões externas** inclui `LICENSE`; tabela de referências + bullet pré-commit `LICENSE`/`README`; **formato de entrega** lista `LICENSE`; nota **«Ao fechar o spot-check na VM»** (tabela R2 + commit) |
 | **2026-05-05** | **VM:** tabela **«Registo de execução»** no `ROADMAP` (checkboxes por passo + data/notas) para fechar R2 com commit após a corrida real |
 | **2026-05-06** | **VM adiada:** decisão explícita — **não** executar spot-check agora; auditoria **VM** mantém-se **PENDENTE**; **R2** / «Outras» ficam **[ ]**; próxima sessão desbloqueada para outras tarefas |
