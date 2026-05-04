@@ -325,7 +325,8 @@ Ao final deste curso, você será capaz de:
 │   │
 │   ├── 📋 Módulo 9: Threat Modeling (Modelagem de Ameaças)
 │   │   ├── Quais são seus riscos?
-│   │   └── Como mitigar cada um?
+│   │   ├── Como mitigar cada um?
+│   │   └── 📎 Risco Win32 + WSL2 (dois gpg-agent) → Apêndice E + ROADMAP.md (Backlog v1.1)
 │   │
 │   ├── 📋 Módulo 10: Comandos de Manutenção
 │   │   ├── Panorama 2026 (SKS ↓, WKD, Hagrid, WoT vs TOFU)
