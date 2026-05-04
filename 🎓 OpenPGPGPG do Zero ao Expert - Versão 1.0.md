@@ -307,6 +307,7 @@ Ao final deste curso, você será capaz de:
 │   │
 │   ├── 📋 Módulo 7: Diagnóstico e Debug
 │   │   ├── ▸ COMANDO 7.1–7.3: verbose/list-packets/agente e dirs
+│   │   ├── Token USB / udev / pcscd (OpenPGP)
 │   │   ├── ▸ COMANDO 7.4: recarregar gpg-agent
 │   │   ├── ▸ COMANDO 7.5: chaves com keygrips
 │   │   └── 🚀 Bônus: Script de health-check
@@ -2357,6 +2358,8 @@ echo "   - [A] para autenticação SSH"
 
 > 📎 **SSH:** depois de mover \[A\] para o cartão, o fluxo do **Módulo 5** (`sshcontrol`, `SSH_AUTH_SOCK`) continua válido — o agente fala com o driver do token.
 
+> 📎 **USB / `udev` / VM:** se o token **não** aparecer para o `gpg --card-status`, trate como problema de **SO/leitor** primeiro — ver [**Módulo 7 — Token USB / udev / pcscd**](#modulo-7-token-usb).
+
 **Onde aprofundar:** [Apêndice C — HARDWARE WALLETS + SMARTCARDS](#apendice-c); documentação oficial **YubiKey OpenPGP** / **Nitrokey** (geração de chaves no próprio token vs *move* desde o `gpg`).
 
 > 📎 **Depois do `keytocard`:** feche o ciclo com o [**COMANDO 6.4**](#comando-6-4) (verificação + cofre offline **antes** de limpar o host).
@@ -2391,6 +2394,8 @@ gpg --verify /tmp/token-smoke.txt.sig /tmp/token-smoke.txt
 
 * **SSH \[A\]:** se usa o **Módulo 5**, confira `SSH_AUTH_SOCK`, `ssh-add -L` e um login de fumo — o agente deve falar com o driver do cartão.
 
+> 📎 Se **`gpg --card-status`** falhar **aqui** (token inserido, mas «sem leitor» / *Permission denied*), não assuma que o `keytocard` falhou — vá direto ao [**Módulo 7 — Token USB / udev / pcscd**](#modulo-7-token-usb).
+
 ### B) Backup de segurança (cofre offline — **antes** da limpeza do disco)
 
 > **Regra de ouro:** **não** remova segredo útil do host nem «formate o laboratório» até a tabela abaixo estar **fechada** para a **sua** identidade.
@@ -2412,6 +2417,8 @@ gpg --verify /tmp/token-smoke.txt.sig /tmp/token-smoke.txt
 > 🎯 **Objetivo:** Aprender a diagnosticar e resolver problemas comuns do GPG
 
 > ⏱️ **Tempo estimado:** 30 minutos
+
+> 📎 **Tokens OpenPGP (YubiKey / Nitrokey):** problemas de **USB**, **`udev`**, **`pcscd`**/`scdaemon` e VM estão na secção [**Token USB OpenPGP**](#modulo-7-token-usb) (entre os COMANDOs 7.3 e 7.4).
 
 * * *
 
@@ -2474,6 +2481,71 @@ gpgconf --check-programs
 
 * * *
 
+<a id="modulo-7-token-usb"></a>
+
+#### Token USB OpenPGP: `udev`, `pcscd` e `scdaemon` (Linux)
+
+> **Público:** quem concluiu o [**COMANDO 6.4**](#comando-6-4) ou usa **YubiKey / Nitrokey** no Ubuntu do curso e esbarra em «cartão não encontrado», **PIN** que nunca aparece, ou *Permission denied* no acesso ao leitor.
+
+**Sintomas típicos**
+
+* `gpg --card-status` responde *connecting to card* / *no card* / *reader not available* com o token **fisicamente** plugado.
+* Funciona numa sessão e «some» depois de suspender o notebook ou trocar de porta USB.
+
+**1) Confirme que o SO vê o dispositivo**
+
+```sh
+lsusb | grep -iE 'yubico|nitrokey|gnupg|openpgp|smart'
+```
+
+Sem linha plausível → cabo, porta, *hub* alimentado ou **pass-through USB** em VM (VirtualBox/VMware: filtre o dispositivo para a VM; **WSL2** costuma **não** expor leitor CCID — use Ubuntu «clássico» ou VM com USB).
+
+**2) Serviço `pcscd` (PC/SC) — comum no Ubuntu para *smart cards***
+
+Muitos tokens OpenPGP falam **CCID** sobre o daemon **pcscd**:
+
+```sh
+systemctl status pcscd --no-pager
+# se inativo ou com erro após plugar:
+sudo systemctl restart pcscd
+```
+
+Instalação típica no Ubuntu (se o pacote não existir): `sudo apt install pcscd` — depois **relogue** a sessão gráfica ou reinicie o `gpg-agent` (passo seguinte).
+
+**3) `scdaemon` (GnuPG) preso ou com estado velho**
+
+O GnuPG usa o **`scdaemon`** para falar com o leitor. Um processo preso é causa frequente de «sumiu o cartão»:
+
+```sh
+gpgconf --kill scdaemon
+gpgconf --launch gpg-agent
+gpg --card-status
+```
+
+(Em alguns setups, `gpgconf --kill gpg-agent` também reinicia a cadeia — equivalente ao que já vimos no Módulo 0.)
+
+**4) `udev` e grupos (`plugdev`, `pcscd`)**
+
+Regras `udev` definem permissões em `/dev/bus/usb/...`. Fabricantes publicam regras prontas (**YubiKey**, **Nitrokey**) — copie o arquivo oficial do **.rules** para `/etc/udev/rules.d/`, rode `sudo udevadm control --reload-rules && sudo udevadm trigger` e **faça logout/login** (ou reinicie) após mudar **grupo** do usuário:
+
+```sh
+sudo usermod -aG plugdev "$USER"
+# se o sistema tiver o grupo pcscd (comum com pcscd instalado):
+getent group pcscd >/dev/null && sudo usermod -aG pcscd "$USER"
+# encerrar sessão e voltar; depois:
+gpg --card-status
+```
+
+> 📎 **Política corporativa:** ambientes com **USB bloqueado** ou *device guard* podem impedir CCID mesmo com regras corretas — aí o bloqueio é **política**, não GnuPG.
+
+**5) Onde aprofundar (sem duplicar o fabricante)**
+
+* Documentação **Linux** do seu modelo (regras `udev`, *firmware*, NFC vs USB-A).
+* **Apêndice C** — critérios de adoção de *hardware*.
+* Se o sintoma for **agente/pinentry**, volte ao **COMANDO 7.3** e ao **Apêndice A** (erros de TTY/pinentry).
+
+* * *
+
 #### ▸ COMANDO 7.4: Recarregar configuração
 
 ```sh
@@ -2507,6 +2579,7 @@ gpg -K --with-keygrip --with-subkey-fingerprints
 | `Can't connect to agent` / IPC ao agente | Agente parado, socket antigo ou **`GNUPGHOME`** diferente entre processos | `gpgconf --launch gpg-agent`; se persistir `gpgconf --kill gpg-agent && gpgconf --launch gpg-agent`; confira `echo "$GNUPGHOME"` (Apêndice A nº 15) |
 | `Agent refused operation` | `gpg-agent` inconsistente | Reiniciar agente e validar sockets |
 | `Permission denied (publickey)` no SSH | `sshcontrol`/`authorized_keys` incorreto | Revisar keygrip, export SSH e arquivo remoto |
+| `gpg --card-status` falha / *no card* com token USB plugado | `pcscd` parado, `scdaemon` preso, `udev`/grupos, VM sem USB pass-through | `lsusb`; `systemctl status pcscd` + `sudo systemctl restart pcscd`; `gpgconf --kill scdaemon` + relançar agente; grupos `plugdev`/`pcscd` + regras do **fabricante**; ver [**Token USB / udev**](#modulo-7-token-usb) |
 | Commit não assina no Git | `gpg.program` ou `signingkey` errado | Reaplicar configuração Git e testar `--show-signature` |
 
 **Fluxo universal de diagnóstico:**
