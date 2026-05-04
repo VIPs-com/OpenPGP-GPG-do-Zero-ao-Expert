@@ -2543,6 +2543,7 @@ gpg --card-status
 * Documentação **Linux** do seu modelo (regras `udev`, *firmware*, NFC vs USB-A).
 * **Apêndice C** — critérios de adoção de *hardware*.
 * Se o sintoma for **agente/pinentry**, volte ao **COMANDO 7.3** e ao **Apêndice A** (erros de TTY/pinentry).
+* **Automação:** o `gpg-health-check.sh` (**Módulo 8**, bônus) inclui passos **7–8** para `lsusb`, `pcscd`, presença do `scdaemon` e grupos `plugdev` / `pcscd` — útil como **alerta** em `cron`, com os limites da nota acima do script (falso negativo de `gpg --card-status` em ambiente *headless*).
 
 * * *
 
@@ -2604,7 +2605,7 @@ gpg --verify /tmp/gpg-smoke.asc
 
 #### 🚀 BÔNUS: Script de health-check completo
 
-> 💡 Este script usa **`grep -oE`** (primeiro par **M.N** na linha da versão) e **`bc`** para comparar versões — no Ubuntu do curso: `sudo apt install bc`. Sem `bc`, o script apenas **avisa** e mostra o **M.N** detectado; confira sempre com `gpg --version | head -n1`.
+> 💡 Este script usa **`grep -oE`** (primeiro par **M.N** na linha da versão) e **`bc`** para comparar versões — no Ubuntu do curso: `sudo apt install bc`. Sem `bc`, o script apenas **avisa** e mostra o **M.N** detectado; confira sempre com `gpg --version | head -n1`. Os passos **7–8** (*token* / `pcscd` / grupos) são **heurísticos**: em **cron** sem sessão interativa, `gpg --card-status` pode dar **falso negativo** — interprete com contexto ou rode o mesmo script **no terminal** do usuário.
 
 ```sh
 #!/bin/bash
@@ -2695,7 +2696,52 @@ else
     echo -e "${YELLOW}⚠ SSH via GPG não configurado${NC}"
 fi
 
-# 7. Backup recente
+# 7. Token USB + pcscd + scdaemon (heurística — NÃO mata processos; ver Módulo 7)
+echo -e "${YELLOW}--- Token / smartcard (opcional) ---${NC}"
+USB_HINT=$(lsusb 2>/dev/null | grep -iE 'yubico|nitrokey' || true)
+if [ -n "$USB_HINT" ]; then
+    echo -e "${GREEN}✓ lsusb: possível token USB (YubiKey/Nitrokey)${NC}"
+    CARD_OUT=$(gpg --card-status 2>&1 || true)
+    if echo "$CARD_OUT" | grep -qiE 'Application ID|Application identifier|OpenPGP card no\.:'; then
+        echo -e "${GREEN}✓ gpg --card-status: leitor respondeu (material OpenPGP visível)${NC}"
+    else
+        echo -e "${YELLOW}⚠ Token visível no lsusb, mas gpg --card-status não mostrou cartão OpenPGP como esperado${NC}"
+        echo -e "${YELLOW}  → Ver Módulo 7 (pcscd, scdaemon, udev). Teste manual: gpgconf --kill scdaemon && gpg --card-status${NC}"
+    fi
+    if command -v systemctl >/dev/null 2>&1; then
+        if systemctl --no-pager list-unit-files pcscd.service 2>/dev/null | awk '$1=="pcscd.service"{found=1} END{exit !found}'; then
+            if systemctl is-active --quiet pcscd 2>/dev/null; then
+                echo -e "${GREEN}✓ pcscd.service ativo${NC}"
+            else
+                echo -e "${YELLOW}⚠ pcscd.service existe mas não está ativo — sudo systemctl start pcscd (Módulo 7)${NC}"
+            fi
+        fi
+    fi
+    if pgrep -x scdaemon >/dev/null 2>&1; then
+        echo -e "${GREEN}✓ scdaemon em execução (PID $(pgrep -x scdaemon | head -1))${NC}"
+    else
+        echo -e "${YELLOW}⚠ scdaemon não encontrado — pode ser normal se nunca abriu o leitor nesta sessão${NC}"
+    fi
+else
+    echo -e "${YELLOW}⚠ Nenhum YubiKey/Nitrokey óbvio no lsusb — diagnóstico de cartão pulado${NC}"
+fi
+
+# 8. Grupos udev / CCID (plugdev; pcscd só se o grupo existir)
+echo -e "${YELLOW}--- Grupos (CCID / leitor USB) ---${NC}"
+if id -nG 2>/dev/null | tr ' ' '\n' | grep -qx plugdev; then
+    echo -e "${GREEN}✓ Usuário no grupo plugdev${NC}"
+else
+    echo -e "${YELLOW}⚠ Usuário fora do grupo plugdev — tokens USB costumam precisar (sudo usermod -aG plugdev \"$USER\"; logout). Ver Módulo 7${NC}"
+fi
+if getent group pcscd >/dev/null 2>&1; then
+    if id -nG 2>/dev/null | tr ' ' '\n' | grep -qx pcscd; then
+        echo -e "${GREEN}✓ Usuário no grupo pcscd${NC}"
+    else
+        echo -e "${YELLOW}⚠ Grupo pcscd existe, mas o usuário não é membro — considere: sudo usermod -aG pcscd \"$USER\" (logout). Ver Módulo 7${NC}"
+    fi
+fi
+
+# 9. Backup recente
 BACKUP_FILE=$(ls -t ~/gpg-backups/subkeys-*.age 2>/dev/null | head -1)
 if [ -n "$BACKUP_FILE" ]; then
     BACKUP_DATE=$(stat -c %y "$BACKUP_FILE" | cut -d' ' -f1)
