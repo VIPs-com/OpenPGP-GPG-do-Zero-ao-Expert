@@ -68,6 +68,25 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 
 ## Pendências ativas (curso + repo)
 
+### Snapshot pós-auditoria (2026-05-04)
+
+**Já concluído nesta rodada (commit `baca8cd`, push em `origin/main`):**
+
+- [x] C-01 / W-02: mapa do Módulo 3 alinhado ao corpo (COMANDO 3.2/3.3).
+- [x] C-02: *hint* do `gpg-health-check.sh` corrigido para `"$FP"`.
+- [x] W-01: `set -euo pipefail` nos 5 scripts-alvo (instalação, criação, backup, health-check, automação) + ajustes defensivos (`|| true`) no health-check.
+- [x] W-03: *rename* canônico `OpenPGPGPG` -> `OpenPGP-GPG` com atualização em `README.md`, `.cursorrules` e nota editorial do curso.
+- [x] W-04: `CERTIFICACAO-INTERNA.md` confirmado no trunk e já referenciado.
+- [x] W-05: passphrase de exemplo sem `#` para evitar conflito com parsers de âncora.
+- [x] W-06: âncora explícita `<a id="apendice-b"></a>` adicionada (Apêndice C já tinha `id`).
+- [x] I-01 / I-04 / I-05: bloco de saída ilegível estabilizado, nota de rubrica `.asc`/`clearsign`/`.sig`, e governança do `gpg-automation.sh` alinhada ao uso didático.
+
+**Pendências que continuam abertas (não esquecidas):**
+
+- [ ] **R2 / W-07:** spot-check VM Ubuntu ainda adiado; checklist segue em branco até corrida real.
+- [ ] **A3 / I-03:** repetir rodada de HEAD em lote após *rename* + novas colagens/trincheiras (atualizar métrica de URLs na tabela de auditoria).
+- [ ] **Eixo B / I-02:** 5 trincheiras de conteúdo seguem como backlog v1.0.x (não bloqueiam a 1.0, mas ainda não iniciadas).
+
 ### P1 — Correções técnicas imediatas (`.md` canônico)
 
 *Origem: auditoria técnica 2026-05-03 + plano aprovado. **Não** alterar o título PQ para «â» — política do anexo: manter **`PÓS-QUÃNTICA`** (ã); grep por corrupção **`QUÂNTICA`**.*
