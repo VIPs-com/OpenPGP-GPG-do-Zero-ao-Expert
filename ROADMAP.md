@@ -100,7 +100,7 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 
 ## Plano definitivo v1.0.x (excelência / nota 9,5)
 
-**Objetivo:** consolidar a **VERSÃO 1.0 canônica** num único Markdown (12 módulos + apêndices), alinhada a [`CERTIFICACAO-INTERNA.md`](./CERTIFICACAO-INTERNA.md), **sem** fundir a estrutura de 15 módulos da referência interna **`🎓 VERSÃO 4.4 EVOLUÍDA – A OBR.md`**. **Nota 9,5** = higiene do repositório + cadência de auditoria + **trincheiras** de conteúdo *reescritas* no tom 1.0 (**mineração selectiva** da 4.4).
+**Objetivo:** consolidar a **VERSÃO 1.0 canônica** num único Markdown (12 módulos + apêndices), alinhada a [`CERTIFICACAO-INTERNA.md`](./CERTIFICACAO-INTERNA.md), **sem** fundir a estrutura de 15 módulos do rascunho histórico **«VERSÃO 4.4 Evoluída»** (ficheiro local opcional **`🎓 VERSÃO 4.4 EVOLUÍDA – A OBR.md`**, **fora do Git** — ver `.gitignore`). **Nota 9,5** = higiene do repositório + cadência de auditoria + **trincheiras** de conteúdo *reescritas* no tom 1.0 (**mineração selectiva** desse material, se existir na tua máquina).
 
 **Ligações:** tabela **«Última auditoria estática»** (início deste ficheiro); **VM** — secção **«Spot-check VM Ubuntu»** abaixo; **R2** — **«Pendências ativas»** acima.
 
@@ -124,7 +124,7 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 | Hardware: comparação, limitações, remissões `keytocard` | Apêndice C (+ M6/M7) | Tabela YubiKey / Nitrokey / SoloKeys; **sem** triplicar COMANDOs existentes | não iniciado |
 | Windows / KeePassXC / FIDO2 / Syncthing / iPhone (profundidade) | Apêndice E | Roteiros em passos; **iPhone** mantém *disclaimer* Blink ≠ Secure Enclave | não iniciado |
 
-**Fonte de mineração:** `🎓 VERSÃO 4.4 EVOLUÍDA – A OBR.md` (raiz do repo) — reaproveitar **ideia e estrutura**; reescrever no vocabulário e nas versões do trunk.
+**Fonte de mineração (opcional):** cópia local `🎓 VERSÃO 4.4 EVOLUÍDA – A OBR.md` na pasta do clone — **não** faz parte do trunk; reaproveitar **ideia e estrutura**; reescrever no vocabulário e nas versões do trunk.
 
 ### Eixo C — Cadência
 
