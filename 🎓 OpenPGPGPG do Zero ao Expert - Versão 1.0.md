@@ -606,11 +606,11 @@ EMAIL_LAB="aluno.training@openpgp-lab.local"
 COMENTARIO_LAB="TRAINING 2026"
 
 echo "Nome: $NOME_LAB"
-echo "Email: $EMAIL_LAB"
+echo "E-mail: $EMAIL_LAB"
 echo "Comentário: $COMENTARIO_LAB"
 ```
 
-> 🔴 **Regra fixa do curso:** durante os exercícios, nunca use email pessoal, da empresa ou chave de produção.
+> 🔴 **Regra fixa do curso:** durante os exercícios, nunca use e-mail pessoal, da empresa ou chave de produção.
 
 **Passphrase da mestra (Diceware — opcional)**
 
@@ -776,7 +776,7 @@ gpg --quick-add-key "$FP" ed25519 auth 1y
 gpg --gen-key
 ```
 
-**O que acontece hoje (GnuPG ≥2.2)?** Em muitas builds, `--gen-key` é **alias** do mesmo assistente simplificado que **`--generate-key`** — o `man gpg` pode listar os dois. O **problema** para o curso não é «comando morto», e sim **ambiguidade:** material velho mistura versões (1.x, 2.0, 2.4) e passos que já não batem com o seu ecrã. **Para aprender e para scripts:** use sempre **`gpg --generate-key`** ou **`gpg --quick-generate-key`** — fica explícito no histórico e evita confusão com textos antigos.
+**O que acontece hoje (GnuPG ≥2.2)?** Em muitas builds, `--gen-key` é **alias** do mesmo assistente simplificado que **`--generate-key`** — o `man gpg` pode listar os dois. O **problema** para o curso não é «comando morto», e sim **ambiguidade:** material velho mistura versões (1.x, 2.0, 2.4) e passos que já não batem com a sua tela. **Para aprender e para scripts:** use sempre **`gpg --generate-key`** ou **`gpg --quick-generate-key`** — fica explícito no histórico e evita confusão com textos antigos.
 
 * * *
 
@@ -791,7 +791,7 @@ gpg --full-generate-key
 *   Tipo de chave (RSA, ECC, etc.)
 *   Tamanho da chave
 *   Validade
-*   Nome, email, comentário
+*   Nome, e-mail, comentário
 *   Senha
 
 **Por que é verbosa?** Pergunta muita coisa que iniciante não precisa saber.
@@ -807,7 +807,7 @@ gpg --generate-key
 **O que acontece?** Pergunta só:
 
 *   Nome
-*   Email
+*   E-mail
 *   Senha
 
 **Por que é boa?** Simples, direta, segura o suficiente para começar.
@@ -854,7 +854,7 @@ gpg --quick-generate-key "Aluno Lab (TRAINING 2026) <aluno.training@openpgp-lab.
 
 **O que faz:** Cria uma chave GPG com configurações simples.
 
-> ⚠️ **IMPORTANTE:** Use uma identidade FALSA para aprender. NUNCA use seu email real nos exercícios.
+> ⚠️ **IMPORTANTE:** Use uma identidade FALSA para aprender. NUNCA use seu e-mail real nos exercícios.
 
 **Digite agora:**
 
@@ -929,7 +929,7 @@ sub   cv25519/7E8F9A0B1C2D3E4F 2026-04-30 [E] [expires: 2027-04-30]
 
 *   `pub` = chave pública (mestra)
 *   `[C]` = capacidade Certify (correto — é a mestra)
-*   `uid` = seu nome e email
+*   `uid` = seu nome e e-mail
 *   `sub` = subchave (já veio automática)
 *   `[E]` = capacidade Encrypt (cifração)
 
@@ -1048,7 +1048,7 @@ COMENTARIO="TRAINING 2026"
 
 echo "🔐 Criando chave GPG..."
 echo "Nome: $NOME"
-echo "Email: $EMAIL"
+echo "E-mail: $EMAIL"
 
 gpg --quick-generate-key "$NOME ($COMENTARIO) <$EMAIL>" ed25519 cert 3y
 
@@ -1229,7 +1229,7 @@ gpg --detach-sign --armor declaracao.txt
 **O que significa:**
 
 *   `--detach-sign` → cria assinatura separada
-*   `--armor` → usa formato texto (para enviar por email)
+*   `--armor` → usa formato texto (para enviar por e-mail)
 
 **Saída esperada:**
 
@@ -1456,7 +1456,7 @@ chmod 400 ~/secure-backup/offline/revogacao-*.asc
 
 | Problema | Solução |
 | --- | --- |
-| `No secret key` | `$FP` incorreto ou chave errada. Confirme com `gpg --fingerprint` ou `gpg --list-secret-keys --with-colons 'UID ou email'`: use o **campo 10** da linha **`fpr:`** (não confunda com o campo 5 de `sec:`, que é só o KeyID longo). |
+| `No secret key` | `$FP` incorreto ou chave errada. Confirme com `gpg --fingerprint` ou `gpg --list-secret-keys --with-colons 'UID ou e-mail'`: use o **campo 10** da linha **`fpr:`** (não confunda com o campo 5 de `sec:`, que é só o KeyID longo). |
 | `Cannot create` | O diretório pode não existir. Crie com `mkdir -p ~/secure-backup/offline` |
 
 * * *
@@ -3303,7 +3303,7 @@ O complemento Enigmail está **descontinuado**; o Thunderbird moderno traz OpenP
 🔑 CONCEITOS IGUAIS (você já sabe tudo isso!):
 ├─ Chave mestra e subchaves [C][S][E][A]
 ├─ Fingerprints (identificadores)
-├─ UIDs (User IDs - nome/email)
+├─ UIDs (User IDs - nome/e-mail)
 ├─ WKD / Keyservers
 └─ Agente de chaves
 
