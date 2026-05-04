@@ -165,7 +165,7 @@ Ao final deste curso, você será capaz de:
 | 11  | Atualize regularmente com `--refresh-keys` | Chaves expiradas precisam ser atualizadas |
 | 12  | Exporte sempre com `--export-options export-minimal` | Evita vazamento de metadados |
 | 13  | Confiança nunca é cega: verifique fingerprints | Única garantia de autenticidade |
-| 14  | Web of Trust > Keyservers cegos | Confiança construída por pessoas |
+| 14  | **WoT** (*Web of Trust*) > keyservers «cegos» | Confiança construída por pessoas e **FPR** confirmado — não por baixar a primeira chave que o servidor devolveu |
 | 15  | WKD é preferível para publicação | HTTPS autenticado |
 | 16  | Assine commits e tags no Git | Prova de autoria e integridade |
 
@@ -198,7 +198,7 @@ Ao final deste curso, você será capaz de:
 | **WKD** | Web Key Directory | Seu site oficial de contato |
 | **Kyber** | Algoritmo pós-quântico (futuro) | Cadeado quântico |
 
-> 📎 **Mais termos** (WoT, HKPS, HKP, SKS, UID, ASCII armor, assinatura destacada, clearsign, entropia, keygrip, `GNUPGHOME`, dirmngr, RNP, LUKS, `age`, certificado de revogação, air-gapped…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
+> 📎 **Mais termos** (WoT, HKPS, HKP, SKS, UID, ASCII armor, assinatura destacada, clearsign, entropia, keygrip, `GNUPGHOME`, dirmngr, RNP, LUKS, `age`, certificado de revogação, air-gapped, **CI/CD**, *pipeline*, *tooling*, **pinentry**…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
 
 * * *
 
@@ -209,7 +209,7 @@ Ao final deste curso, você será capaz de:
 | **2023–2024** | Tutoriais comuns ainda centrados em RSA e comandos antigos | 🟡 Legado |
 | **2025** | ECC mainstream, endurecimento de práticas | 🟢 Transição |
 | **2026** | Estado da arte documentado neste material (referência atual) | 🟢 **ATUAL** |
-| **2027–2028** | Era Sequoia-PGP (Rust, CI/CD) | ⚠️ Preparação |
+| **2027–2028** | Era Sequoia-PGP (Rust) + adoção em **CI/CD** (*integração e entrega contínuas* — automação de build/teste/publicação) | ⚠️ Preparação |
 | **2029–2030** | Salto Pós-Quântico (Kyber, SPHINCS+) | 🔮 Futuro |
 
 * * *
@@ -3261,7 +3261,7 @@ FP=$(gpg --list-secret-keys --with-colons "$UID_PQ_MIG" | awk -F: '/^fpr:/ {prin
 
 *   **Distribuições Linux** que empacotam **`sequoia-sq`** e projetos Rust que dependem do crate **`sequoia-openpgp`** (assinatura, parsing, ferramentas internas).
 *   **Integrações sob política «Rust/OpenPGP»** — ao avaliar um produto, confira **qual** biblioteca entra **no pacote que você instala** (**Sequoia**, **rPGP**, outra).
-*   **Ecossistema em expansão:** uso costuma ser **menos visível** que o `gpg` no desktop, mas cresce em **CI, assinatura de artefatos e integração em pipelines** — por isso o **`sq`** vale como segunda ferramenta na caixa do expert.
+*   **Ecossistema em expansão:** uso costuma ser **menos visível** que o `gpg` no desktop, mas cresce em **CI**, assinatura de artefatos e integração em ***pipelines*** — por isso o **`sq`** vale como segunda ferramenta na caixa do expert (*CI*, *pipeline*, *tooling*: [glossário de referência](#glossario-referencia)).
 
 #### Thunderbird com OpenPGP nativo (e-mail desktop)
 
@@ -3318,7 +3318,7 @@ O complemento Enigmail está **descontinuado**; o Thunderbird moderno traz OpenP
 └─ gpg --decrypt → sq decrypt … (opc. --recipient-file … se a chave estiver só em arquivo)
 ```
 
-> 💡 **DICA DO PROFESSOR:** O **modelo mental** de OpenPGP (certificado, UID, fingerprint, subchaves, agente) **serve quase igual** no Sequoia; mudam sobretudo **sintaxe de CLI**, **valores padrão** e alguns cantos de WoT/policy entre `gpg` e `sq`. Por isso dominar o `gpg` **e** saber ler o `sq help` deixa você preparado quando o `sq` ganhar mais tração em **ferramentas de apoio ao desenvolvedor**.
+> 💡 **DICA DO PROFESSOR:** O **modelo mental** de OpenPGP (certificado, UID, fingerprint, subchaves, agente) **serve quase igual** no Sequoia; mudam sobretudo **sintaxe de CLI**, **valores padrão** e alguns cantos de WoT/*policy* entre `gpg` e `sq`. Por isso dominar o `gpg` **e** saber ler o `sq help` deixa você preparado quando o `sq` ganhar mais tração em ***tooling*** (ferramentas de apoio ao desenvolvedor — ver [glossário](#glossario-referencia)).
 
 * * *
 
@@ -3461,7 +3461,7 @@ Use esta página como **referência rápida** antes de encerrar cada fase do cur
 
 ### 📖 Glossário de referência
 
-Definições curtas dos termos que mais reaparecem no curso. Para uma leitura inicial de um minuto, veja também o [Glossário rápido](#glossario-rapido) no onboarding.
+Definições curtas dos termos que mais reaparecem no curso. **Inglês técnico:** nomes de opções e ferramentas seguem o upstream (`--clearsign`, `pinentry`, …); vocabulário de DevOps (**CI/CD**, *pipeline*, *tooling*) mantém-se em inglês onde é o uso comum em equipes — com **uma linha** de sentido aqui na primeira leitura sistemática. Para um minuto no início do curso, veja também o [Glossário rápido](#glossario-rapido) no onboarding.
 
 | Termo | Significado |
 | --- | --- |
@@ -3486,6 +3486,9 @@ Definições curtas dos termos que mais reaparecem no curso. Para uma leitura in
 | **Air-gapped / offline** | Operação sem rede no momento sensível (ex.: operar a mestra no Tails sem Internet). Objetivo: reduzir superfície de vazamento. |
 | **LUKS** | Criptografia de disco/partição no Linux — uso típico para proteger mídia física onde você guarda backups ou cofres. |
 | **age** | Ferramenta simples para cifrar arquivos com chave ou passphrase — usada nos roteiros de backup com `gpg` + arquivos `.age`. |
+| **CI / CD / CI/CD** | *Continuous Integration* (**CI**) — integrar mudanças com testes automatizados; *Continuous Delivery* ou *Deployment* (**CD**) — entregar ou implantar com cadência alta. **CI/CD** resume o par. No curso, pense nisso ao falar de **assinatura de artefatos**, `sq`/`gpg` em robôs de build e modos **não interativos**. |
+| ***Pipeline*** | Sequência automatizada de etapas num sistema de CI (*build*, testes, verificação de assinatura, *deploy*). Em português falado em equipes de software, a palavra costuma ficar em inglês. |
+| ***Tooling*** | *Tooling* — conjunto de ferramentas de apoio ao desenvolvedor (CLI, `sq` em *wrappers*, integrações). Mantemos o termo em inglês por ser vocabulário corrente na indústria. |
 | **Certificado de revogação** | Saída de **`gpg --gen-revoke`** (COMANDO 3.1): arquivo **sem** passphrase que, **se publicado**, invalida a chave alvo — trate como segredo físico/offline (quem o tiver pode destruir a reputação operacional da identidade). |
 | **`sq cert export`** | No **Sequoia**, exporta só material **público** (certificado OpenPGP sem segredo no cofre). Comparar com `sq key export`. Ver **Módulo 12** e tabela GnuPG × Sequoia. |
 | **`sq key export`** | No **Sequoia**, exporta pacote com **material secreto** disponível no cofre local (fluxo análogo a backup mestra com `gpg --export-secret-keys`). O filtro **`--cert=FPR`** escolhe a identidade. Ver **Módulo 12**. |
