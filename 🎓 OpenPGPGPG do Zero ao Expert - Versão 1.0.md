@@ -198,7 +198,7 @@ Ao final deste curso, você será capaz de:
 | **WKD** | Web Key Directory | Seu site oficial de contato |
 | **Kyber** | Algoritmo pós-quântico (futuro) | Cadeado quântico |
 
-> 📎 **Mais termos** (WoT, HKPS, HKP, SKS, UID, ASCII armor, assinatura destacada, clearsign, entropia, keygrip, `GNUPGHOME`, dirmngr, RNP, LUKS, `age`, certificado de revogação, air-gapped, **CI/CD**, *pipeline*, *tooling*, **pinentry**…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
+> 📎 **Mais termos** (WoT, **TOFU**, HKPS, HKP, SKS, **Hagrid**, UID, ASCII armor, assinatura destacada, clearsign, entropia, keygrip, `GNUPGHOME`, dirmngr, RNP, LUKS, `age`, certificado de revogação, air-gapped, **CI/CD**, *pipeline*, *tooling*, **pinentry**…): ver o [Glossário de referência](#glossario-referencia), na área dos Apêndices.
 
 * * *
 
@@ -301,6 +301,7 @@ Ao final deste curso, você será capaz de:
 │   │   ├── ▸ COMANDO 6.1: dd para gravar Tails (com verificação)
 │   │   ├── ▸ COMANDO 6.2: gpg no Tails (offline)
 │   │   ├── ▸ COMANDO 6.3: exportando subchaves
+│   │   ├── 🔵 (opc.) Sub-módulo: subchaves em token (YubiKey / Nitrokey)
 │   │   └── 🚀 Bônus: Script automatizado para Tails
 │   │
 │   ├── 📋 Módulo 7: Diagnóstico e Debug
@@ -325,6 +326,7 @@ Ao final deste curso, você será capaz de:
 │   │   └── Como mitigar cada um?
 │   │
 │   ├── 📋 Módulo 10: Comandos de Manutenção
+│   │   ├── Panorama 2026 (SKS ↓, WKD, Hagrid, WoT vs TOFU)
 │   │   ├── ▸ COMANDO 10.1: gpg --refresh-keys (+ keyservers HKPS / WKD)
 │   │   ├── ▸ COMANDO 10.2: gpg --check-trustdb
 │   │   ├── ▸ COMANDO 10.3: gpg --update-trustdb
@@ -850,6 +852,19 @@ gpg --quick-generate-key "Aluno Lab (TRAINING 2026) <aluno.training@openpgp-lab.
 
 * * *
 
+#### Validade: mestra \[C\] vs subchaves \[S\]\[E\]\[A\] (política «expert»)
+
+No modelo **cartório + carimbos** deste curso, a **mestra** fica em cofre (Tails/offline) e as **subchaves** fazem o trabalho diário — por isso a **validade** também deve ser **assimétrica**:
+
+| Material | Validade típica (produção bem disciplinada) | Por quê |
+| --- | --- | --- |
+| **Subchaves** \[S\]\[E\]\[A\] | **Curta**: **1 ano** (como nos `quick-add-key … 1y` deste módulo) até **2 anos** no máximo | Força **rotação** previsível; se vazar uma subchave, o impacto temporal é limitado — alinhado ao **Mandamento 10**. |
+| **Mestra** \[C\] | **Longa**: **5–10 anos**, ou **sem data de expiração** (*no expiry*) **só** se a mestra estiver **muito** bem protegida (air-gapped, backup e **certificado de revogação** testados — Módulo 3) | Trocar a mestra é operação **pesada** (reassinhar identidades, reconfiar contatos); prazo longo reduz atrito **desde** que o plano de revogação não seja fictício. |
+
+> 📎 **Laboratório vs vida real:** no **🔵** `quick-generate-key … cert 3y` acima usamos **3 anos** na mestra só para o aluno **ver** expiração sem empurrar para «para sempre» no primeiro dia. Em produção, ajuste `3y` → `5y` / `10y` / `0` conforme política interna — **nunca** `0` na mestra sem cofre + revogação + pessoas treinadas.
+
+* * *
+
 #### ▸ COMANDO 1.1: Criando sua primeira chave (método padrão)
 
 **O que faz:** Cria uma chave GPG com configurações simples.
@@ -983,6 +998,8 @@ gpg --quick-add-key "$FP" ed25519 sign 1y
 *   `ed25519` → algoritmo (moderno, seguro)
 *   `sign` → capacidade (Assinatura)
 *   `1y` = válida por 1 ano
+
+> 📎 **Política de validade:** `1y` nas subchaves é o **padrão didático e uma boa linha de base em produção**; a mestra costuma ter prazo **bem maior** (ou *no expiry* com proteção forte). Leia a tabela **«Validade: mestra vs subchaves»** acima antes de sair copiando prazos de tutoriais antigos.
 
 **Saída esperada:**
 
@@ -2321,6 +2338,28 @@ echo "   - [A] para autenticação SSH"
 
 * * *
 
+<a id="submodulo-token-openpgp"></a>
+
+#### 🔵 Sub-módulo opcional: subchaves em token (YubiKey / Nitrokey)
+
+> **Público:** quem já dominou **backup + revogação** (Módulo 3), **export/import de subchaves** (Módulo 6) e quer tirar o material **\[S\]\[E\]\[A\]** do disco — mantendo a mestra **\[C\]** no Tails/cofre. **Não** é obrigatório para fechar o curso.
+
+**Ideia:** o *smart card* OpenPGP do **YubiKey** (ou equivalente **Nitrokey**, Librem Key, etc.) guarda cópias **não exportáveis** das subchaves; o `gpg-agent` usa o leitor em vez de `~/.gnupg/private-keys-v1.d/` para as operações diárias.
+
+**Roteiro de alto nível (leia o manual do fabricante antes de tocar em produção):**
+
+1. **Cofre em dia:** certificado de revogação, backup `.asc` das subchaves e da mestra conforme Módulo 3 — **sem** isso, **não** apague segredos do disco.
+2. **`gpg --card-status`** — confirme que o leitor, PIN e **Admin PIN** estão conhecidos; reset de fábrica apaga o cartão (**irreversível**).
+3. **`gpg --edit-key`** na mestra certa → `keytocard` para cada subchave \[S\]/\[E\]/\[A\] nos *slots* certos do cartão (a ordem e os limites variam por modelo — siga a doc do aparelho).
+4. **Verificar** assinatura, decifração e **SSH** \[A\] com o token inserido **antes** de remover segredos do host.
+5. **Só então** (se política interna permitir) reduzir cópias secretas **no disco** do host — o detalhe depende do modelo (**stub** que aponta para o cartão vs remoção real) e da série do GnuPG; siga o **manual do fabricante** e `man gpg` / `gpg --card-edit` **antes** de qualquer `delete-*`. Operação mal feita pode deixá-lo **sem** cópia recuperável; muitos times mantêm cofre **offline** com `.asc` mesmo após `keytocard`.
+
+> 📎 **SSH:** depois de mover \[A\] para o cartão, o fluxo do **Módulo 5** (`sshcontrol`, `SSH_AUTH_SOCK`) continua válido — o agente fala com o driver do token.
+
+**Onde aprofundar:** [Apêndice C — HARDWARE WALLETS + SMARTCARDS](#apendice-c); documentação oficial **YubiKey OpenPGP** / **Nitrokey** (geração de chaves no próprio token vs *move* desde o `gpg`).
+
+* * *
+
 ### 📋 MÓDULO 7: DIAGNÓSTICO E DEBUG
 
 > 🎯 **Objetivo:** Aprender a diagnosticar e resolver problemas comuns do GPG
@@ -2865,6 +2904,32 @@ Mapa rápido (útil ao revisar política com times de segurança — mesmo vocab
 
 * * *
 
+<a id="panorama-2026-sks-wkd-tofu"></a>
+
+#### Panorama 2026: SKS em declínio, WKD, HKPS (**Hagrid**) e WoT vs **TOFU**
+
+**O que mudou na «rede de keyservers»:** a federação **SKS** (*Synchronizing Key Server*) — muitos pools *mutuamente sincronizados* — foi o padrão visual dos anos 2000–2010, mas em **2026** é **legado arriscado**: *key flooding*, metadados expostos, chaves erradas «parecidas» e operadores saindo do ar. **Não** trate pool SKS genérico como fonte primária (o curso já marca isso como 🔴).
+
+**O que subiu no lugar (descoberta e publicação):**
+
+| Mecanismo | Papel em 2026 |
+| --- | --- |
+| **WKD** (*Web Key Directory*) | **Publicação** no **seu** HTTPS (`/.well-known/openpgpkey/…`) — você controla o domínio e o conteúdo; o `gpg` descobre a chave pelo e-mail. **COMANDO 10.5**. |
+| **HKPS** pontual | **Download** com TLS — ex.: **`hkps://keys.openpgp.org`** (serviço **independente** da rede SKS) ou `hkps://keyserver.ubuntu.com` (Hockeypuck) como *fallback*. |
+| **`keys.openpgp.org` + *Hagrid*** | O site roda o software **[*Hagrid*](https://gitlab.com/keys.openpgp.org/hagrid)** — *keyserver* moderno com verificação de e-mail no UID, **sem** semântica de «pool SKS» clássica. Útil para **recv** com **FPR** confirmado **fora da banda**; ainda assim, **WKD** ganha quando você controla o domínio. |
+
+**WoT vs TOFU (dois modelos de confiança — não confunda):**
+
+| Modelo | O que é | Quando aparece no discurso do curso |
+| --- | --- | --- |
+| **WoT** (*Web of Trust*) | Rede de **assinaturas explícitas** (`gpg --sign-key`, níveis de margem) entre pessoas que se verificaram **fora** do e-mail — **COMANDO 10.6**. Continua válida em **nichos** (grupos técnicos, conferências), mas **não escala** para «todo mundo assina todo mundo». |
+| **TOFU** (*trust on first use*) | O programa **memoriza** o par (identidade → fingerprint) na **primeira** importação boa e **alerta** se o material mudar depois — *“confie na primeira vez que acertei, desconfie se mudar”*. No GnuPG existe modo **`trust-model tofu`** (detalhes fora do escopo deste laboratório, mas você verá menções em documentação upstream). |
+| **Prática comum em 2026** | Combinar **FPR** publicado em canal **oficial** (site, README assinado, WKD) + **HKPS** ou `.asc` — **WoT** como reforço entre pares, **TOFU** como rede de segurança contra troca silenciosa. |
+
+> 📎 **Lembrete:** nenhum keyserver — nem Hagrid — substitui **verificar o fingerprint** com a pessoa ou com a fonte oficial do projeto.
+
+* * *
+
 <a id="comando-10-1"></a>
 
 #### ▸ COMANDO 10.1: Atualizando chaves de keyservers
@@ -2885,7 +2950,7 @@ A fonte da verdade para **publicação** continua sendo **WKD** (COMANDO 10.5). 
 
 | Endpoint | Papel |
 | --- | --- |
-| `hkps://keys.openpgp.org` | Foco em privacidade e verificação de e-mail; não participa da rede SKS clássica |
+| `hkps://keys.openpgp.org` | Foco em privacidade e verificação de e-mail; **não** é rede **SKS** — infraestrutura **Hagrid** (serviço concentrado) |
 | `hkps://keyserver.ubuntu.com` | Fallback Hockeypuck; ampla interoperabilidade; UIDs ficam públicos |
 
 🔴 **Evite:** pools SKS genéricos, `pgp.mit.edu` e qualquer servidor sem **HKPS** (TLS).
@@ -2983,6 +3048,8 @@ gpg --export --armor "$FP" > pubkey.asc
 #### ▸ COMANDO 10.6: Web of Trust operacional (assinando chave de terceiro)
 
 **O que faz:** Constrói confiança explícita entre identidades verificadas.
+
+> 📎 **Contexto 2026:** leia o bloco [**Panorama 2026: SKS, WKD, Hagrid e WoT vs TOFU**](#panorama-2026-sks-wkd-tofu) (acima, **antes** do COMANDO 10.1) — a **WoT** aqui é **complemento** humano, não substituto de **FPR** confirmado nem de **WKD**.
 
 ```sh
 # 1) importe a chave pública da pessoa
@@ -3468,6 +3535,8 @@ Definições curtas dos termos que mais reaparecem no curso. **Inglês técnico:
 | **\[C\] / \[S\] / \[E\] / \[A\]** | Capacidades OpenPGP na chave: **C**ertify (mestra: assinar identidades da própria chave e emitir revogação), **S**ign (assinatura), **E**ncryption (cifragem a terceiros), **A**uthentication (ex.: SSH com `gpg-agent`). |
 | **WKD** | *Web Key Directory* — forma padrão de publicar a chave pública via HTTPS no domínio do e-mail (`.well-known/openpgpkey/` ou subdomínio `openpgpkey`). Ver Módulo 10. |
 | **WoT** | *Web of Trust* — confiança derivada de assinaturas mútuas e níveis de confiança no chaveiro (não confundir com “confiar cegamente” em keyserver). Ver Módulo 10 / apêndices de política. |
+| **TOFU** | *Trust on first use* — modelo em que o software **regista** o fingerprint visto na **primeira** importação «boa» e **avisa** se outro material aparecer depois para o mesmo identificador; no GnuPG, relaciona-se com **`trust-model tofu`**. Complementa (não substitui) verificação **fora da banda** e **WKD**. |
+| **Hagrid** | *Software* do *keyserver* **`keys.openpgp.org`** (HKPS com verificação de e-mail no UID). **Não** é a rede federada **SKS**; trate como serviço **operado** e moderado — ainda assim exija **FPR** confirmado por canal independente. |
 | **HKPS** | Acesso a servidor de chaves sobre TLS (`hkps://`), reduzindo exposição em relação a HKP simples ou infraestruturas SKS legadas. |
 | **HKP** | *HTTP Key Protocol* — keyserver clássico **sem** TLS (`hkps://` é a variante segura). Hoje prefira **HKPS**, **WKD** ou publicação direta; trate HKP “nu” como legado / laboratório. |
 | **SKS** | *Synchronizing Key Server* — rede federada **antiga** de keyservers (sincronização em massa). Hoje é **legado**: superfície para *key flooding*, metadados e confusão de chaves. Não a trate como fonte primária; use **WKD**, **keys.openpgp.org** ou **HKPS** pontual com **FPR** confirmado. |
@@ -3581,7 +3650,11 @@ set -euo pipefail
 
 * * *
 
+<a id="apendice-c"></a>
+
 ### APÊNDICE C: HARDWARE WALLETS + SMARTCARDS
+
+> 📎 **Fluxo passo a passo (mover subchaves para token):** o roteiro **pedagógico** está no [**Sub-módulo opcional — YubiKey / Nitrokey**](#submodulo-token-openpgp) (Módulo 6). Este apêndice resume **opções**, **custos** e **critérios de adoção**.
 
 | Opção | Segurança | Custo | Melhor uso |
 | --- | --- | --- | --- |
