@@ -1,13 +1,13 @@
 # OpenPGP/GPG do Zero ao Expert
 
-Curso em **um único Markdown** (versão canônica **1.0**), com orientações para mantenedor, roadmap e regras para o Cursor.
+Curso em **um único Markdown** (versão canônica **1.0**), com orientações para mantenedor, roadmap e regras para o Cursor. **Plano de evolução v1.0.x** (trincheiras, higiene do repo, nota 9,5): ver secção **«Plano definitivo v1.0.x»** no [`ROADMAP.md`](./ROADMAP.md).
 
 ## Conteúdo principal
 
 | Arquivo | Descrição |
 |---------|-----------|
 | [🎓 OpenPGPGPG do Zero ao Expert - Versão 1.0.md](./🎓%20OpenPGPGPG%20do%20Zero%20ao%20Expert%20-%20Versão%201.0.md) | Curso completo (módulos, comandos, checkpoints, apêndices) |
-| [ROADMAP.md](./ROADMAP.md) | Fluxo auditoria → roadmap; **spot-check VM** opcional/pendente; checklist por camada |
+| [ROADMAP.md](./ROADMAP.md) | Fluxo auditoria → roadmap; **spot-check VM** opcional/pendente; checklist por camada; **Plano definitivo v1.0.x** (Eixos A/B/C) |
 | [CERTIFICACAO-INTERNA.md](./CERTIFICACAO-INTERNA.md) | Rubrica opcional para validar nível **Expert** ao fechar o curso (instrutor/mantenedor) |
 | [`LICENSE`](./LICENSE) | Direitos reservados (por padrão); substituir se mudar a política editorial |
 | [.cursorrules](./.cursorrules) | Contexto e padrões do projeto para IA / equipe |

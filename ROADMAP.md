@@ -62,6 +62,7 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 | 3 | Próxima tarefa à escolha (conteúdo `.md`, URLs, anexo, meta-repo) | **VM spot-check adiado** — ver § Pendências; **R2** continua **[ ]** |
 | 4 | Checklist **camadas 1–2–4** (e **3** se houver rede) | Atualizar **tabela de auditoria** quando fizer rodada |
 | 5 | **Spot-check VM** (opcional, quando houver Ubuntu) | **§ Spot-check VM Ubuntu** + **Registro de execução** — só após voltar a priorizar a VM |
+| 6 | **Plano definitivo v1.0.x (nota 9,5)** | Secção **«Plano definitivo v1.0.x»** (após **Pendências ativas**) — Eixos A/B/C, *tracking* de trincheiras e higiene do repo |
 
 ---
 
@@ -94,6 +95,42 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 ### Outras (alta utilidade, fora P1–P3)
 
 - [ ] **Spot-check na VM Ubuntu** — roteiro completo abaixo (`dd`, `gpg --verify` `.img`, `quick-add-key`, import subchaves, health-check). *Idem **R2**: adiado por ora.*
+
+---
+
+## Plano definitivo v1.0.x (excelência / nota 9,5)
+
+**Objetivo:** consolidar a **VERSÃO 1.0 canônica** num único Markdown (12 módulos + apêndices), alinhada a [`CERTIFICACAO-INTERNA.md`](./CERTIFICACAO-INTERNA.md), **sem** fundir a estrutura de 15 módulos da referência interna **`🎓 VERSÃO 4.4 EVOLUÍDA – A OBR.md`**. **Nota 9,5** = higiene do repositório + cadência de auditoria + **trincheiras** de conteúdo *reescritas* no tom 1.0 (**mineração selectiva** da 4.4).
+
+**Ligações:** tabela **«Última auditoria estática»** (início deste ficheiro); **VM** — secção **«Spot-check VM Ubuntu»** abaixo; **R2** — **«Pendências ativas»** acima.
+
+**Regra:** não renumerar módulos nem criar «Módulo 1.5» no mapa certificado; novos blocos entram como **subsecções** ou **apêndices**.
+
+### Eixo A — Higiene do repositório (decisões de manutenção)
+
+| Item | Estado | Notas |
+| --- | --- | --- |
+| **A1** — Nome do ficheiro canónico (`OpenPGPGPG` no nome em disco) | não iniciado | Corrigir o segmento no *filename*; varredura em `README.md`, cabeçalho do `.md` canónico, `CERTIFICACAO-INTERNA.md`, `.cursorrules`, links relativos; decidir **emoji + Versão 1.0** vs nome **ASCII** e registar a decisão num *commit* |
+| **A2** — Camada **5** (spot-check VM Ubuntu) | Pendente (política) | Ver **R2**, tabela **Registro de execução** e linha **VM** na auditoria estática; **PASS** só após corrida real ou desvio documentado |
+| **A3** — Rodada **URLs** (camada 3) + métricas | não iniciado | Após *rename*, trincheiras com novos links ou grandes colagens: HEAD em lote nos HTTPS **únicos** do `.md` canónico; actualizar a célula **URLs** na tabela de auditoria (contagem + data) |
+
+### Eixo B — Trincheiras de conteúdo v1.0.x (4.4 → canónico)
+
+| Trincheira | Destino no canónico | Critério de pronto | Estado |
+| --- | --- | --- | --- |
+| Curvas **ed25519** × **cv25519** + tabela de decisão `[S]`/`[E]` | Módulo 1 (subsecções) | Aluno explica em ~60s o papel de `[S]` e `[E]` no curso | não iniciado |
+| Evolução CLI `--gen-key` → `--full-*` / `--generate-key` / `--quick-*` | Módulo 0 ou 1 | Linha do tempo + o que usar no Ubuntu 24.04 do curso | não iniciado |
+| PQ mais prático (lab híbrido, avisos 2.4 vs 2.5) | Módulo 11 | `GNUPGHOME` de teste + *teardown*; sem prometer 2.5 no `apt` para todos | não iniciado |
+| Hardware: comparação, limitações, remissões `keytocard` | Apêndice C (+ M6/M7) | Tabela YubiKey / Nitrokey / SoloKeys; **sem** triplicar COMANDOs existentes | não iniciado |
+| Windows / KeePassXC / FIDO2 / Syncthing / iPhone (profundidade) | Apêndice E | Roteiros em passos; **iPhone** mantém *disclaimer* Blink ≠ Secure Enclave | não iniciado |
+
+**Fonte de mineração:** `🎓 VERSÃO 4.4 EVOLUÍDA – A OBR.md` (raiz do repo) — reaproveitar **ideia e estrutura**; reescrever no vocabulário e nas versões do trunk.
+
+### Eixo C — Cadência
+
+- Preferir **um tema** (ou uma linha da tabela B) por *commit* / *PR*.
+- Após cada trincheira: camadas **2** e **4**; camada **3** se houver URLs novos; registo no **Histórico de rodadas** deste ficheiro e actualização da coluna **Estado** na tabela B.
+- **Mapa visual** do curso: alterar só se surgir **COMANDO** novo ou título que o aluno procura no índice.
 
 ---
 
@@ -192,6 +229,7 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-12** | **Apêndice E (Android):** OpenKeychain — manutenção limitada, lançamentos irregulares, aviso de dependência; glossário + mapa |
 | **2026-05-13** | **v1.1 planejado:** secção **Backlog v1.1** no `ROADMAP` (WSL2 + GPG, `SSH_AUTH_SOCK`, Gpg4win vs agente WSL); nota no Apêndice E + linha no mapa do curso |
 | **2026-05-14** | **Pré-lançamento 1.0:** `curl -I -L` nos URLs do cabeçalho (GnuPG download, Tails, Sequoia `sq`, manual OpenPGP Key Management) — **200** ou **302→200**; glossário — entradas **ML-KEM**, **`GPG_TTY`**, **`HEALTHCHECK_AUTO_RESET`** + âncora `#apendice-d-healthcheck-auto-reset`; **HEAD** na tabela de referências (**SafeCurves**, **EFF Diceware**) — **200**; rubrica certificação (Git **Módulo 4** / SSH **Módulo 5**); nota didática **Apêndice F** (migração RSA→ECC); **pedagogia WSL2:** Módulo 9 — linha **Win32 + WSL2** → **Apêndice E** + `ROADMAP` v1.1; Apêndice E — `#apendice-e`, remissões M1–M5 / M0·8 / D / Windows; `#modulo-9-threat-modeling` (PARTE 4 sem inflação — PQ / Sequoia / WKD) |
+| **2026-05-02** | **ROADMAP:** secção **«Plano definitivo v1.0.x (excelência / nota 9,5)»** — Eixos A (higiene), B (trincheiras 4.4 → canónico), C (cadência); **Backlog v1.1** alargado (**E‑ZT**, **E‑BENCH**, **E‑FLOW**, **E‑CERT**, **E‑K8S**); **README** remete ao plano; **Próxima sessão** — linha 6 |
 | **Repo** | `.vscode/` e `scripts/` só locais (`.gitignore` + fora do remoto) |
 
 **Manutenção recorrente:** ao **novo** bloco shell no `.md` canônico → rever `list-secret-keys` + `fpr:` + `UID_IMPORT` / `LAB_EMAIL`; ao **novo** link HTTPS → repetir **HEAD** em lote; ao subir **GnuPG** experimental → rever nomes PQ na CLI (Módulo 11).
@@ -205,8 +243,13 @@ Conteúdo acordado para **futura** revisão **1.1.x** do `.md` canônico; o trun
 | # | Tema | Notas para quem for escrever |
 | --- | --- | --- |
 | **E‑WSL** | **WSL2 + GnuPG no Windows** (Apêndice E ou subsecção nova) | Cobrir **dois mundos**: `gpg`/`gpg-agent` no **Ubuntu WSL** vs **Gpg4win** no Win32 — **conflito** de agentes, `GNUPGHOME`, sockets. **`SSH_AUTH_SOCK`**: não cruza o *boundary* **WSL ↔ Win32** por defeito; documentar *workarounds* comuns (*npipe* / `socat` / «Git só no WSL») com **avisos de risco**. **Pinentry** no WSL sem DISPLAY. *Decision tree*: «só WSL», «só Windows», «híbrido com política explícita». |
+| **E‑ZT** | **Zero Trust** aplicado ao cofre GnuPG (conceito longo) | Enquadramento arquitectural (identidade, agentes, superfícies); **não** obrigatório para fechar a 1.0; evitar duplicar o *threat model* do Módulo 9 sem remissões |
+| **E‑BENCH** | **Benchmarks** de performance (algoritmos / curvas) | Scripts reprodutíveis + aviso de *microbenchmark* enganoso; opcional para turmas avançadas |
+| **E‑FLOW** | **Fluxogramas** / *assets* visuais densos | Diagramas (WKD, Tails → subchaves, recuperação); manutenção extra — ficar para quando houver ferramenta e tempo |
+| **E‑CERT** | **Certificado** de conclusão mais elaborado (*design*) | Modelo visual ou PDF gerado; não bloqueia estudo pelo `.md` |
+| **E‑K8S** | **Kubernetes** / rotinas operacionais além do Apêndice D | *Playbooks* ou exemplos adicionais se o Apêndice D ficar curto para o teu público-alvo |
 
-**Origem:** *feedback* de que este é o *gap* mais provável para **devs Windows** que seguem o curso em contexto corporativo.
+**Origem:** **E‑WSL** — *feedback* de *gap* corporativo Windows/WSL. **E‑ZT** a **E‑K8S** — *stretch goals* acordados fora do âmbito **v1.0.x** (ver **Plano definitivo v1.0.x** — Eixo B para o que **entra** na 1.0).
 
 ---
 
