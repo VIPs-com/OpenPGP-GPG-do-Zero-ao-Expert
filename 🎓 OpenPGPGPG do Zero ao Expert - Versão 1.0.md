@@ -1438,7 +1438,7 @@ Confirme que deseja criar este certificado? (s/N) s
 Revocation certificate created.
 ```
 
-> 📎 **Revogação automática vs. este ficheiro:** desde o GnuPG **2.1**, ao criar uma mestra o instalador costuma guardar um certificado de revogação **automático** em `~/.gnupg/openpgp-revocs.d/<KeyId>.rev`. O **`--gen-revoke` deste COMANDO** gera **outra** cópia (`.asc`) para **mídia ou cofre que você controla** (offline, 3-2-1), com o **motivo** e a **documentação** do laboratório. Não substitui o ficheiro automático no PC — **complementa** o plano de recuperação se perder a máquina ou o diretório `~/.gnupg`.
+> 📎 **Revogação automática vs. este bloco:** desde o GnuPG **2.1**, ao criar uma mestra o instalador costuma guardar um certificado de revogação **automático** em `~/.gnupg/openpgp-revocs.d/<KeyId>.rev`. O **`--gen-revoke` deste COMANDO** gera **outra** cópia (`.asc`) para **mídia ou cofre que você controla** (offline, 3-2-1), com o **motivo** e a **documentação** do laboratório. Não substitui o arquivo automático no PC — **complementa** o plano de recuperação se perder a máquina ou o diretório `~/.gnupg`.
 
 **Agora guarde em um local seguro:**
 
@@ -2641,7 +2641,7 @@ fi
     echo "ALERTA: GPG Health Check" | mail -s "GPG Alert" aluno@local
 ```
 
-> 📎 **Cron + e-mail:** o pipe final usa `mail` (pacote típico **`mailutils`** no Ubuntu do curso). Sem MTA local, o comando falha em silêncio ou gera erro no log — em **laboratório**, comente a linha do `mail` ou redirecione só para ficheiro (`>> …/gpg-health.log`).
+> 📎 **Cron + e-mail:** o pipe final usa `mail` (pacote típico **`mailutils`** no Ubuntu do curso). Sem MTA local, o comando falha em silêncio ou gera erro no log — em **laboratório**, comente a linha do `mail` ou redirecione só para arquivo (`>> …/gpg-health.log`).
 
 * * *
 
@@ -3076,7 +3076,7 @@ Computadores quânticos suficientemente grandes (milhões de qubits) quebrarão:
 | **2030-2035** | Risco crescente a **RSA** de tamanhos modestos se computadores quânticos **escaláveis** existirem (Shor) | Planeamento de migração e chaves híbridas |
 | **2040+** | Horizonte: curvas clássicas (ECC) e RSA deixam de ser «para sempre» em arquivos de **muito** longo prazo | Depende de progresso real de hardware e da criptanálise — siga NIST/NSA, fornecedores e a sua política de risco |
 
-> 📎 **Incerteza:** ordens de grandeza em **anos** (qual algoritmo «cai primeiro» sob Shor) dependem de **premissas** sobre qubits, correção de erros e novos ataques. Use a tabela como **mapa de conversa** e para **priorizar rotação de chaves** — não como calendário exacto. Referências úteis: [NIST Post-Quantum Cryptography](https://csrc.nist.gov/projects/post-quantum-cryptography) e relatórios do seu setor.
+> 📎 **Incerteza:** ordens de grandeza em **anos** (qual algoritmo «cai primeiro» sob Shor) dependem de **premissas** sobre qubits, correção de erros e novos ataques. Use a tabela como **mapa de conversa** e para **priorizar rotação de chaves** — não como calendário exato. Referências úteis: [NIST Post-Quantum Cryptography](https://csrc.nist.gov/projects/post-quantum-cryptography) e relatórios do seu setor.
 
 * * *
 
@@ -3293,7 +3293,7 @@ O complemento Enigmail está **descontinuado**; o Thunderbird moderno traz OpenP
 
 > 📎 No Sequoia, **`sq cert export`** é só material **público**; já **`sq key export`** envia o OpenPGP **com segredo** disponível no cofre (como `gpg --export-secret-keys`). O **`--cert=FPR`** em **`sq key export`** só **escolhe** qual identidade exportar — não significa “sem segredo”. Saída OpenPGP costuma vir **ASCII armor por omissão**; confira `sq help` na sua versão.
 
-> 📎 **`sq verify` / `sq decrypt` (~1.3.x):** verificação **destacada** → **`--signature-file=SIG`** + arquivo de dados (como na tabela). Mensagem **inline** assinada → **`sq verify --message`**; **clearsigned** → **`sq verify --cleartext`**. Em **`sq decrypt`**, se o segredo estiver **só** em um arquivo exportado (fora do cofre Sequoia), use **`--recipient-file=chave-secreta.pgp`**; com cofre já povoado, **`sq decrypt arquivo_cifrado.pgp`** costuma bastar (exemplos em `man sq-verify` / `man sq-decrypt`).
+> 📎 **`sq verify` / `sq decrypt` (~1.3.x):** verificação **destacada** → **`--signature-file=SIG`** + arquivo de dados (como na tabela). Mensagem **inline** assinada → **`sq verify --message`**; **clearsigned** → **`sq verify --cleartext`**. Em **`sq decrypt`**, se o segredo estiver **só** em um arquivo exportado (fora do cofre Sequoia), use **`--recipient-file=chave-secreta.pgp`**; com cofre já povoado, **`sq decrypt arquivo_cifrado.gpg`** costuma bastar (exemplos em `man sq-verify` / `man sq-decrypt`). *Extensão ilustrativa:* no resto do curso os exemplos com `gpg` usam sobretudo **`.gpg`**; **`.pgp`** também aparece em textos Sequoia/OpenPGP — o formato é o mesmo pacote, não o sufixo.
 
 * * *
 
@@ -3909,17 +3909,17 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 
 ### O que é a linha «5 — VM» na tabela de auditoria?
 
-No ficheiro **[`ROADMAP.md`](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/blob/main/ROADMAP.md)** do projeto Git existe uma tabela **«Última auditoria estática»**. Uma das linhas chama-se **VM (spot-check)** e corresponde à **camada 5** do checklist de auditoria: **validação prática** do material num ambiente real (Ubuntu 24.04), executando o roteiro do curso (e não só ler o texto).
+No arquivo **[`ROADMAP.md`](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/blob/main/ROADMAP.md)** do projeto Git existe uma tabela **«Última auditoria estática»**. Uma das linhas chama-se **VM (spot-check)** e corresponde à **camada 5** do checklist de auditoria: **validação prática** do material num ambiente real (Ubuntu 24.04), executando o roteiro do curso (e não só ler o texto).
 
 **O que o estado significa (exemplo ilustrativo):** pode aparecer como **PENDENTE** ou **PENDENTE (adiado)** — ou seja, o roteiro **ainda não foi** fechado com **PASS** no repositório; isso pode dever-se a falta de tempo, falta de VM, ou **decisão explícita** de adiar. **Não** significa «esquecido» nem «erro do curso»; **não bloqueia** o estudo dos módulos nem outras melhorias no GitHub.
 
-> 📎 **Sempre actual:** abra o `ROADMAP.md` no link acima e leia a linha **VM** e o histórico de rodadas — as datas e notas mudam quando alguém executar ou documentar o spot-check.
+> 📎 **Sempre atual:** abra o `ROADMAP.md` no link acima e leia a linha **VM** e o histórico de rodadas — as datas e notas mudam quando alguém executar ou documentar o spot-check.
 
 ---
 
 ### Checklist — o que *você* faz na VM (resumo dos 7 passos)
 
-Use uma **VM ou máquina Ubuntu 24.04** (VirtualBox, VMware, hardware real; **WSL2** pode servir para parte dos passos, mas **`dd` em pendrive** costuma ser mais simples no Linux «clássico» ou VM com USB pass-through). Siga a ordem do **`ROADMAP.md`**, secção **«Spot-check VM Ubuntu (roteiro mínimo)»** — aqui vai o resumo:
+Use uma **VM ou máquina Ubuntu 24.04** (VirtualBox, VMware, hardware real; **WSL2** pode servir para parte dos passos, mas **`dd` em pendrive** costuma ser mais simples no Linux «clássico» ou VM com USB pass-through). Siga a ordem do **`ROADMAP.md`**, seção **«Spot-check VM Ubuntu (roteiro mínimo)»** — aqui vai o resumo:
 
 | # | O quê fazer | Onde aprofundar no curso |
 | --- | --- | --- |
@@ -3931,27 +3931,27 @@ Use uma **VM ou máquina Ubuntu 24.04** (VirtualBox, VMware, hardware real; **WS
 | 6 | Copiar **`gpg-health-check.sh`** para `~/scripts/`, `chmod +x`, correr com `LAB_EMAIL=...` | Módulo 8 (bônus) |
 | 7 | (Opcional) `gpg --clearsign` / `gpg --verify` de fumo | Módulo 7 |
 
-**Critério de sucesso:** todos os passos **sem erro bloqueante**, **ou** desvio **documentado** (comando exacto + saída) para o mantenedor analisar.
+**Critério de sucesso:** todos os passos **sem erro bloqueante**, **ou** desvio **documentado** (comando exato + saída) para o mantenedor analisar.
 
 ---
 
 ### Como concluir no `ROADMAP` (transformar em **PASS** no repositório)
 
-Se quiser **registar** a sua corrida no Git (útil para o histórico do curso), faça **fork** ou peça acesso ao repo, depois:
+Se quiser **registrar** a sua corrida no Git (útil para o histórico do curso), faça **fork** ou peça acesso ao repo, depois:
 
-1. **Preencher** a tabela **«Registo de execução»** no `ROADMAP.md` (marcar `[x]` por passo, data, notas ou «nenhum desvio»).
+1. **Preencher** a tabela **«Registro de execução»** no `ROADMAP.md` (marcar `[x]` por passo, data, notas ou «nenhum desvio»).
 2. **Atualizar** a tabela **«Última auditoria estática»**: linha **VM (spot-check)** → **PASS** + data + nota curta (ex.: «7/7 OK no Ubuntu 24.04» ou «6/7 — passo 3 em loop por falta de pendrive»).
-3. **Marcar** como feito na secção **Pendências ativas** do `ROADMAP`: **[x] R2** e **[x] Spot-check na VM Ubuntu** (quando aplicável ao texto actual do ficheiro).
+3. **Marcar** como feito na seção **Pendências ativas** do `ROADMAP`: **[x] R2** e **[x] Spot-check na VM Ubuntu** (quando aplicável ao texto atual do arquivo).
 4. **`git commit`** + **`git push`** com mensagem clara, por exemplo: `docs(repo): spot-check VM Ubuntu OK — YYYY-MM-DD`.
 
-> ⚠️ **Pull request:** se não tiver escrita directa no repositório canónico, abra um **PR** com o `ROADMAP.md` actualizado; o mantenedor faz *merge* após rever.
+> ⚠️ **Pull request:** se não tiver escrita direta no repositório canônico, abra um **PR** com o `ROADMAP.md` atualizado; o mantenedor faz *merge* após rever.
 
 ---
 
-### Exemplo de «Registo de execução» preenchido (modelo)
+### Exemplo de «Registro de execução» preenchido (modelo)
 
 ```markdown
-### Registo de execução (preencher na VM, depois commitar)
+### Registro de execução (preencher na VM, depois commitar)
 
 | # | Passo | OK |
 | --- | --- | :---: |
@@ -3976,9 +3976,9 @@ Se quiser **registar** a sua corrida no Git (útil para o histórico do curso), 
 | --- | --- |
 | **O que é a camada 5 / linha VM?** | Teste prático do roteiro do curso em **Ubuntu 24.04** real, alinhado ao `ROADMAP.md`. |
 | **É obrigatório para «terminar o curso»?** | **Não.** É opcional; serve para confiança e para fechar a auditoria do **repo**. |
-| **Por que pode estar PENDENTE?** | Porque ainda ninguém fechou o roteiro com **PASS**, ou porque foi **adiado** por decisão — consulte o `ROADMAP` actual. |
+| **Por que pode estar PENDENTE?** | Porque ainda ninguém fechou o roteiro com **PASS**, ou porque foi **adiado** por decisão — consulte o `ROADMAP` atual. |
 | **Quanto tempo leva?** | Ordem de **20–40 minutos** numa VM já instalada e com rede, se não houver surpresas. |
-| **Onde estão os comandos exactos?** | No **corpo do curso** (COMANDOs referidos) e na secção **Spot-check VM Ubuntu** do **`ROADMAP.md`**. |
+| **Onde estão os comandos exatos?** | No **corpo do curso** (COMANDOs referidos) e na seção **Spot-check VM Ubuntu** do **`ROADMAP.md`**. |
 
 * * *
 
@@ -3998,7 +3998,7 @@ Se quiser **registar** a sua corrida no Git (útil para o histórico do curso), 
 
 ### Harmonização com `.cursorrules` (Git no agente Cursor)
 
-O ficheiro **`.cursorrules`** na raiz do repo define quando o agente deve correr **`git add` / `commit` / `push`** após editar material versionado. Para **eliminar ambiguidade** entre «salvo o utilizador pedir o contrário» e exceções concretas, as regras usam **uma única lista canónica de quatro exceções explícitas**: *só no disco* · *sem push* · *rascunho* · *não commits*. O bullet **Manter o remoto alinhado** enumera e delimita essa lista; o bullet **Git após entregar trabalho** remete **somente** a ela — **sem** ampliar por interpretação vaga. **Registo:** harmonização **2026-05** (mantenedor + agente).
+O arquivo **`.cursorrules`** na raiz do repo define quando o agente deve correr **`git add` / `commit` / `push`** após editar material versionado. Para **eliminar ambiguidade** entre «salvo o usuário pedir o contrário» e exceções concretas, as regras usam **uma única lista canônica de quatro exceções explícitas**: *só no disco* · *sem push* · *rascunho* · *não commits*. O bullet **Manter o remoto alinhado** enumera e delimita essa lista; o bullet **Git após entregar trabalho** remete **somente** a ela — **sem** ampliar por interpretação vaga. **Registro:** harmonização **2026-05** (mantenedor + agente).
 
 ### Grep preventivo `list-secret-keys` / `fpr:` (rodada 2026-05-III)
 
@@ -4010,7 +4010,7 @@ O ficheiro **`.cursorrules`** na raiz do repo define quando o agente deve correr
 
 ### Antes de commitar (sanidade rápida)
 
-- **`LICENSE` / `README`:** mudou a política de uso (aberta vs. reservada)? Mantenha o ficheiro **`LICENSE`** na raiz do repo e a secção **«Licença e uso»** do **`README.md`** alinhados (substitua ambos se adoptar, por exemplo, **CC BY-SA 4.0**).
+- **`LICENSE` / `README`:** mudou a política de uso (aberta vs. reservada)? Mantenha o arquivo **`LICENSE`** na raiz do repo e a seção **«Licença e uso»** do **`README.md`** alinhados (substitua ambos se adotar, por exemplo, **CC BY-SA 4.0**).
 - **Título do Módulo 11 (PQ):** alguns editores substituem **ã** por **â** em «quântica». Procure por `QUÂNTICA` (U+00C2) e deixe **`PÓS-QUÃNTICA`** (U+00C3), como no mapa e no restante do texto em PT‑BR.
 - **Módulo 11 — strings PQ na CLI:** ao atualizar exemplos Kyber/SPHINCS+ ou a versão mínima do GnuPG no cabeçalho, rode na VM **`gpg --quick-generate-key --help`** (e, se possível, um teste real) para alinhar nomes de algoritmo ao binário — ver nota 📎 antes do primeiro bloco `sh` do Kyber.
 - **`$FP` / `$FP_MASTER`:** fingerprint pela linha `fpr:` (campo 10) só **depois** de filtrar identidade (`LAB_EMAIL`, `UID_MASTER`, `"$EMAIL"` no script bônus, etc.). Evite reintroduzir `gpg --list-secret-keys --with-colons | awk …` sem esse filtro se houver risco de mais de uma mestra.

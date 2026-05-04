@@ -12,9 +12,9 @@
 
 Ordem acordada com o **plano «Auditoria pré-roadmap»** (e auditoria técnica do conteúdo **2026-05-03**):
 
-1. **Auditoria de conteúdo** no `.md` canónico (precisão GnuPG/Sequoia, rubricas, exemplos) — fechar **P1 → P2 → P3** quando possível.
-2. **Auditoria estática do trunk** — checklist das **seis camadas** abaixo; preencher a **tabela de resultado** na secção seguinte.
-3. **Novas linhas datadas** neste ficheiro (ex.: «Rodada estática 2026-05-X») só **depois** de lacunas reais (FAIL/WARN) ou decisão explícita do mantenedor.
+1. **Auditoria de conteúdo** no `.md` canônico (precisão GnuPG/Sequoia, rubricas, exemplos) — fechar **P1 → P2 → P3** quando possível.
+2. **Auditoria estática do trunk** — checklist das **seis camadas** abaixo; preencher a **tabela de resultado** na seção seguinte.
+3. **Novas linhas datadas** neste arquivo (ex.: «Rodada estática 2026-05-X») só **depois** de lacunas reais (FAIL/WARN) ou decisão explícita do mantenedor.
 
 A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática; o fecho formal do spot-check atualiza a tabela e o backlog. **Adiamento explícito:** se o mantenedor decidir **não** executar o roteiro nesta fase, mantenha **PENDENTE** na auditoria e **[ ]** em **R2** — não bloqueia outras tarefas do repo nem a continuidade do material estático.
 
@@ -28,7 +28,7 @@ A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática; o 
 | --- | --- | --- |
 | Git / trunk | **PASS** 2026-05-03 | Re-verificação rápida (camada **1**): `main` alinhado com `origin/main`; working tree limpo; `git remote -v` = **OpenPGP-GPG-do-Zero-ao-Expert**; `git ls-files` sem `.vscode/` nem `scripts/` |
 | Versões (Tails / GnuPG / `sq`) | **PASS** 2026-05-03 | Re-verificação (camada **2**): cabeçalho + `README.md` + Módulo 0 — Tails **7.7.1+**, GnuPG **2.4.x** / **2.5.19+**, **sequoia-sq ~1.3.x**; sem divergência |
-| URLs (HEAD HTTPS únicos) | **PASS** 2026-05-03 | **23** URLs únicos no `.md` canónico; **HEAD** → **200** em todos (incl. `…/blob/main/LICENSE`, `…/blob/main/ROADMAP.md`); `https://SEU_DOMINIO/...` **fora** do lote |
+| URLs (HEAD HTTPS únicos) | **PASS** 2026-05-03 | **23** URLs únicos no `.md` canônico; **HEAD** → **200** em todos (incl. `…/blob/main/LICENSE`, `…/blob/main/ROADMAP.md`); `https://SEU_DOMINIO/...` **fora** do lote |
 | Grep scripts + PQ (`list-secret-keys`, `fpr:`, sem `grep -oP`, `QUÂNTICA` indevido) | **PASS** 2026-05-03 | Re-grep (camada **4**) pós-2026-05-02: **sem** `grep -oP`; **`QUÂNTICA`** só no anexo; novos blocos revistos — Apêndice F `FP_NOVO` com `"$UID_NOVO"`; exceções inalteradas: **health-check** `^sec:`; **import** `COLON_FILTER` sem UID só com nota de laboratório |
 | VM (spot-check) | **PENDENTE** | Roteiro **§ Spot-check VM Ubuntu** — **adiado** (mantenedor: não executar agora); permanece **PENDENTE** até corrida real ou nova decisão |
 | Governança (`.cursorrules`, `.mdc`, formato entrega) | **PASS** 2026-05-02 | `openpgp-course-pointer.mdc` → `.cursorrules`, `alwaysApply: true`; README coerente com trunk = MD + meta |
@@ -45,11 +45,11 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 | # | Camada | O quê |
 | --- | --- | --- |
 | 1 | Inventário Git | Pasta do clone; `git pull` / `status`; remoto = **OpenPGP-GPG-do-Zero-ao-Expert**; nada sensível em `~` por engano |
-| 2 | Versões | Grep cruzado `Tails`, `7.7`, `gnupg`, `2.4`, `2.5`, `sequoia`, `sq` entre `.md` canónico, `README`, notas de rodada |
-| 3 | URLs | HEAD em lote nos HTTPS **únicos** do `.md` canónico; repetir após **novos** links |
+| 2 | Versões | Grep cruzado `Tails`, `7.7`, `gnupg`, `2.4`, `2.5`, `sequoia`, `sq` entre `.md` canônico, `README`, notas de rodada |
+| 3 | URLs | HEAD em lote nos HTTPS **únicos** do `.md` canônico; repetir após **novos** links |
 | 4 | Grep preventivo | `list-secret-keys` / `fpr:` / `UID_IMPORT` / `LAB_EMAIL`; sem `grep -oP`; título PQ **`PÓS-QUÃNTICA`** (ã) — grep por **`QUÂNTICA`** (â) = corrupção de editor |
 | 5 | Spot-check VM | Tabela em **§ Spot-check VM Ubuntu** |
-| 6 | Governança | `.cursorrules` ↔ `openpgp-course-pointer.mdc`; secção **Formato de entrega**; `LICENSE` se política editorial existir |
+| 6 | Governança | `.cursorrules` ↔ `openpgp-course-pointer.mdc`; seção **Formato de entrega**; `LICENSE` se política editorial existir |
 
 ---
 
@@ -61,20 +61,20 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 | 2 | `git pull` / `git status` / `git remote -v` | Em `E:\pgp` ou `/e/pgp` |
 | 3 | Próxima tarefa à escolha (conteúdo `.md`, URLs, anexo, meta-repo) | **VM spot-check adiado** — ver § Pendências; **R2** continua **[ ]** |
 | 4 | Checklist **camadas 1–2–4** (e **3** se houver rede) | Atualizar **tabela de auditoria** quando fizer rodada |
-| 5 | **Spot-check VM** (opcional, quando houver Ubuntu) | **§ Spot-check VM Ubuntu** + **Registo de execução** — só após voltar a priorizar a VM |
+| 5 | **Spot-check VM** (opcional, quando houver Ubuntu) | **§ Spot-check VM Ubuntu** + **Registro de execução** — só após voltar a priorizar a VM |
 
 ---
 
 ## Pendências ativas (curso + repo)
 
-### P1 — Correções técnicas imediatas (`.md` canónico)
+### P1 — Correções técnicas imediatas (`.md` canônico)
 
 *Origem: auditoria técnica 2026-05-03 + plano aprovado. **Não** alterar o título PQ para «â» — política do anexo: manter **`PÓS-QUÃNTICA`** (ã); grep por corrupção **`QUÂNTICA`**.*
 
 - [x] **T2:** Remover ou substituir `agent-timeout` em `gpg-agent.conf` (COMANDO 0.8 e tabela de perfis); confirmar com `man gpg-agent` / VM — opções válidas incluem `default-cache-ttl`, `max-cache-ttl`; para timeout de pinentry ver `pinentry-timeout` se for o objetivo.
 - [x] **T6:** Ajustar texto/exemplo de `gpg --generate-key` vs comentário (2.4.x não pede comentário como em `--full-generate-key`).
 - [x] **SEC1:** Alinhar exemplo de passphrase (COMANDO 1.1) com Mandamento 6 (mínimo 6 palavras em produção) ou nota explícita «laboratório».
-- [x] **Validação PQ (camada 4):** confirmar zero `QUÂNTICA` indevido no título/corpo; título canónico com **ã**.
+- [x] **Validação PQ (camada 4):** confirmar zero `QUÂNTICA` indevido no título/corpo; título canônico com **ã**.
 
 ### P2 — Precisão e clareza didática
 
@@ -115,7 +115,7 @@ VM alinhada ao curso (**Ubuntu 24.04**, `gnupg2`, rede para `wget`/`apt` onde ne
 
 **Critério de fecho:** checklist sem erro bloqueante **ou** desvio documentado com comando e saída.
 
-### Registo de execução (preencher na VM, depois commitar)
+### Registro de execução (preencher na VM, depois commitar)
 
 | # | Passo | OK |
 | --- | --- | :---: |
@@ -137,7 +137,7 @@ VM alinhada ao curso (**Ubuntu 24.04**, `gnupg2`, rede para `wget`/`apt` onde ne
 
 ## Formato de entrega (decisão trunk 1.x)
 
-**Até nova decisão explícita do mantenedor:** entrega principal no Git = **Markdown canónico** do curso + meta-repo (`README`, `ROADMAP`, **`LICENSE`**, `.cursorrules`, `.cursor/rules`). **Não** há obrigação no trunk de PDF, HTML estático nem site gerado — fase posterior se/quando houver ferramenta e tempo.
+**Até nova decisão explícita do mantenedor:** entrega principal no Git = **Markdown canônico** do curso + meta-repo (`README`, `ROADMAP`, **`LICENSE`**, `.cursorrules`, `.cursor/rules`). **Não** há obrigação no trunk de PDF, HTML estático nem site gerado — fase posterior se/quando houver ferramenta e tempo.
 
 ---
 
@@ -155,16 +155,16 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-VI** | Formato entrega trunk; **`.cursor/rules/openpgp-course-pointer.mdc`** |
 | **2026-05-VII** | **P1** no `.md`: remover `agent-timeout` + nota `pinentry-timeout`; COMANDO **1.1–1.3** alinhados a `--generate-key` sem comentário obrigatório; passphrase exemplo **6** segmentos (Mandamento 6); grep **`QUÂNTICA`** só no anexo |
 | **2026-05-VIII** | **P2:** `--gen-key` como legado/alias (T1); nota `openpgp-revocs.d` vs `--gen-revoke` (T7); «Resultados esperados» + legenda **⚫** e níveis 🔵 (E2/E3); rubrica CP1 `.asc`/clearsign/`.sig` (C1); cronograma quântico + NIST + incerteza (S1); mapa Módulo 1 |
-| **2026-05-IX** | **Auditoria estática trunk** (plano pré-roadmap): Git, versões, **HEAD** em URLs do `.md` canónico, grep preventivo, governança **R3**; correção URL GitHub sem `**` no Markdown; **T5** idempotência COMANDO 5.3; **VM** pendente de execução |
-| **2026-05-03** | **R1:** ficheiro **`LICENSE`** (todos os direitos reservados); **README** — secção licença; tabela de auditoria — linha `LICENSE` **PASS** |
-| **2026-05-03 (camada 3 + curso)** | **URLs:** **HEAD** no `.md` — **23** HTTPS únicos, **200** todos (novo link `ROADMAP.md` no curso). **Aluno:** secção opcional **«Spot-check na VM»** (camada 5, checklist, fecho **PASS**, PR); mapa atualizado |
+| **2026-05-IX** | **Auditoria estática trunk** (plano pré-roadmap): Git, versões, **HEAD** em URLs do `.md` canônico, grep preventivo, governança **R3**; correção URL GitHub sem `**` no Markdown; **T5** idempotência COMANDO 5.3; **VM** pendente de execução |
+| **2026-05-03** | **R1:** arquivo **`LICENSE`** (todos os direitos reservados); **README** — seção licença; tabela de auditoria — linha `LICENSE` **PASS** |
+| **2026-05-03 (camada 3 + curso)** | **URLs:** **HEAD** no `.md` — **23** HTTPS únicos, **200** todos (novo link `ROADMAP.md` no curso). **Aluno:** seção opcional **«Spot-check na VM»** (camada 5, checklist, fecho **PASS**, PR); mapa atualizado |
 | **2026-05-03 (camadas 1+2+4)** | **Git** (1), **versões** (2) e **grep preventivo** (4) reexecutados após novos blocos desde 2026-05-02 — **PASS**; sem regressão |
 | **2026-05-04** | **Anexo + ROADMAP:** checklist **Versões externas** inclui `LICENSE`; tabela de referências + bullet pré-commit `LICENSE`/`README`; **formato de entrega** lista `LICENSE`; nota **«Ao fechar o spot-check na VM»** (tabela R2 + commit) |
-| **2026-05-05** | **VM:** tabela **«Registo de execução»** no `ROADMAP` (checkboxes por passo + data/notas) para fechar R2 com commit após a corrida real |
+| **2026-05-05** | **VM:** tabela **«Registro de execução»** no `ROADMAP` (checkboxes por passo + data/notas) para fechar R2 com commit após a corrida real |
 | **2026-05-06** | **VM adiada:** decisão explícita — **não** executar spot-check agora; auditoria **VM** mantém-se **PENDENTE**; **R2** / «Outras» ficam **[ ]**; próxima sessão desbloqueada para outras tarefas |
 | **Repo** | `.vscode/` e `scripts/` só locais (`.gitignore` + fora do remoto) |
 
-**Manutenção recorrente:** ao **novo** bloco shell no `.md` canónico → rever `list-secret-keys` + `fpr:` + `UID_IMPORT` / `LAB_EMAIL`; ao **novo** link HTTPS → repetir **HEAD** em lote; ao subir **GnuPG** experimental → rever nomes PQ na CLI (Módulo 11).
+**Manutenção recorrente:** ao **novo** bloco shell no `.md` canônico → rever `list-secret-keys` + `fpr:` + `UID_IMPORT` / `LAB_EMAIL`; ao **novo** link HTTPS → repetir **HEAD** em lote; ao subir **GnuPG** experimental → rever nomes PQ na CLI (Módulo 11).
 
 ---
 
@@ -181,4 +181,4 @@ Itens já tratados nas rodadas acima (não reabrir salvo regressão):
 ## «Vai lembrar na próxima sessão?»
 
 - **Sim:** o próximo agente vê este repo, **`.cursorrules`**, **`.cursor/rules/*.mdc`** e **`ROADMAP.md`**.
-- **Não** no sentido de chat infinito: decisões finas ficam no **Git** (`git log -p`) e na **tabela de auditoria** deste ficheiro.
+- **Não** no sentido de chat infinito: decisões finas ficam no **Git** (`git log -p`) e na **tabela de auditoria** deste arquivo.

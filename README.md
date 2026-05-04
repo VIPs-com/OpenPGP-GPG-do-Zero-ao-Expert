@@ -8,9 +8,9 @@ Curso em **um único Markdown** (versão canônica **1.0**), com orientações p
 |---------|-----------|
 | [🎓 OpenPGPGPG do Zero ao Expert - Versão 1.0.md](./🎓%20OpenPGPGPG%20do%20Zero%20ao%20Expert%20-%20Versão%201.0.md) | Curso completo (módulos, comandos, checkpoints) |
 | [ROADMAP.md](./ROADMAP.md) | Fluxo auditoria → roadmap; **spot-check VM** pendente; checklist por camada |
-| [`LICENSE`](./LICENSE) | Direitos reservados (por defeito); substituir se mudar a política editorial |
+| [`LICENSE`](./LICENSE) | Direitos reservados (por padrão); substituir se mudar a política editorial |
 | [.cursorrules](./.cursorrules) | Contexto e padrões do projeto para IA / equipe |
-| [`.cursor/rules/openpgp-course-pointer.mdc`](./.cursor/rules/openpgp-course-pointer.mdc) | Ponte MDC do Cursor ao `.cursorrules` (regras canónicas) |
+| [`.cursor/rules/openpgp-course-pointer.mdc`](./.cursor/rules/openpgp-course-pointer.mdc) | Ponte MDC do Cursor ao `.cursorrules` (regras canônicas) |
 
 ## Requisitos no leitor
 
@@ -20,7 +20,7 @@ Curso em **um único Markdown** (versão canônica **1.0**), com orientações p
 
 ## Licença e uso
 
-Na raiz do repositório existe o ficheiro **`LICENSE`**, que documenta **todos os direitos reservados** pelos autores do material (política por defeito). Se quiser adoptar uma licença aberta (por exemplo **CC BY-SA 4.0** para conteúdo didático), substitua `LICENSE` por um texto reconhecido e atualize esta frase no `README.md`.
+Na raiz do repositório existe o arquivo **`LICENSE`**, que documenta **todos os direitos reservados** pelos autores do material (política por padrão). Se quiser adotar uma licença aberta (por exemplo **CC BY-SA 4.0** para conteúdo didático), substitua `LICENSE` por um texto reconhecido e atualize esta frase no `README.md`.
 
 ## Repositório no GitHub
 
