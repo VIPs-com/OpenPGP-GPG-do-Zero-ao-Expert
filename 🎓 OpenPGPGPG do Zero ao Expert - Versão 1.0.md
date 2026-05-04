@@ -4118,7 +4118,11 @@ gpgconf --kill gpg-agent
 gpgconf --launch gpg-agent
 ```
 
-> 📎 **Versão 1.1 (planejado — não integrado na 1.0):** em **WSL2**, desenvolvedores misturam **GnuPG dentro do Ubuntu embebido** com **Git/SSH no Windows nativo**. Aí surgem *gaps* típicos: **`SSH_AUTH_SOCK`** do agente no Linux **não** aparece no **Win32** sem *forwarding* (`npiperelay`, `socat` ou política «tudo no WSL»); dois **`gpg-agent`** (WSL + **Gpg4win**) disputam sockets, `pinentry` e qual ferramenta fala com qual chaveiro. O material corporativo pede uma secção dedicada — está registada no **`ROADMAP.md`** (*Backlog v1.1*).
+> 📎 **v1.1 (planejado — não integrado na 1.0 canônica): conectividade WSL2 ↔ Windows**
+>
+> - **O problema:** conflito entre o **`gpg-agent` do Windows** (**Gpg4win**) e o **`gpg`/agente dentro do Ubuntu embebido no WSL2** — dois agentes, sockets e `pinentry` que o utilizador precisa de **mapear** com consciência.
+> - **A fronteira:** **`SSH_AUTH_SOCK`** (e o socket do `gpg-agent` no Linux) **não** atravessam nativamente a barreira **Win32 ↔ kernel Linux do WSL2**; sem *forwarding* explícito (ex.: *named pipes* / **`npiperelay`**, **`socat`**, ou política «**tudo no WSL**»), o Git/SSH nativo no Windows **não** vê o agente do lado Linux.
+> - **Solução na v1.0 (hoje):** **isolar** o fluxo (chaves, Git e SSH **no mesmo** «mundo» — em geral **tudo no WSL2**) **ou** documentar internamente **pontes** aceites pela equipa. O **roteiro passo a passo** para ambientes híbridos corporativos fica no **`ROADMAP.md`**, secção **Backlog v1.1** — a **1.0** mantém-se **auditável** sem esse capítulo longo.
 
 #### Linux (referência rápida de operação)
 
