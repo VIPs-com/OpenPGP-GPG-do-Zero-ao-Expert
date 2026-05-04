@@ -354,6 +354,7 @@ Ao final deste curso, você será capaz de:
     ├── Apêndice E: GUIA MULTIPLATAFORMA (Win/Android/iPhone + SSH sem YubiKey: FIDO2/sk, ssh-add -c, cofres)
     ├── Apêndice F: MIGRAÇÃO RSA → ECC (Legado para Moderno)
     ├── ⚖️ Qualidade, ética e referências (checklist mantenedor + ética + URLs)
+    ├── ☑️ Opcional — Spot-check VM (camada 5 do `ROADMAP`; validar comandos no Ubuntu 24.04)
     ├── 📎 Anexo (mantenedor — opcional): princípios editoriais + pré-commit (PQ/Unicode, FP, URLs)
     └── 🏁 Conclusão
 
@@ -3899,6 +3900,85 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 | Diceware / dados — guia EFF | https://www.eff.org/dice |
 | Tails | https://tails.net |
 | Licença do material (`LICENSE` no repo) | https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/blob/main/LICENSE |
+
+* * *
+
+## ☑️ OPCIONAL — Spot-check na VM Ubuntu (camada 5 do `ROADMAP`)
+
+> 💡 **Para quem é:** alunos que já seguiram o curso e querem **confirmar na prática** que os comandos sensíveis (`gpg`, `sq`, `dd`, `wget`, scripts) funcionam num **Ubuntu 24.04** real — e quem quiser **contribuir** a fechar a auditoria do repositório. **Não** é obrigatório para «passar» os módulos; é um laboratório extra de confiança.
+
+### O que é a linha «5 — VM» na tabela de auditoria?
+
+No ficheiro **[`ROADMAP.md`](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/blob/main/ROADMAP.md)** do projeto Git existe uma tabela **«Última auditoria estática»**. Uma das linhas chama-se **VM (spot-check)** e corresponde à **camada 5** do checklist de auditoria: **validação prática** do material num ambiente real (Ubuntu 24.04), executando o roteiro do curso (e não só ler o texto).
+
+**O que o estado significa (exemplo ilustrativo):** pode aparecer como **PENDENTE** ou **PENDENTE (adiado)** — ou seja, o roteiro **ainda não foi** fechado com **PASS** no repositório; isso pode dever-se a falta de tempo, falta de VM, ou **decisão explícita** de adiar. **Não** significa «esquecido» nem «erro do curso»; **não bloqueia** o estudo dos módulos nem outras melhorias no GitHub.
+
+> 📎 **Sempre actual:** abra o `ROADMAP.md` no link acima e leia a linha **VM** e o histórico de rodadas — as datas e notas mudam quando alguém executar ou documentar o spot-check.
+
+---
+
+### Checklist — o que *você* faz na VM (resumo dos 7 passos)
+
+Use uma **VM ou máquina Ubuntu 24.04** (VirtualBox, VMware, hardware real; **WSL2** pode servir para parte dos passos, mas **`dd` em pendrive** costuma ser mais simples no Linux «clássico» ou VM com USB pass-through). Siga a ordem do **`ROADMAP.md`**, secção **«Spot-check VM Ubuntu (roteiro mínimo)»** — aqui vai o resumo:
+
+| # | O quê fazer | Onde aprofundar no curso |
+| --- | --- | --- |
+| 1 | `gpg --version` e, se instalou, `sq version` | Cabeçalho + Módulo 12 |
+| 2 | `wget` + `gpg --verify` da imagem **`.img`** Tails (ou fluxo equivalente) | **COMANDO 6.1** |
+| 3 | `lsblk -p`; `dd` + `sync` no **disco inteiro** (`/dev/sdX`), **não** na partição `sdX1`; ou loop | **COMANDO 6.1** |
+| 4 | `gpg --quick-generate-key` / `--quick-add-key` com `LAB_EMAIL` e `FP` da linha `fpr:` | Módulos 3–4 |
+| 5 | Export/import de subchaves com **`UID_IMPORT`** correto quando houver >1 `sec:` | Módulo 6, script `gpg-import-subkeys.sh` |
+| 6 | Copiar **`gpg-health-check.sh`** para `~/scripts/`, `chmod +x`, correr com `LAB_EMAIL=...` | Módulo 8 (bônus) |
+| 7 | (Opcional) `gpg --clearsign` / `gpg --verify` de fumo | Módulo 7 |
+
+**Critério de sucesso:** todos os passos **sem erro bloqueante**, **ou** desvio **documentado** (comando exacto + saída) para o mantenedor analisar.
+
+---
+
+### Como concluir no `ROADMAP` (transformar em **PASS** no repositório)
+
+Se quiser **registar** a sua corrida no Git (útil para o histórico do curso), faça **fork** ou peça acesso ao repo, depois:
+
+1. **Preencher** a tabela **«Registo de execução»** no `ROADMAP.md` (marcar `[x]` por passo, data, notas ou «nenhum desvio»).
+2. **Atualizar** a tabela **«Última auditoria estática»**: linha **VM (spot-check)** → **PASS** + data + nota curta (ex.: «7/7 OK no Ubuntu 24.04» ou «6/7 — passo 3 em loop por falta de pendrive»).
+3. **Marcar** como feito na secção **Pendências ativas** do `ROADMAP`: **[x] R2** e **[x] Spot-check na VM Ubuntu** (quando aplicável ao texto actual do ficheiro).
+4. **`git commit`** + **`git push`** com mensagem clara, por exemplo: `docs(repo): spot-check VM Ubuntu OK — YYYY-MM-DD`.
+
+> ⚠️ **Pull request:** se não tiver escrita directa no repositório canónico, abra um **PR** com o `ROADMAP.md` actualizado; o mantenedor faz *merge* após rever.
+
+---
+
+### Exemplo de «Registo de execução» preenchido (modelo)
+
+```markdown
+### Registo de execução (preencher na VM, depois commitar)
+
+| # | Passo | OK |
+| --- | --- | :---: |
+| 1 | `gpg --version` (+ `sq version` se `sequoia-sq` instalado) | [x] |
+| 2 | `wget` + `gpg --verify` da `.img` Tails | [x] |
+| 3 | `lsblk` + `dd`/`sync` em disco inteiro ou loop | [x] |
+| 4 | `quick-generate-key` / `quick-add-key` + `FP` de `fpr:` | [x] |
+| 5 | Import subchaves + `UID_IMPORT` quando >1 `sec:` | [x] |
+| 6 | `gpg-health-check.sh` com `LAB_EMAIL` | [x] |
+| 7 | (Opcional) `clearsign` / `verify` | [x] |
+
+**Data da corrida:** 2026-05-15
+
+**Notas / desvios:** Nenhum bloqueante. Ubuntu 24.04 LTS, `gnupg2` do `apt`.
+```
+
+---
+
+### Resumo em uma página
+
+| Pergunta | Resposta |
+| --- | --- |
+| **O que é a camada 5 / linha VM?** | Teste prático do roteiro do curso em **Ubuntu 24.04** real, alinhado ao `ROADMAP.md`. |
+| **É obrigatório para «terminar o curso»?** | **Não.** É opcional; serve para confiança e para fechar a auditoria do **repo**. |
+| **Por que pode estar PENDENTE?** | Porque ainda ninguém fechou o roteiro com **PASS**, ou porque foi **adiado** por decisão — consulte o `ROADMAP` actual. |
+| **Quanto tempo leva?** | Ordem de **20–40 minutos** numa VM já instalada e com rede, se não houver surpresas. |
+| **Onde estão os comandos exactos?** | No **corpo do curso** (COMANDOs referidos) e na secção **Spot-check VM Ubuntu** do **`ROADMAP.md`**. |
 
 * * *
 
