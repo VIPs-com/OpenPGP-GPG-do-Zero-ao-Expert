@@ -302,6 +302,7 @@ Ao final deste curso, você será capaz de:
 │   │   ├── ▸ COMANDO 6.2: gpg no Tails (offline)
 │   │   ├── ▸ COMANDO 6.3: exportando subchaves
 │   │   ├── 🔵 (opc.) Sub-módulo: subchaves em token (YubiKey / Nitrokey)
+│   │   ├── ▸ COMANDO 6.4: checklist pós-transferência (token)
 │   │   └── 🚀 Bônus: Script automatizado para Tails
 │   │
 │   ├── 📋 Módulo 7: Diagnóstico e Debug
@@ -2358,6 +2359,52 @@ echo "   - [A] para autenticação SSH"
 
 **Onde aprofundar:** [Apêndice C — HARDWARE WALLETS + SMARTCARDS](#apendice-c); documentação oficial **YubiKey OpenPGP** / **Nitrokey** (geração de chaves no próprio token vs *move* desde o `gpg`).
 
+> 📎 **Depois do `keytocard`:** feche o ciclo com o [**COMANDO 6.4**](#comando-6-4) (verificação + cofre offline **antes** de limpar o host).
+
+* * *
+
+<a id="comando-6-4"></a>
+
+#### ▸ COMANDO 6.4: Checklist pós-transferência (token OpenPGP)
+
+**Quando usar:** imediatamente **após** transferir **\[S\]\[E\]\[A\]** para o token (fluxo do [sub-módulo opcional](#submodulo-token-openpgp)) e **antes** de tratar o disco do PC como «sem segredo» ou desativar o pendrive Tails.
+
+### A) Verificação (cartão + *stubs*)
+
+```sh
+gpg --card-status
+gpg -K --with-keygrip --with-subkey-fingerprints
+```
+
+**O que validar:**
+
+* **`gpg --card-status`:** *serial* do cartão, versão do *applet* OpenPGP, referências de chave nos *slots* — e que **PIN** / **Admin PIN** não estão «adivinhados na hora» (anote em cofre físico, **não** em chat).
+* **`gpg -K`:** com material no token, o GnuPG costuma mostrar **stubs** no chaveiro local (`sec#` / `ssb>` ou equivalente — **varia** com versão e *locale*). O objetivo não é decorar a formatação, e sim confirmar que **assinar / decifrar / SSH** passam a **pedir o token**.
+
+**Testes mínimos funcionais (token inserido):**
+
+```sh
+echo "teste-pós-transfer-$(date -Iseconds)" > /tmp/token-smoke.txt
+gpg --detach-sign /tmp/token-smoke.txt
+gpg --verify /tmp/token-smoke.txt.sig /tmp/token-smoke.txt
+```
+
+* **SSH \[A\]:** se usa o **Módulo 5**, confira `SSH_AUTH_SOCK`, `ssh-add -L` e um login de fumo — o agente deve falar com o driver do cartão.
+
+### B) Backup de segurança (cofre offline — **antes** da limpeza do disco)
+
+> **Regra de ouro:** **não** remova segredo útil do host nem «formate o laboratório» até a tabela abaixo estar **fechada** para a **sua** identidade.
+
+| # | Item | Onde aprofundar no curso |
+| --- | --- | --- |
+| 1 | **Certificado de revogação** fora do PC diário (mídia que *você* controla + trilha documental) | **COMANDO 3.1** + nota sobre `~/.gnupg/openpgp-revocs.d/` vs cópia exportada |
+| 2 | **Mestra \[C\]** com segredo só no **cofre offline** (Tails, `age`, pendrive cifrado, cofre físico — **3-2-1**) | **Módulo 3** + **COMANDO 6.2** / **6.3** |
+| 3 | **Cópia das subchaves** `.asc` **antes** do `keytocard` (se a política do time exigir recuperação sem só depender do token) | **COMANDO 3.2** + export no Tails |
+| 4 | **Material público** atualizado (`export-minimal`, WKD / canais oficiais) para contatos não dependerem de chave velha | **Módulo 10** (WKD + HKPS) |
+| 5 | **Registro** interno (*serial* do token, data, UIDs tocados, responsável) | Procedimento do **seu** time |
+
+> 📎 **Nomenclatura de processo:** se o organismo usa um *runbook* com nome próprio (ex.: *«CaniveteSysAdmin v3.0»*, *«cofre offline v3»*…), **mapeie** cada linha da tabela para o passo oficial de vocês — o conteúdo **técnico** é o da coluna do meio; o **nome** é só convenção interna.
+
 * * *
 
 ### 📋 MÓDULO 7: DIAGNÓSTICO E DEBUG
@@ -3654,7 +3701,7 @@ set -euo pipefail
 
 ### APÊNDICE C: HARDWARE WALLETS + SMARTCARDS
 
-> 📎 **Fluxo passo a passo (mover subchaves para token):** o roteiro **pedagógico** está no [**Sub-módulo opcional — YubiKey / Nitrokey**](#submodulo-token-openpgp) (Módulo 6). Este apêndice resume **opções**, **custos** e **critérios de adoção**.
+> 📎 **Fluxo passo a passo (mover subchaves para token):** o roteiro **pedagógico** está no [**Sub-módulo opcional — YubiKey / Nitrokey**](#submodulo-token-openpgp) (Módulo 6); o **fecho operacional** pós-`keytocard` está no [**COMANDO 6.4**](#comando-6-4). Este apêndice resume **opções**, **custos** e **critérios de adoção**.
 
 | Opção | Segurança | Custo | Melhor uso |
 | --- | --- | --- | --- |
