@@ -6,7 +6,7 @@ Curso em **um único Markdown** (versão canônica **1.0**), com orientações p
 
 | Arquivo | Descrição |
 |---------|-----------|
-| [🎓 OpenPGPGPG do Zero ao Expert - Versão 1.0.md](./🎓%20OpenPGPGPG%20do%20Zero%20ao%20Expert%20-%20Versão%201.0.md) | Curso completo (módulos, comandos, checkpoints, apêndices) |
+| [🎓 OpenPGP-GPG do Zero ao Expert - Versão 1.0.md](./🎓%20OpenPGP-GPG%20do%20Zero%20ao%20Expert%20-%20Versão%201.0.md) | Curso completo (módulos, comandos, checkpoints, apêndices) |
 | [ROADMAP.md](./ROADMAP.md) | Fluxo auditoria → roadmap; **spot-check VM** opcional/pendente; checklist por camada; **Plano definitivo v1.0.x** (Eixos A/B/C) |
 | [CERTIFICACAO-INTERNA.md](./CERTIFICACAO-INTERNA.md) | Rubrica opcional para validar nível **Expert** ao fechar o curso (instrutor/mantenedor) |
 | [`LICENSE`](./LICENSE) | Direitos reservados (por padrão); substituir se mudar a política editorial |

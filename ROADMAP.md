@@ -110,11 +110,13 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 
 | Item | Estado | Notas |
 | --- | --- | --- |
-| **A1** — Nome do ficheiro canônico (`OpenPGPGPG` no nome em disco) | não iniciado | Corrigir o segmento no *filename*; varredura em `README.md`, cabeçalho do `.md` canônico, `CERTIFICACAO-INTERNA.md`, `.cursorrules`, links relativos; decidir **emoji + Versão 1.0** vs nome **ASCII** e registar a decisão num *commit* |
+| **A1** — Nome do ficheiro canônico (`OpenPGP-GPG` no *filename*, sem «OpenPGPGPG») | **fechado** (2026-05-02) | *Rename* para `🎓 OpenPGP-GPG do Zero ao Expert - Versão 1.0.md`; `README.md`, `.cursorrules`, nota editorial do `.md` canônico alinhados; **A3** — repetir rodada HEAD após trincheiras com novos links |
 | **A2** — Camada **5** (spot-check VM Ubuntu) | Pendente (política) | Ver **R2**, tabela **Registro de execução** e linha **VM** na auditoria estática; **PASS** só após corrida real ou desvio documentado |
-| **A3** — Rodada **URLs** (camada 3) + métricas | não iniciado | Após *rename*, trincheiras com novos links ou grandes colagens: HEAD em lote nos HTTPS **únicos** do `.md` canônico; actualizar a célula **URLs** na tabela de auditoria (contagem + data) |
+| **A3** — Rodada **URLs** (camada 3) + métricas | não iniciado | **Prioridade após A1:** HEAD em lote nos HTTPS **únicos** do `.md` canônico (última rodada **23** URL antes do *rename*; repetir após trincheiras ou colagens grandes); actualizar a célula **URLs** na tabela de auditoria (contagem + data) |
 
 ### Eixo B — Trincheiras de conteúdo v1.0.x (4.4 → canônico)
+
+> 📎 **Leitura para alunos:** as linhas abaixo são **melhorias planejadas** (v1.0.x / *backlog* de mantenedor), **não** requisitos do núcleo certificado do curso — o material canónico **1.0** está completo sem depender destas trincheiras.
 
 | Trincheira | Destino no canônico | Critério de pronto | Estado |
 | --- | --- | --- | --- |
@@ -136,7 +138,7 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 
 ## Spot-check VM Ubuntu (roteiro mínimo)
 
-> 📎 **Adiado:** se não for prioridade nesta fase, **não** preencha o registo abaixo; o roteiro permanece aqui para quando voltar à VM.
+> 📎 **Adiado:** se não for prioridade nesta fase, **não** preencha o registo abaixo; o roteiro permanece aqui para quando voltar à VM. **Risco explícito:** lançar sem marcar **[x]** nesta tabela implica que erros de cópia/comando podem ser descobertos primeiro pelos alunos — só aceite com política explícita (ver histórico **2026-05-06** / **R2**).
 
 VM alinhada ao curso (**Ubuntu 24.04**, `gnupg2`, rede para `wget`/`apt` onde necessário). Marque cada passo; anote desvios no commit seguinte ou em issue.
 
@@ -230,6 +232,7 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-13** | **v1.1 planejado:** secção **Backlog v1.1** no `ROADMAP` (WSL2 + GPG, `SSH_AUTH_SOCK`, Gpg4win vs agente WSL); nota no Apêndice E + linha no mapa do curso |
 | **2026-05-14** | **Pré-lançamento 1.0:** `curl -I -L` nos URLs do cabeçalho (GnuPG download, Tails, Sequoia `sq`, manual OpenPGP Key Management) — **200** ou **302→200**; glossário — entradas **ML-KEM**, **`GPG_TTY`**, **`HEALTHCHECK_AUTO_RESET`** + âncora `#apendice-d-healthcheck-auto-reset`; **HEAD** na tabela de referências (**SafeCurves**, **EFF Diceware**) — **200**; rubrica certificação (Git **Módulo 4** / SSH **Módulo 5**); nota didática **Apêndice F** (migração RSA→ECC); **pedagogia WSL2:** Módulo 9 — linha **Win32 + WSL2** → **Apêndice E** + `ROADMAP` v1.1; Apêndice E — `#apendice-e`, remissões M1–M5 / M0·8 / D / Windows; `#modulo-9-threat-modeling` (PARTE 4 sem inflação — PQ / Sequoia / WKD) |
 | **2026-05-02** | **ROADMAP:** secção **«Plano definitivo v1.0.x (excelência / nota 9,5)»** — Eixos A (higiene), B (trincheiras 4.4 → canônico), C (cadência); **Backlog v1.1** alargado (**E‑ZT**, **E‑BENCH**, **E‑FLOW**, **E‑CERT**, **E‑K8S**); **README** remete ao plano; **Próxima sessão** — linha 6 |
+| **2026-05-02 (II)** | **Auditoria pré-lançamento:** mapa Módulo 3 (COMANDO **3.2**/**3.3**); *hint* `gpg-health-check.sh` com `\"$FP\"`; `set -euo pipefail` + ajustes `|| true` onde necessário; passphrase exemplo sem `#` (TOC); `<a id="apendice-b">`; bloco «lixo ilegível» COMANDO 2.2; nota rubrica CP1 ↔ COMANDO **2.4**; *rename* canónico **`OpenPGP-GPG`**; governança **`gpg-automation.sh`**; ROADMAP **A1** fechado, **A3**/Eixo **B**/spot-check com notas de risco |
 | **Repo** | `.vscode/` e `scripts/` só locais (`.gitignore` + fora do remoto) |
 
 **Manutenção recorrente:** ao **novo** bloco shell no `.md` canônico → rever `list-secret-keys` + `fpr:` + `UID_IMPORT` / `LAB_EMAIL`; ao **novo** link HTTPS → repetir **HEAD** em lote; ao subir **GnuPG** experimental → rever nomes PQ na CLI (Módulo 11).

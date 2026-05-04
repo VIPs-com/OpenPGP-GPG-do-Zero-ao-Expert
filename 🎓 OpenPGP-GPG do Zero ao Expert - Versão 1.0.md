@@ -7,7 +7,7 @@
 **Metodologia:** 🔴🟡🟢🔵 + COMANDO A COMANDO + Checkpoints  
 **Status:** ✅ **VERSÃO 1.0 — material canônico único**
 
-> 📌 **Nota editorial:** **`🎓 OpenPGPGPG do Zero ao Expert - Versão 1.0.md`** é o curso oficial (**VERSÃO 1.0 canônica**), arquivo único no projeto. O cabeçalho usa **OpenPGP/GPG** como nome didático do curso.
+> 📌 **Nota editorial:** **`🎓 OpenPGP-GPG do Zero ao Expert - Versão 1.0.md`** é o curso oficial (**VERSÃO 1.0 canônica**), arquivo único no projeto. O cabeçalho usa **OpenPGP/GPG** como nome didático do curso; o *filename* usa **OpenPGP-GPG** (hífen) para evitar o typo histórico «OpenPGPGPG» no nome em disco.
 
 > 📎 **Repositório Git (opcional):** histórico público em [github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert) — útil para `git clone`, *pull* e *issues*; estudar só com este `.md` local ou cópia ZIP continua válido.
 
@@ -271,8 +271,8 @@ Ao final deste curso, você será capaz de:
 │   │   ├── 🟡 Abordagem com fingerprint (melhor)
 │   │   ├── 🟢 Abordagem completa (recomendada)
 │   │   ├── ▸ COMANDO 3.1: gpg --gen-revoke
-│   │   ├── ▸ COMANDO 3.2: gpg --export-secret-subkeys
-│   │   ├── ▸ COMANDO 3.3: age --passphrase
+│   │   ├── ▸ COMANDO 3.2: Backup subchaves (🔴→🟡→🟢; export + age; backup-subkeys-completo.sh)
+│   │   ├── ▸ COMANDO 3.3: Teste de restauração (obrigatório)
 │   │   ├── ▸ COMANDO 3.4: Simulando perda total
 │   │   ├── ▸ COMANDO 3.5: Revogar subchave comprometida
 │   │   └── 🚀 Bônus: Script de backup completo
@@ -711,6 +711,7 @@ O COMANDO 0.8 acima já implementa um perfil **equilibrado** com SSH ativo para 
 ```sh
 #!/bin/bash
 # install-gpg.sh - Instalação completa do GPG
+set -euo pipefail
 
 echo "🔐 Instalando GPG e ferramentas..."
 
@@ -904,7 +905,7 @@ Você selecionou este identificador de usuário:
 Vai pedir uma senha (passphrase).
 ```
 
-> ⚠️ **Use uma senha forte, mas que você consiga lembrar para os exercícios.** O **Mandamento 6** pede Diceware com **mínimo de 6 palavras** em produção; neste laboratório o exemplo segue esse mínimo: `cadeado$trovão&lago#castelo&rio#nuvem` (6 segmentos aleatórios — misture com separadores fortes e **não** copie este exemplo literal para vida real).
+> ⚠️ **Use uma senha forte, mas que você consiga lembrar para os exercícios.** O **Mandamento 6** pede Diceware com **mínimo de 6 palavras** em produção; neste laboratório o exemplo segue esse mínimo: `cadeado$trovão&lago~castelo~rio~nuvem` (6 segmentos — **sem** `#` no exemplo, para parsers de TOC/Markdown não confundirem com âncoras; **não** copie literal para vida real).
 
 **Saída esperada (final):**
 
@@ -1063,6 +1064,7 @@ ssb   ed25519/DDDDDDDD... [A]  ← Autenticação (SSH)
 ```sh
 #!/bin/bash
 # create-gpg-key.sh - Cria chave mestra + subchaves automaticamente
+set -euo pipefail
 
 NOME="Aluno Lab"
 EMAIL="aluno.training@openpgp-lab.local"
@@ -1152,7 +1154,7 @@ cat segredo.txt.gpg
 **Saída esperada (lixo ilegível):**
 
 ```
-�^�C� �gpg-cipher$��$�?��}��/��f�����FZ�...
+[… dados binários omitidos — saída intencionalmente ilegível no terminal …]
 ```
 
 > 🔐 **Isso é segurança!** Sem sua chave privada, ninguém consegue ler.
@@ -1262,6 +1264,8 @@ gpg: Assinatura criada em 2026-04-30
 
 **Foi criado o arquivo** `declaracao.txt.asc`. É sua assinatura digital.
 
+> 📎 **Rubrica do Checkpoint 1:** aqui usamos **`gpg --detach-sign --armor`** → assinatura **destacada** em texto (`.asc`). Com **`gpg --clearsign`**, a assinatura fica **no próprio texto legível** (comum em e-mail). Com **`gpg --detach-sign`** **sem** `--armor`, o ficheiro de assinatura costuma ser **binário** (extensão típica **`.sig`**). Qualquer um destes formatos conta como evidência de «assinatura» no checkpoint, conforme o fluxo que praticar.
+
 * * *
 
 #### ▸ COMANDO 2.5: Verificando a assinatura
@@ -1352,6 +1356,7 @@ gpg: BAD signature from "Aluno Lab (TRAINING 2026) <aluno.training@openpgp-lab.l
 ```sh
 #!/bin/bash
 # backup-subkeys.sh - Backup diário das subchaves
+set -euo pipefail
 
 BACKUP_DIR="$HOME/gpg-backups"
 TIMESTAMP=$(date -u +"%Y%m%dT%H%M%SZ")
@@ -2618,6 +2623,7 @@ gpg --verify /tmp/gpg-smoke.asc
 ```sh
 #!/bin/bash
 # gpg-health-check.sh - Verifica sanidade da configuração
+set -euo pipefail
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -2630,7 +2636,7 @@ echo -e "${GREEN}=== HEALTH CHECK GPG ===${NC}"
 LAB_EMAIL="${LAB_EMAIL:-aluno.training@openpgp-lab.local}"
 
 # 1. Versão (M.N — sem depender de grep -P)
-GPG_VER=$(gpg --version | head -n1 | grep -oE '[0-9]+\.[0-9]+' | head -1)
+GPG_VER=$(gpg --version | head -n1 | grep -oE '[0-9]+\.[0-9]+' | head -n1 || true)
 GPG_VER="${GPG_VER:-0.0}"
 if command -v bc >/dev/null 2>&1; then
     if (( $(echo "$GPG_VER >= 2.5" | bc -l) )); then
@@ -2680,7 +2686,7 @@ if gpg --list-secret-keys --with-colons "$LAB_EMAIL" 2>/dev/null | awk -F: 'BEGI
         echo -e "${GREEN}✓ Subchave [E] com cv25519 (correto)${NC}"
     else
         echo -e "${RED}✗ Subchave [E] NÃO está usando cv25519${NC}"
-        echo -e "${YELLOW}  → Corrija com: gpg --quick-add-key FP cv25519 encr 1y${NC}"
+        echo -e "${YELLOW}  → Corrija com: gpg --quick-add-key \"\$FP\" cv25519 encr 1y${NC}"
     fi
 else
     echo -e "${YELLOW}⚠ Subchave [E] não encontrada${NC}"
@@ -2762,7 +2768,7 @@ if getent group pcscd >/dev/null 2>&1; then
 fi
 
 # 9. Backup recente
-BACKUP_FILE=$(ls -t ~/gpg-backups/subkeys-*.age 2>/dev/null | head -1)
+BACKUP_FILE=$(ls -t ~/gpg-backups/subkeys-*.age 2>/dev/null | head -n1 || true)
 if [ -n "$BACKUP_FILE" ]; then
     BACKUP_DATE=$(stat -c %y "$BACKUP_FILE" | cut -d' ' -f1)
     echo -e "${GREEN}✓ Backup recente: $BACKUP_DATE${NC}"
@@ -2874,10 +2880,15 @@ fi
 
 ```sh
 #!/bin/bash
-# gpg-automation.sh - Script completo com todas as funções
+# gpg-automation.sh - Atalho didático (laboratório); produção → COMANDO 3.2 completo + checklist
+set -euo pipefail
 
 LAB_EMAIL="${LAB_EMAIL:-aluno.training@openpgp-lab.local}"
 FP=$(gpg --list-secret-keys --with-colons "$LAB_EMAIL" | awk -F: '/^fpr:/ {print $10; exit}')
+if [ -z "${FP:-}" ]; then
+    echo "❌ FP vazio — defina LAB_EMAIL ou crie a chave (Módulo 1)."
+    exit 1
+fi
 
 case "${1:-}" in
     backup)
@@ -2917,6 +2928,7 @@ esac
 | Script simples (🔴) | Sim | Não | Apenas para aprendizado |
 | Script intermediário (🟡) | Sim | Com cautela | Definir fingerprint alvo |
 | Script completo (🟢) | Sim | Sim | Log, retenção, validação, rollback |
+| **`gpg-automation.sh`** (atalho unificado acima) | Sim | **Não** (só laboratório) | **Atalho didático**; backup/rotação simplificados — produção exige script **🟢** do **COMANDO 3.2** + itens do checklist abaixo |
 
 **Checklist obrigatório antes de colocar em produção:**
 
@@ -3904,6 +3916,8 @@ Definições curtas dos termos que mais reaparecem no curso. **Inglês técnico:
 - Erro de trust/chave pública: atualize chaveiro e revalide fingerprint.
 
 * * *
+
+<a id="apendice-b"></a>
 
 ### APÊNDICE B: SCRIPTS EVOLUTIVOS (simples → fingerprint → completo)
 
