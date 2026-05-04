@@ -4254,6 +4254,8 @@ Trilha de referência para operações **multi-dispositivo**: pensar em **zonas*
 
 #### Estratégia segura de migração (sem interrupção)
 
+> 📎 **Bloco didático:** os comandos abaixo ilustram a sequência de migração — **não** é um *script* autónomo completo (por exemplo **não** inclui `set -euo pipefail` como nos roteiros executáveis do curso). Adapte variáveis, caminhos e política interna antes de usar em produção; teste sempre num `GNUPGHOME` de laboratório.
+
 ```sh
 # 1) mantenha RSA ativa temporariamente (coexistência)
 gpg --list-keys --keyid-format long

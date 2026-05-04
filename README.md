@@ -8,13 +8,14 @@ Curso em **um único Markdown** (versão canônica **1.0**), com orientações p
 |---------|-----------|
 | [🎓 OpenPGPGPG do Zero ao Expert - Versão 1.0.md](./🎓%20OpenPGPGPG%20do%20Zero%20ao%20Expert%20-%20Versão%201.0.md) | Curso completo (módulos, comandos, checkpoints) |
 | [ROADMAP.md](./ROADMAP.md) | Fluxo auditoria → roadmap; **spot-check VM** pendente; checklist por camada |
+| [CERTIFICACAO-INTERNA.md](./CERTIFICACAO-INTERNA.md) | Rubrica opcional para validar nível **Expert** ao fechar o curso (instrutor/mantenedor) |
 | [`LICENSE`](./LICENSE) | Direitos reservados (por padrão); substituir se mudar a política editorial |
 | [.cursorrules](./.cursorrules) | Contexto e padrões do projeto para IA / equipe |
 | [`.cursor/rules/openpgp-course-pointer.mdc`](./.cursor/rules/openpgp-course-pointer.mdc) | Ponte MDC do Cursor ao `.cursorrules` (regras canônicas) |
 
 ## Requisitos no leitor
 
-- **GnuPG** ~2.4.x (Ubuntu 24.04 do curso); trechos experimentais **2.5.19+** (Kyber) onde indicado.
+- **GnuPG** ~2.4.x (Ubuntu 24.04 do curso); trechos experimentais **2.5.19+** (**ML-KEM** / `pqc`; rótulo «Kyber» na CLI) onde indicado.
 - **Tails** 7.7.1+ para laboratório offline; imagem **`.img`** para pendrive (ver curso, COMANDO 6.1).
 - **Sequoia `sq`** ~1.3.x onde o módulo 12 referenciar.
 

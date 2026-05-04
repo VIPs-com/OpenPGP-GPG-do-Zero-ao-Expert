@@ -8,9 +8,9 @@ Este repositório **não** é uma aplicação web nem monorepo TypeScript. O tra
 
 | Camada | Uso |
 |--------|-----|
-| **Conteúdo** | Um único arquivo Markdown canônico: `🎓 OpenPGPGPG do Zero ao Expert - Versão 1.0.md` (~3900 linhas), **VERSÃO 1.0**. Prosa em **português**; **termos em inglês** (CLI, *flags*, nomes de algoritmos, *tooling*, *pipeline*, *backup*, etc.) são **normais** quando são o vocabulário da área — use **entre aspas** ou **uma linha de explicação** na primeira ocorrência se ajudar o leitor. |
+| **Conteúdo** | Um único arquivo Markdown canônico: `🎓 OpenPGPGPG do Zero ao Expert - Versão 1.0.md` (~4400 linhas), **VERSÃO 1.0**. Prosa em **português**; **termos em inglês** (CLI, *flags*, nomes de algoritmos, *tooling*, *pipeline*, *backup*, etc.) são **normais** quando são o vocabulário da área — use **entre aspas** ou **uma linha de explicação** na primeira ocorrência se ajudar o leitor. |
 | **Controle de versão** | **Git** (`main`). Commits frequentes no material didático. |
-| **Ferramentas alvo do curso (referência no texto)** | **GnuPG** ~2.4.x (Ubuntu 24.04 do curso); trechos **2.5.19+** para Kyber/ML-KEM experimental; **Tails** 7.7.1+; **Sequoia `sq`** ~1.3.x; **bash** nos blocos de script; **age**, **git** com assinatura, etc. |
+| **Ferramentas alvo do curso (referência no texto)** | **GnuPG** ~2.4.x (`apt` Ubuntu 24.04); **2.5.19+** só para **ML-KEM** em **VM**/*build* oficial (rótulo «Kyber» na CLI; **fora** do `apt` LTS); **Tails** 7.7.1+ (variável `TAILS_VER` no COMANDO 6.1); **Sequoia `sq`** ~1.3.x; **bash** nos blocos de script; **age**, **git** com assinatura, etc. |
 | **Estilização** | Markdown padrão (títulos, tabelas, listas, blocos ` ```sh `, callouts com `> 📎` / `> 💡`). Sem CSS/Tailwind neste repo. |
 
 Não introduzir `package.json`, frameworks ou pastas `src/` “por hábito” — só se o escopo do projeto mudar explicitamente.

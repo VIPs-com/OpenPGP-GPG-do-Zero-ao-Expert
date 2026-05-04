@@ -22,13 +22,13 @@ A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática; o 
 
 ## Última auditoria estática (preencher após cada rodada completa)
 
-**Rodada de fecho:** **2026-05-02** — plano «Auditoria pré-roadmap» (camadas 1, 2, 4, 3, 6; **5** = VM continua manual).
+**Rodada de fecho:** **2026-05-14** — plano «Auditoria pré-roadmap» (camadas 1, 2, 4, 3, 6; **5** = VM continua manual).
 
 | Área | Resultado | Notas / próximo passo |
 | --- | --- | --- |
 | Git / trunk | **PASS** 2026-05-03 | Re-verificação rápida (camada **1**): `main` alinhado com `origin/main`; working tree limpo; `git remote -v` = **OpenPGP-GPG-do-Zero-ao-Expert**; `git ls-files` sem `.vscode/` nem `scripts/` |
 | Versões (Tails / GnuPG / `sq`) | **PASS** 2026-05-03 | Re-verificação (camada **2**): cabeçalho + `README.md` + Módulo 0 — Tails **7.7.1+**, GnuPG **2.4.x** / **2.5.19+**, **sequoia-sq ~1.3.x**; sem divergência |
-| URLs (HEAD HTTPS únicos) | **PASS** 2026-05-03 | **23** URLs únicos no `.md` canônico; **HEAD** → **200** em todos (incl. `…/blob/main/LICENSE`, `…/blob/main/ROADMAP.md`); `https://SEU_DOMINIO/...` **fora** do lote |
+| URLs (HEAD HTTPS únicos) | **PASS** 2026-05-14 | Lote canónico **23** (rodada 2026-05-03) + **2** da tabela «Referências oficiais» no `.md` canônico (`https://safecurves.cr.yp.to`, `https://www.eff.org/dice`); **HEAD** → **200** em todos; `https://SEU_DOMINIO/...` **fora** do lote |
 | Grep scripts + PQ (`list-secret-keys`, `fpr:`, sem `grep -oP`, `QUÂNTICA` indevido) | **PASS** 2026-05-03 | Re-grep (camada **4**) pós-2026-05-02: **sem** `grep -oP`; **`QUÂNTICA`** só no anexo; novos blocos revistos — Apêndice F `FP_NOVO` com `"$UID_NOVO"`; exceções inalteradas: **health-check** `^sec:`; **import** `COLON_FILTER` sem UID só com nota de laboratório |
 | VM (spot-check) | **PENDENTE** | Roteiro **§ Spot-check VM Ubuntu** — **adiado** (mantenedor: não executar agora); permanece **PENDENTE** até corrida real ou nova decisão |
 | Governança (`.cursorrules`, `.mdc`, formato entrega) | **PASS** 2026-05-02 | `openpgp-course-pointer.mdc` → `.cursorrules`, `alwaysApply: true`; README coerente com trunk = MD + meta |
@@ -111,6 +111,7 @@ VM alinhada ao curso (**Ubuntu 24.04**, `gnupg2`, rede para `wget`/`apt` onde ne
 | 4 | `gpg --quick-generate-key` / `--quick-add-key` com `LAB_EMAIL` e `FP` de `fpr:` | Módulos 3–4 |
 | 5 | Export/import subchaves com **`UID_IMPORT`** igual ao UID da mestra quando houver >1 `sec:` | Módulo 6, `gpg-import-subkeys.sh` |
 | 6 | Copiar o **health-check** do curso para `~/scripts/`, `chmod +x`, `LAB_EMAIL=... ./gpg-health-check.sh` | Módulo 8 (bônus) |
+| 6b | (Opcional, **GnuPG 2.5.19+** separado do `apt`) Roteiro **ML-KEM** do Módulo 11: `GNUPGHOME` de teste, `pqc default`, cifrar/decifrar `/tmp/pq-lab-plain.txt` | Módulo 11 |
 | 7 | (Opcional) `gpg --clearsign` / `gpg --verify` fumaça | Módulo 7 |
 
 **Critério de fecho:** checklist sem erro bloqueante **ou** desvio documentado com comando e saída.
@@ -125,6 +126,7 @@ VM alinhada ao curso (**Ubuntu 24.04**, `gnupg2`, rede para `wget`/`apt` onde ne
 | 4 | `quick-generate-key` / `quick-add-key` + `FP` de `fpr:` | [ ] |
 | 5 | Import subchaves + `UID_IMPORT` quando >1 `sec:` | [ ] |
 | 6 | `gpg-health-check.sh` com `LAB_EMAIL` | [ ] |
+| 6b | (Opcional) Roteiro **ML-KEM** Módulo 11 (`pqc`, `GNUPGHOME` de teste) | [ ] |
 | 7 | (Opcional) `clearsign` / `verify` | [ ] |
 
 **Data da corrida:** _______________
@@ -138,6 +140,25 @@ VM alinhada ao curso (**Ubuntu 24.04**, `gnupg2`, rede para `wget`/`apt` onde ne
 ## Formato de entrega (decisão trunk 1.x)
 
 **Até nova decisão explícita do mantenedor:** entrega principal no Git = **Markdown canônico** do curso + meta-repo (`README`, `ROADMAP`, **`LICENSE`**, `.cursorrules`, `.cursor/rules`). **Não** há obrigação no trunk de PDF, HTML estático nem site gerado — fase posterior se/quando houver ferramenta e tempo.
+
+---
+
+## Changelog editorial (material v1.0.x)
+
+Transparência para alunos e mantenedores: mudanças de **conteúdo** que cruzam módulos (detalhe no `git log` do `.md` canônico).
+
+| Versão / data | Mudança | Impacto |
+| --- | --- | --- |
+| **v1.0.x** (2026-05) | **`HEALTHCHECK_AUTO_RESET`** no **Apêndice D**; ramo opt-in no `gpg-health-check.sh` (**Módulo 8**) | Suporte a **CI/CD** e servidores de assinatura: reinício controlado de `scdaemon` / agente quando `lsusb` vê token mas `gpg --card-status` falha; riscos (máquina partilhada, `pcscd`) documentados |
+| **v1.0.x** (2026-05) | **Módulo 9:** riscos de **hardware/token** (USB / `pcscd` / VM, perda ou roubo do token) e remissões ao **Módulo 7**, passos **7–8** do health-check e **Apêndice D** | *Threat model* alinhado à camada física; liga mitigação preventiva à recuperação operacional |
+| **v1.0.x** (2026-05) | **Módulo 11 (PQ):** **ML-KEM** (FIPS 203) vs rótulo **«Kyber»** na CLI; **RFC 9580** + trilho **draft-ietf-openpgp-pqc**; roteiro **`pqc default`** + cifragem/decifragem em `GNUPGHOME` de laboratório | Referência canônica até ~2030 com teoria alinhada a normas e prática reproduzível em **GnuPG 2.5.19+** |
+| **v1.0.x** (2026-05) | **`CERTIFICACAO-INTERNA.md`:** rubrica **Expert — núcleo** (12 itens) + extensão opcional **PQ**; ficha copiável; limites legais explícitos | Fecho de turma / *onboarding* auditável sem «ilhas» fora do `README` |
+| **v1.0.x** (2026-05) | **`.md` canônico:** remissão pós-**EXAME FINAL** → `./CERTIFICACAO-INTERNA.md` (instrutores + aluno avançado) | O recurso aparece no momento de fecho da jornada, antes dos **APÊNDICES** |
+| **v1.0.x** (2026-05) | **Rede / WKD / CI:** secção **dirmngr**; **WKD** no domínio próprio; **gpg-agent** *headless* (`GPG_TTY`, loopback, SSH vs CI) | Auditoria: menos «ilhas» para aluno avançado e *training* corporativo |
+| **v1.0.x** (2026-05) | **Clareza operacional:** prioridade **GnuPG** (apt vs lab PQ); **RFC 9580** visível no Módulo 12; exemplos Tails/SSH iPhone/PowerShell alinhados a fatos | Reduz confusão de iniciante e risco cognitivo / *supply-chain* |
+| **v1.0.x** (2026-05) | **OpenKeychain (Android):** quadro de manutenção limitada / LTS comunitário; passo extra na lista; entrada no glossário | Aluno não assume *app* móvel como pilar de décadas sem verificar o repositório |
+| **v1.1.x** (planejado) | **WSL2 + GPG (Windows):** agente, `SSH_AUTH_SOCK`, *boundary* Win32, coexistência com Gpg4win | *Gap* corporativo mais citado por devs Windows; texto completo adiado à **1.1** |
+| **v1.0.x** (2026-05) | **Pré-lançamento:** HEAD nos URLs do cabeçalho; glossário alinhado a **ML-KEM** / **`GPG_TTY`** / **`HEALTHCHECK_AUTO_RESET`** | Segunda passagem opcional fechada sem bloquear publicação |
 
 ---
 
@@ -162,9 +183,30 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-04** | **Anexo + ROADMAP:** checklist **Versões externas** inclui `LICENSE`; tabela de referências + bullet pré-commit `LICENSE`/`README`; **formato de entrega** lista `LICENSE`; nota **«Ao fechar o spot-check na VM»** (tabela R2 + commit) |
 | **2026-05-05** | **VM:** tabela **«Registro de execução»** no `ROADMAP` (checkboxes por passo + data/notas) para fechar R2 com commit após a corrida real |
 | **2026-05-06** | **VM adiada:** decisão explícita — **não** executar spot-check agora; auditoria **VM** mantém-se **PENDENTE**; **R2** / «Outras» ficam **[ ]**; próxima sessão desbloqueada para outras tarefas |
+| **2026-05-07** | **Apêndice D + Módulo 8 + Módulo 9:** `HEALTHCHECK_AUTO_RESET=1` (opt-in); health-check com ramo condicionado; *threat model* com riscos token/USB e tabela de mitigação cruzada — ver **Changelog editorial** acima |
+| **2026-05-08** | **Módulo 11 + meta:** ML-KEM/FIPS 203, RFC 9580 + *draft* OpenPGP PQC, roteiro `pqc` + round-trip cifrar/decifrar; glossário/mandamento 19/Módulo 9/12 e cabeçalho alinhados — ver **Changelog editorial** |
+| **2026-05-09** | **`CERTIFICACAO-INTERNA.md` + README:** guia de rubrica «Expert»; changelog editorial |
+| **2026-05-09** | **Curso canônico:** secção **«Validação de competências (nível Expert)»** após **EXAME FINAL + CERTIFICADO**, link `./CERTIFICACAO-INTERNA.md` |
+| **2026-05-10** | **Módulo 10 + Apêndice D + glossário + mapa:** `dirmngr` (avançado); WKD *direct* passo a passo (`gpg-wks-client`); *headless* / `GPG_TTY` / pinentry no Apêndice D; âncoras `#comando-10-5`, `#dirmngr-avancado`, `#wkd-passo-a-passo`, `#apendice-d-headless-gpg-agent` |
+| **2026-05-11** | **Auditoria externa (correcções):** COMANDO 2.1 sem texto tipo senha; Tails 6.1 com `TAILS_VER`; tabela Módulo 12 — prioridade **2.4.x apt** vs **2.5.x** só em lab; **RFC 9580** no Módulo 12 + glossário; iPhone/Blink sem alegação de Secure Enclave; PowerShell `enable-ssh-support` idempotente |
+| **2026-05-12** | **Apêndice E (Android):** OpenKeychain — manutenção limitada, lançamentos irregulares, aviso de dependência; glossário + mapa |
+| **2026-05-13** | **v1.1 planejado:** secção **Backlog v1.1** no `ROADMAP` (WSL2 + GPG, `SSH_AUTH_SOCK`, Gpg4win vs agente WSL); nota no Apêndice E + linha no mapa do curso |
+| **2026-05-14** | **Pré-lançamento 1.0:** `curl -I -L` nos URLs do cabeçalho (GnuPG download, Tails, Sequoia `sq`, manual OpenPGP Key Management) — **200** ou **302→200**; glossário — entradas **ML-KEM**, **`GPG_TTY`**, **`HEALTHCHECK_AUTO_RESET`** + âncora `#apendice-d-healthcheck-auto-reset`; **HEAD** na tabela de referências (**SafeCurves**, **EFF Diceware**) — **200**; rubrica certificação (Git **Módulo 4** / SSH **Módulo 5**); nota didática **Apêndice F** (migração RSA→ECC) |
 | **Repo** | `.vscode/` e `scripts/` só locais (`.gitignore` + fora do remoto) |
 
 **Manutenção recorrente:** ao **novo** bloco shell no `.md` canônico → rever `list-secret-keys` + `fpr:` + `UID_IMPORT` / `LAB_EMAIL`; ao **novo** link HTTPS → repetir **HEAD** em lote; ao subir **GnuPG** experimental → rever nomes PQ na CLI (Módulo 11).
+
+---
+
+## Backlog v1.1 (planejado — não bloqueia a versão 1.0 canônica)
+
+Conteúdo acordado para **futura** revisão **1.1.x** do `.md` canônico; o trunk **1.0** permanece válido sem estes blocos.
+
+| # | Tema | Notas para quem for escrever |
+| --- | --- | --- |
+| **E‑WSL** | **WSL2 + GnuPG no Windows** (Apêndice E ou subsecção nova) | Cobrir **dois mundos**: `gpg`/`gpg-agent` no **Ubuntu WSL** vs **Gpg4win** no Win32 — **conflito** de agentes, `GNUPGHOME`, sockets. **`SSH_AUTH_SOCK`**: não cruza o *boundary* **WSL ↔ Win32** por defeito; documentar *workarounds* comuns (*npipe* / `socat` / «Git só no WSL») com **avisos de risco**. **Pinentry** no WSL sem DISPLAY. *Decision tree*: «só WSL», «só Windows», «híbrido com política explícita». |
+
+**Origem:** *feedback* de que este é o *gap* mais provável para **devs Windows** que seguem o curso em contexto corporativo.
 
 ---
 
@@ -174,7 +216,7 @@ Itens já tratados nas rodadas acima (não reabrir salvo regressão):
 
 - Varredura URLs (última rodada completa; repetir só após links novos — agora coberto na **camada 3**).
 - Grep preventivo parcial/completo (rodada III + regra de manutenção).
-- Kyber / Thunderbird / glossário Sequoia+rede / decisão trunk / ponte MDC.
+- ML-KEM / Thunderbird / glossário Sequoia+rede / decisão trunk / ponte MDC.
 
 ---
 
