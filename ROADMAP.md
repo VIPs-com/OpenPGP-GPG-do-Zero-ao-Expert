@@ -16,7 +16,7 @@ Ordem acordada com o **plano «Auditoria pré-roadmap»** (e auditoria técnica 
 2. **Auditoria estática do trunk** — checklist das **seis camadas** abaixo; preencher a **tabela de resultado** na secção seguinte.
 3. **Novas linhas datadas** neste ficheiro (ex.: «Rodada estática 2026-05-X») só **depois** de lacunas reais (FAIL/WARN) ou decisão explícita do mantenedor.
 
-A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática; o fecho formal do spot-check atualiza a tabela e o backlog.
+A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática; o fecho formal do spot-check atualiza a tabela e o backlog. **Adiamento explícito:** se o mantenedor decidir **não** executar o roteiro nesta fase, mantenha **PENDENTE** na auditoria e **[ ]** em **R2** — não bloqueia outras tarefas do repo nem a continuidade do material estático.
 
 ---
 
@@ -30,11 +30,11 @@ A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática; o 
 | Versões (Tails / GnuPG / `sq`) | **PASS** 2026-05-02 | Cabeçalho + Módulo 0 + `README.md`: Tails **7.7.1+**, GnuPG **2.4.x** / **2.5.19+** (Kyber), **sequoia-sq ~1.3.x** — sem divergência relevante |
 | URLs (HEAD HTTPS únicos) | **PASS** 2026-05-02 | **21** URLs únicos no `.md` canónico; `urllib` **HEAD** → **200** em todos após corrigir link GitHub (evitar `**` colado ao URL no Markdown); `https://SEU_DOMINIO/...` (exemplo WKD) **fora** do lote automático |
 | Grep scripts + PQ (`list-secret-keys`, `fpr:`, sem `grep -oP`, `QUÂNTICA` indevido) | **PASS** 2026-05-02 | Sem `grep -oP`; `QUÂNTICA` só no anexo; exceções aceites: contagem `^sec:` no health-check; `gpg-import-subkeys` com `UID_IMPORT` vazio **só** com comentário de laboratório no script |
-| VM (spot-check) | **PENDENTE** | Roteiro **§ Spot-check VM Ubuntu** — única lacuna que exige Ubuntu real |
+| VM (spot-check) | **PENDENTE** | Roteiro **§ Spot-check VM Ubuntu** — **adiado** (mantenedor: não executar agora); permanece **PENDENTE** até corrida real ou nova decisão |
 | Governança (`.cursorrules`, `.mdc`, formato entrega) | **PASS** 2026-05-02 | `openpgp-course-pointer.mdc` → `.cursorrules`, `alwaysApply: true`; README coerente com trunk = MD + meta |
 | `LICENSE` | **PASS** 2026-05-03 | Ficheiro `LICENSE` no trunk (direitos reservados); README alinhado — mudança para licença aberta = substituir `LICENSE` + editar README |
 
-*Substituir células conforme novas rodadas; VM passa a **PASS** quando o roteiro for executado ou desvio for documentado.*
+*Substituir células conforme novas rodadas; VM passa a **PASS** quando o roteiro for executado ou desvio for documentado. **Adiado** = manter **PENDENTE** e anotar aqui a data da decisão (ver histórico).*
 
 ---
 
@@ -59,9 +59,9 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 | --- | --- | --- |
 | 1 | Colar ou abrir este `ROADMAP.md` + `.cursorrules` | Contexto estável para o agente |
 | 2 | `git pull` / `git status` / `git remote -v` | Em `E:\pgp` ou `/e/pgp` |
-| 3 | **Spot-check VM** (R2) — única lacuna P3 que exige Ubuntu | **§ Spot-check VM Ubuntu**; preencher tabela de auditoria «VM» ao concluir |
-| 4 | Checklist **camadas 1–2–4** (e **3** se houver rede) | Atualizar **tabela de auditoria** |
-| 5 | **Spot-check VM** | **§ Spot-check VM Ubuntu**; único passo que exige Ubuntu real |
+| 3 | Próxima tarefa à escolha (conteúdo `.md`, URLs, anexo, meta-repo) | **VM spot-check adiado** — ver § Pendências; **R2** continua **[ ]** |
+| 4 | Checklist **camadas 1–2–4** (e **3** se houver rede) | Atualizar **tabela de auditoria** quando fizer rodada |
+| 5 | **Spot-check VM** (opcional, quando houver Ubuntu) | **§ Spot-check VM Ubuntu** + **Registo de execução** — só após voltar a priorizar a VM |
 
 ---
 
@@ -86,18 +86,20 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 
 ### P3 — Ecossistema e robustez
 
-- [ ] **R2:** Spot-check VM (espelha P1 operacional no SO real).
+- [ ] **R2:** Spot-check VM (espelha P1 operacional no SO real). *Estado: **adiado** — não vai fazer agora; mantém-se pendente na auditoria e **[ ]** até nova prioridade.*
 - [x] **T5:** Idempotência COMANDO 5.3 (`grep -q` antes de `echo >>` em `enable-ssh-support`).
 - [x] **R1:** Ficheiro `LICENSE` no repositório (direitos reservados; substituir se a decisão editorial for licença aberta).
 - [x] **R3:** Rever ponta a ponta `openpgp-course-pointer.mdc` ↔ `.cursorrules`.
 
 ### Outras (alta utilidade, fora P1–P3)
 
-- [ ] **Spot-check na VM Ubuntu** — roteiro completo abaixo (`dd`, `gpg --verify` `.img`, `quick-add-key`, import subchaves, health-check).
+- [ ] **Spot-check na VM Ubuntu** — roteiro completo abaixo (`dd`, `gpg --verify` `.img`, `quick-add-key`, import subchaves, health-check). *Idem **R2**: adiado por ora.*
 
 ---
 
 ## Spot-check VM Ubuntu (roteiro mínimo)
+
+> 📎 **Adiado:** se não for prioridade nesta fase, **não** preencha o registo abaixo; o roteiro permanece aqui para quando voltar à VM.
 
 VM alinhada ao curso (**Ubuntu 24.04**, `gnupg2`, rede para `wget`/`apt` onde necessário). Marque cada passo; anote desvios no commit seguinte ou em issue.
 
@@ -157,6 +159,7 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-03** | **R1:** ficheiro **`LICENSE`** (todos os direitos reservados); **README** — secção licença; tabela de auditoria — linha `LICENSE` **PASS** |
 | **2026-05-04** | **Anexo + ROADMAP:** checklist **Versões externas** inclui `LICENSE`; tabela de referências + bullet pré-commit `LICENSE`/`README`; **formato de entrega** lista `LICENSE`; nota **«Ao fechar o spot-check na VM»** (tabela R2 + commit) |
 | **2026-05-05** | **VM:** tabela **«Registo de execução»** no `ROADMAP` (checkboxes por passo + data/notas) para fechar R2 com commit após a corrida real |
+| **2026-05-06** | **VM adiada:** decisão explícita — **não** executar spot-check agora; auditoria **VM** mantém-se **PENDENTE**; **R2** / «Outras» ficam **[ ]**; próxima sessão desbloqueada para outras tarefas |
 | **Repo** | `.vscode/` e `scripts/` só locais (`.gitignore` + fora do remoto) |
 
 **Manutenção recorrente:** ao **novo** bloco shell no `.md` canónico → rever `list-secret-keys` + `fpr:` + `UID_IMPORT` / `LAB_EMAIL`; ao **novo** link HTTPS → repetir **HEAD** em lote; ao subir **GnuPG** experimental → rever nomes PQ na CLI (Módulo 11).
