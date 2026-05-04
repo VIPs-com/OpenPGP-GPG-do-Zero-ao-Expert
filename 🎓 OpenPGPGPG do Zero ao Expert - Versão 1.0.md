@@ -2978,6 +2978,8 @@ echo "recuperei" | gpg --clearsign > /dev/null 2>&1 && echo "✓ Recuperação O
 
 * * *
 
+<a id="modulo-9-threat-modeling"></a>
+
 ### 📋 MÓDULO 9: THREAT MODELING (MODELAGEM DE AMEAÇAS)
 
 > 🎯 **Objetivo:** Entender os riscos à sua identidade digital e como mitigá-los
@@ -3012,6 +3014,7 @@ echo "recuperei" | gpg --clearsign > /dev/null 2>&1 && echo "✓ Recuperação O
 | **Senha fraca na mestra** | Média | Crítico | Diceware com 6+ palavras |
 | **Keyserver com chave falsa** | Baixa | Médio | Preferir WKD (Web Key Directory) |
 | **Token/leitor USB mal configurado** (`pcscd`, `udev`, VM) | Média | Médio | [Módulo 7 — Token USB](#modulo-7-token-usb) + passos **7–8** do `gpg-health-check.sh` |
+| **Superfície dupla Win32 + WSL2** (dois `gpg-agent`, dois *keyrings*, Git/SSH no «mundo» errado) | Média | Alto | **Um só mundo** (ex.: chaves + Git + SSH **no mesmo** lado — em geral **tudo no WSL2**) ou pontes com política explícita — [**Apêndice E**](#apendice-e) (*WSL2 ↔ Windows, v1.1 planejado*) + [`ROADMAP.md`](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/blob/main/ROADMAP.md) (*Backlog v1.1*) |
 | **Perda ou roubo do token** | Baixa | Alto | PIN forte + contingência de **revogação** + **subchaves** de reserva (política interna) |
 
 * * *
@@ -4084,6 +4087,8 @@ export HEALTHCHECK_AUTO_RESET=1
 
 * * *
 
+<a id="apendice-e"></a>
+
 ### APÊNDICE E: GUIA MULTIPLATAFORMA
 
 #### Windows (KeePassXC + SSH Agent)
@@ -4123,6 +4128,18 @@ gpgconf --launch gpg-agent
 > - **O problema:** conflito entre o **`gpg-agent` do Windows** (**Gpg4win**) e o **`gpg`/agente dentro do Ubuntu embebido no WSL2** — dois agentes, sockets e `pinentry` que o utilizador precisa de **mapear** com consciência.
 > - **A fronteira:** **`SSH_AUTH_SOCK`** (e o socket do `gpg-agent` no Linux) **não** atravessam nativamente a barreira **Win32 ↔ kernel Linux do WSL2**; sem *forwarding* explícito (ex.: *named pipes* / **`npiperelay`**, **`socat`**, ou política «**tudo no WSL**»), o Git/SSH nativo no Windows **não** vê o agente do lado Linux.
 > - **Solução na v1.0 (hoje):** **isolar** o fluxo (chaves, Git e SSH **no mesmo** «mundo» — em geral **tudo no WSL2**) **ou** documentar internamente **pontes** aceites pela equipa. O **roteiro passo a passo** para ambientes híbridos corporativos fica no **`ROADMAP.md`**, secção **Backlog v1.1** — a **1.0** mantém-se **auditável** sem esse capítulo longo.
+
+#### WSL2: onde rever o que já aprendeu *(sem repetir comandos neste bloco)*
+
+No WSL2 a **sintaxe** de `gpg`, `git` e `ssh` **não** muda em relação ao Linux «clássico» do curso; o desafio é **qual** `GNUPGHOME`, **qual** `gpg-agent` e **qual** socket (`SSH_AUTH_SOCK`, *pipe* do agente) está **ativo** — tema da caixa **v1.1** acima e da linha **Win32 + WSL2** no [**Módulo 9 — Threat modeling**](#modulo-9-threat-modeling) (tabela *Quais são seus riscos?*).
+
+| Tema | Onde no curso |
+| --- | --- |
+| Chaves, subchaves, backup, revogação | **Módulos 1**–**3** |
+| Git com assinatura GPG | **Módulo 4** |
+| SSH via `gpg-agent` | **Módulo 5** |
+| `gpg-agent`, `gpgconf`, *health-check*, *headless* / `GPG_TTY` | **Módulos 0** e **8**; **Apêndice D** |
+| PowerShell e `gpg-agent.conf` em Windows **nativo** | Secção **Windows (KeePassXC + SSH Agent)** **acima** neste apêndice |
 
 #### Linux (referência rápida de operação)
 
