@@ -32,7 +32,7 @@ A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática; o 
 | Grep scripts + PQ (`list-secret-keys`, `fpr:`, sem `grep -oP`, `QUÂNTICA` indevido) | **PASS** 2026-05-03 | Re-grep (camada **4**) pós-2026-05-02: **sem** `grep -oP`; **`QUÂNTICA`** só no anexo; novos blocos revistos — Apêndice F `FP_NOVO` com `"$UID_NOVO"`; exceções inalteradas: **health-check** `^sec:`; **import** `COLON_FILTER` sem UID só com nota de laboratório |
 | VM (spot-check) | **PENDENTE** | Roteiro **§ Spot-check VM Ubuntu** — **adiado** (mantenedor: não executar agora); permanece **PENDENTE** até corrida real ou nova decisão |
 | Governança (`.cursorrules`, `.mdc`, formato entrega) | **PASS** 2026-05-02 | `openpgp-course-pointer.mdc` → `.cursorrules`, `alwaysApply: true`; README coerente com trunk = MD + meta |
-| `LICENSE` | **PASS** 2026-05-03 | Ficheiro `LICENSE` no trunk (direitos reservados); README alinhado — mudança para licença aberta = substituir `LICENSE` + editar README |
+| `LICENSE` | **PASS** 2026-05-03 | Arquivo `LICENSE` no trunk (direitos reservados); README alinhado — mudança para licença aberta = substituir `LICENSE` + editar README |
 
 *Substituir células conforme novas rodadas; VM passa a **PASS** quando o roteiro for executado ou desvio for documentado. **Adiado** = manter **PENDENTE** e anotar aqui a data da decisão (ver histórico).*
 
@@ -88,7 +88,7 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 
 - [ ] **R2:** Spot-check VM (espelha P1 operacional no SO real). *Estado: **adiado** — não vai fazer agora; mantém-se pendente na auditoria e **[ ]** até nova prioridade.*
 - [x] **T5:** Idempotência COMANDO 5.3 (`grep -q` antes de `echo >>` em `enable-ssh-support`).
-- [x] **R1:** Ficheiro `LICENSE` no repositório (direitos reservados; substituir se a decisão editorial for licença aberta).
+- [x] **R1:** Arquivo `LICENSE` no repositório (direitos reservados; substituir se a decisão editorial for licença aberta).
 - [x] **R3:** Rever ponta a ponta `openpgp-course-pointer.mdc` ↔ `.cursorrules`.
 
 ### Outras (alta utilidade, fora P1–P3)
