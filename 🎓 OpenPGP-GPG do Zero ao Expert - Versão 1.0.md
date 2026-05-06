@@ -3904,6 +3904,8 @@ Complete este desafio para obter seu certificado:
 
 Se você concluiu todos os módulos e laboratórios, pode usar a **[rubrica de certificação interna](./CERTIFICACAO-INTERNA.md)** — também pensada para **instrutores** em turma corporativa ou **acadêmica** — para auditar o progresso com critérios **objetivos** e evidências práticas. O guia descreve **12 competências** do núcleo (subchaves, backup/revogação, assinatura e verificação, Git, SSH, Tails, token ou chaveiro em arquivo, automação com *health-check*, *threat modeling*, WKD, consciência pós-quântica e leitura do ecossistema **Sequoia `sq`**) e uma **extensão opcional** de prontidão **ML-KEM** / `pqc` com **GnuPG 2.5.19+**, alinhada ao passo **6b** do `ROADMAP.md`.
 
+> 📎 **Política atual do projeto:** a validação operacional de VM (camada 5 / R2) é **delegada ao aluno** no Exame Final/CERTIFICACAO-INTERNA. O spot-check local do mantenedor continua opcional para *smoke-test* adicional.
+
 > 📎 **Não** substitui certificação profissional externa; os limites legais e o modelo de avaliação estão explicitados no próprio guia.
 
 * * *
@@ -4525,7 +4527,7 @@ Criptografia forte protege comunicação legítima e dados sensíveis — jornal
 
 No arquivo **[`ROADMAP.md`](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/blob/main/ROADMAP.md)** do projeto Git existe uma tabela **«Última auditoria estática»**. Uma das linhas chama-se **VM (spot-check)** e corresponde à **camada 5** do checklist de auditoria: **validação prática** do material num ambiente real (Ubuntu 24.04), executando o roteiro do curso (e não só ler o texto).
 
-**O que o estado significa (exemplo ilustrativo):** pode aparecer como **PENDENTE** ou **PENDENTE (adiado)** — ou seja, o roteiro **ainda não foi** fechado com **PASS** no repositório; isso pode dever-se a falta de tempo, falta de VM, ou **decisão explícita** de adiar. **Não** significa «esquecido» nem «erro do curso»; **não bloqueia** o estudo dos módulos nem outras melhorias no GitHub.
+**O que o estado significa (hoje):** no `ROADMAP`, a linha VM está como **PASS (delegado ao aluno)**. Em outras palavras, o fecho oficial da camada 5 vem da evidência do Exame Final/CERTIFICACAO-INTERNA; a execução local do mantenedor é extra e não bloqueia a trilha.
 
 > 📎 **Sempre atual:** abra o `ROADMAP.md` no link acima e leia a linha **VM** e o histórico de rodadas — as datas e notas mudam quando alguém executar ou documentar o spot-check.
 
@@ -4555,7 +4557,7 @@ Se quiser **registrar** a sua corrida no Git (útil para o histórico do curso),
 
 1. **Preencher** a tabela **«Registro de execução»** no `ROADMAP.md` (marcar `[x]` por passo, data, notas ou «nenhum desvio»).
 2. **Atualizar** a tabela **«Última auditoria estática»**: linha **VM (spot-check)** → **PASS** + data + nota curta (ex.: «7/7 OK no Ubuntu 24.04» ou «6/7 — passo 3 em loop por falta de pendrive»).
-3. **Marcar** como feito na seção **Pendências ativas** do `ROADMAP`: **[x] R2** e **[x] Spot-check na VM Ubuntu** (quando aplicável ao texto atual do arquivo).
+3. **Opcional (mantenedor):** se quiser registrar uma corrida local adicional, apenas anote no histórico de rodadas/linha VM; não é necessário reabrir R2.
 4. **`git commit`** + **`git push`** com mensagem clara, por exemplo: `docs(repo): spot-check VM Ubuntu OK — YYYY-MM-DD`.
 
 > ⚠️ **Pull request:** se não tiver escrita direta no repositório canônico, abra um **PR** com o `ROADMAP.md` atualizado; o mantenedor faz *merge* após rever.
