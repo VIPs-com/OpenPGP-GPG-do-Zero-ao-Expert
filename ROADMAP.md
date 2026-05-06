@@ -26,7 +26,7 @@ A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática. **
 
 | Área | Resultado | Notas / próximo passo |
 | --- | --- | --- |
-| Git / trunk | **PASS** 2026-05-06 | Re-verificação rápida (camada **1**): `main` alinhado com `origin/main`; working tree limpo; `git remote -v` = **OpenPGP-GPG-do-Zero-ao-Expert**; `git ls-files` sem `.vscode/` nem `scripts/`; snapshot publicado em `origin/main` no commit **`7dfc698`** |
+| Git / trunk | **PASS** 2026-05-06 | Re-verificação rápida (camada **1**): `main` alinhado com `origin/main`; working tree limpo; `git remote -v` = **OpenPGP-GPG-do-Zero-ao-Expert**; `git ls-files` sem `.vscode/` nem `scripts/`; snapshot publicado em `origin/main` no commit **`5201809`** |
 | Versões (Tails / GnuPG / `sq`) | **PASS** 2026-05-03 | Re-verificação (camada **2**): cabeçalho + `README.md` + Módulo 0 — Tails **7.7.1+**, GnuPG **2.4.x** / **2.5.19+**, **sequoia-sq ~1.3.x**; sem divergência |
 | URLs (HEAD HTTPS únicos) | **PASS** 2026-05-06 | **W-A3 / A3:** rodada completa — **26** HTTPS únicos «reais» no `.md` (filtro: sem `SEU_DOMINIO`, sem `seudominio.example`, sem URLs-sintaxe com `${…}` nos `wget`; **HEAD** → **200**). Correção editorial: **FIPS 203** — `https://csrc.nist.gov/pubs/fips/203/final` (path antigo `…/publications/detail/…` → **404**) |
 | Grep scripts + PQ (`list-secret-keys`, `fpr:`, sem `grep -oP`, `QUÂNTICA` indevido) | **PASS** 2026-05-03 | Re-grep (camada **4**) pós-2026-05-02: **sem** `grep -oP`; **`QUÂNTICA`** só no anexo; novos blocos revistos — Apêndice F `FP_NOVO` com `"$UID_NOVO"`; exceções inalteradas: **health-check** `^sec:`; **import** `COLON_FILTER` sem UID só com nota de laboratório |
@@ -81,13 +81,14 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 - [x] W-06: âncora explícita `<a id="apendice-b"></a>` adicionada (Apêndice C já tinha `id`).
 - [x] I-01 / I-04 / I-05: bloco de saída ilegível estabilizado, nota de rubrica `.asc`/`clearsign`/`.sig`, e governança do `gpg-automation.sh` alinhada ao uso didático.
 
-**Pendências que continuam abertas (não esquecidas):**
+**Pendências abertas (estado actual):**
 
 - [x] **R2 / W-07:** política definida — validação operacional delegada ao aluno via Exame Final/CERTIFICACAO-INTERNA; spot-check local do mantenedor fica opcional.
 - [x] **A3 / I-03:** rodada **2026-05-06** — **26** URLs (lote filtrado), **HEAD**→**200**; **FIPS 203** corrigido no canónico — **repetir** após **novos** links grandes (actualizar tabela de auditoria).
 - [x] **Eixo B (lote 2026-05-15):** linha do tempo CLI (**Módulo 0**); decisão + verificação **ed25519/cv25519** (**Módulo 1**); diagnóstico `[E]` (**Módulo 2**); modelo de e‑mail de revogação (**Módulo 3**); **TOP 15 + Gravidade** (**Apêndice A**) + ponte no **Módulo 9**.
 - [x] **Índice / navegação (2026-05-15 II):** mapa ASCII com linhas 📎 alinhadas ao corpo; âncoras `modulo-0-linha-tempo-cli`, `modulo-1-decisao-subchaves-ecc`, `modulo-2-diagnostico-subchave-e`, `modulo-3-modelo-email-revogacao`, `modulo-9-top15-gravidade`; bloco **«Ligações diretas»** após o mapa (`README.md` referencia o fluxo).
 - [x] **Eixo B / I-02 (restante):** lote 2 integrado no canônico — **Módulo 11** (roteiro `pqc default` + *teardown* em `GNUPGHOME` isolado), **Apêndice C** (tabela YubiKey/Nitrokey/SoloKeys), **Apêndice E** (roteiros Windows/iPhone em passos).
+- ✅ **Conclusão:** sem pendências activas para fechar a versão **1.0.x**; evolução segue no **Backlog v1.1** (E‑BENCH / E‑CERT / E‑K8S, etc.).
 
 ### P1 — Correções técnicas imediatas (`.md` canônico)
 
