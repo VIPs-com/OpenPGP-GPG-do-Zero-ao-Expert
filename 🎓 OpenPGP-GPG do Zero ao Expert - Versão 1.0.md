@@ -518,16 +518,31 @@ Reading package lists... Done
 **Digite agora:**
 
 ```sh
-sudo apt install -y gnupg2 rng-tools age cryptsetup pinentry-tty
+sudo apt install -y gnupg2 rng-tools age cryptsetup pinentry-tty wget curl git
 ```
 
-**O que cada um faz:**
+**Pacotes base (essenciais no curso):**
 
 *   `gnupg2` → O próprio GPG (versão moderna)
 *   `rng-tools` → Ajuda o sistema a **repôr entropia** durante geração pesada de chaves — sobretudo útil em **VM minimal/antiga**; em desktop físico Ubuntu 24.x costuma ser medida de conforto/laboratório, não sempre obrigatória
 *   `age` → Ferramenta para backups (moderna, simples)
 *   `cryptsetup` → Para criar pendrives criptografados (LUKS)
 *   `pinentry-tty` → Interface para digitar senha no terminal
+*   `wget` → Download de artefatos (ex.: Tails, assinaturas)
+*   `curl` → Verificação de links/headers e testes de rede
+*   `git` → Assinatura de commits/tags e fluxo com repositório remoto
+
+**Pacotes extras (recomendados para melhor aprendizado):**
+
+```sh
+sudo apt install -y vim qrencode zbar-tools
+```
+
+*   `vim` → Editor terminal avançado (opcional; `nano` também serve para novato)
+*   `qrencode` → Gera QR code (útil em troca/verificação de dados)
+*   `zbar-tools` → Lê/decodifica QR code (complementa `qrencode`)
+
+> 📎 **Regra prática:** base = obrigatório para acompanhar os módulos; extras = aceleram laboratório e troubleshooting, sobretudo em perfil Expert.
 
 **Saída esperada (parecido com):**
 
@@ -535,7 +550,7 @@ sudo apt install -y gnupg2 rng-tools age cryptsetup pinentry-tty
 Reading package lists... Done
 Building dependency tree... Done
 The following NEW packages will be installed:
-  gnupg2 rng-tools age cryptsetup pinentry-tty
+  gnupg2 rng-tools age cryptsetup pinentry-tty wget curl git
 ...
 Setting up gnupg2 (2.4.4-2ubuntu17.4) ...
 ```
@@ -726,7 +741,9 @@ set -euo pipefail
 echo "🔐 Instalando GPG e ferramentas..."
 
 sudo apt update
-sudo apt install -y gnupg2 rng-tools age cryptsetup pinentry-tty
+sudo apt install -y gnupg2 rng-tools age cryptsetup pinentry-tty wget curl git
+# extras úteis para laboratório/QR (opcional)
+sudo apt install -y vim qrencode zbar-tools
 
 echo "✅ Instalação concluída!"
 gpg --version | head -n1
