@@ -258,7 +258,7 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-15** | **Eixo B (lote 1):** Módulo 0 — linha do tempo CLI; Módulo 1 — decisão `ed25519`/`cv25519` + anti‑padrão + verificação; Módulo 2 — diagnóstico `[E]`; Módulo 3 — modelo de e‑mail de revogação; **Apêndice A** — coluna **Gravidade** nos 15 erros; **Módulo 9** — ponte operacional para essa tabela; `ROADMAP` Eixo B actualizado |
 | **2026-05-15 (II)** | **Curso — mapa visual:** linhas 📎 no índice ASCII (Módulos **0–3**, **9**, Apêndice **A**); âncoras explícitas `modulo-0-linha-tempo-cli`, `modulo-1-decisao-subchaves-ecc`, `modulo-2-diagnostico-subchave-e`, `modulo-3-modelo-email-revogacao`, `modulo-9-top15-gravidade`; bloco **«Ligações diretas»** após o mapa (Markdown clicável fora da cerca ` ``` `) |
 | **2026-05-06 (III)** | **Camada 3 (W-A3):** `curl -IL` nos **26** HTTPS únicos do `.md` canónico (placeholders e templates `${…}` **fora** do lote); **200** em todos; hiperligação **FIPS 203** actualizada para `csrc.nist.gov/pubs/fips/203/final` |
-| **2026-05-06 (IV)** | **Eixo B (lote 2) integrado:** Módulo 11 com *teardown* explícito do `GNUPGHOME` de laboratório PQ; Apêndice C com comparação **YubiKey / Nitrokey / SoloKeys** e tabela de decisão; Apêndice E com roteiros em passos para **Windows** e **iPhone**; linha **Git/trunk** actualizada para **PASS 2026-05-06** (snapshot **`7dfc698`**) |
+| **2026-05-06 (IV)** | **Eixo B (lote 2) integrado:** Módulo 11 com *teardown* explícito do `GNUPGHOME` de laboratório PQ; Apêndice C com comparação **YubiKey / Nitrokey / SoloKeys** e tabela de decisão; Apêndice E com roteiros em passos para **Windows** e **iPhone**; linha **Git/trunk** actualizada para **PASS 2026-05-06** (snapshot **`0ebcd71`**) |
 | **2026-05-02** | **ROADMAP:** secção **«Plano definitivo v1.0.x (excelência / nota 9,5)»** — Eixos A (higiene), B (trincheiras 4.4 → canônico), C (cadência); **Backlog v1.1** alargado (**E‑ZT**, **E‑BENCH**, **E‑FLOW**, **E‑CERT**, **E‑K8S**); **README** remete ao plano; **Próxima sessão** — linha 6 |
 | **2026-05-02 (II)** | **Auditoria pré-lançamento:** mapa Módulo 3 (COMANDO **3.2**/**3.3**); *hint* `gpg-health-check.sh` com `\"$FP\"`; `set -euo pipefail` + ajustes `|| true` onde necessário; passphrase exemplo sem `#` (TOC); `<a id="apendice-b">`; bloco «lixo ilegível» COMANDO 2.2; nota rubrica CP1 ↔ COMANDO **2.4**; *rename* canónico **`OpenPGP-GPG`**; governança **`gpg-automation.sh`**; ROADMAP **A1** fechado, **A3**/Eixo **B**/spot-check com notas de risco |
 | **Repo** | `.vscode/` e `scripts/` só locais (`.gitignore` + fora do remoto) |
@@ -279,8 +279,28 @@ Conteúdo acordado para **futura** revisão **1.1.x** do `.md` canônico; o trun
 | **E‑FLOW** | **Fluxogramas** / *assets* visuais densos | Diagramas (WKD, Tails → subchaves, recuperação); manutenção extra — ficar para quando houver ferramenta e tempo |
 | **E‑CERT** | **Certificado** de conclusão mais elaborado (*design*) | Modelo visual ou PDF gerado; não bloqueia estudo pelo `.md` |
 | **E‑K8S** | **Kubernetes** / rotinas operacionais além do Apêndice D | *Playbooks* ou exemplos adicionais se o Apêndice D ficar curto para o teu público-alvo |
+| **E‑PROX** | **Laboratório Proxmox** (opcional; Apêndice futuro) | Template Ubuntu 24.04 + VMs por perfil + LXC headless + simulação de air-gap do Módulo 6; manter VirtualBox como padrão para iniciantes |
 
-**Origem:** **E‑WSL** — *feedback* de *gap* corporativo Windows/WSL. **E‑ZT** a **E‑K8S** — *stretch goals* acordados fora do âmbito **v1.0.x** (ver **Plano definitivo v1.0.x** — Eixo B para o que **entra** na 1.0).
+**Origem:** **E‑WSL** — *feedback* de *gap* corporativo Windows/WSL. **E‑ZT** a **E‑K8S** e **E‑PROX** — *stretch goals* acordados fora do âmbito **v1.0.x** (ver **Plano definitivo v1.0.x** — Eixo B para o que **entra** na 1.0).
+
+---
+
+## Triagem rápida (plano da equipe)
+
+Regra para evitar ficheiro local gigante: o `Plano equipe` vira apenas **inbox curta** (rascunho), e as decisões estáveis ficam aqui no `ROADMAP`.
+
+**Já absorvido no roadmap/canônico:**
+
+- Eixo B lote 2 (B-PQ, B-HW, B-WIN) integrado no curso.
+- A3/W-A3 (HEAD em lote) fechado em 2026-05-06.
+- Git/trunk alinhado com snapshot actual.
+
+**Aberto para próxima decisão:**
+
+- **R2 (VM spot-check):** escolher política final entre:
+  - mantenedor executa (quando houver Ubuntu/Proxmox),
+  - delegado ao aluno via Exame Final,
+  - N/A documentado (mantenedor não executa).
 
 ---
 
