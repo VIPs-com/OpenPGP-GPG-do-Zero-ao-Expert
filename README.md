@@ -63,6 +63,7 @@ O desafio **Win32 ↔ WSL2** (dois `gpg-agent`, sockets, `SSH_AUTH_SOCK`) **não
 
 ## Governança e qualidade
 
+- **Só no disco local:** alguns ficheiros e pastas estão no [`.gitignore`](./.gitignore) (ex.: rascunhos, plano interno da equipa, diretórios de trabalho opcionais) — **não** sobem para o GitHub; o remoto fica o curso + meta-documentação acordada na raiz.
 - **[ROADMAP.md](./ROADMAP.md):** tabela **«Última auditoria estática»** (Git/trunk, versões Tails/GnuPG/`sq`, HEAD em URLs do curso, grep preventivo, **VM** opcional, governança, `LICENSE`), **histórico de rodadas** e *snapshot* de pendências.
 - **Workflow Git:** depois de alterar o `.md` canônico ou meta-docs, `git commit` + **`git push origin main`** para manter [o remoto](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert) alinhado ao clone local (ver secção **Repositório no GitHub** acima).
 - Conteúdo didático alinhado ao ecossistema **OpenPGP / GnuPG**; menções à **RFC 9580** e ao plano **pós-quântico** **onde o curso assinala** — material de formação, não substitui auditoria legal ou *compliance* formal da tua organização.

@@ -3519,7 +3519,7 @@ Computadores quânticos suficientemente grandes (milhões de qubits) quebrarão:
 
 #### 🔵 ML-KEM (FIPS 203) e o nome «Kyber» no GnuPG
 
-**O que é (nome oficial):** **ML-KEM** (*Module-Lattice-Based Key-Encapsulation Mechanism*) — família **ML-KEM-512 / ML-KEM-768 / ML-KEM-1024** publicada no **[FIPS 203](https://csrc.nist.gov/publications/detail/fips/203/final)** (agosto de 2024). O projeto que originou o padrão chamava-se **CRYSTALS-Kyber**; por isso **documentação, mensagens de erro e strings da CLI** do GnuPG ainda costumam dizer **«Kyber»** ou **`kyber768`** — é **o mesmo algoritmo** sob rótulos diferentes.
+**O que é (nome oficial):** **ML-KEM** (*Module-Lattice-Based Key-Encapsulation Mechanism*) — família **ML-KEM-512 / ML-KEM-768 / ML-KEM-1024** publicada no **[FIPS 203](https://csrc.nist.gov/pubs/fips/203/final)** (agosto de 2024). O projeto que originou o padrão chamava-se **CRYSTALS-Kyber**; por isso **documentação, mensagens de erro e strings da CLI** do GnuPG ainda costumam dizer **«Kyber»** ou **`kyber768`** — é **o mesmo algoritmo** sob rótulos diferentes.
 
 **Onde isto entra no OpenPGP:** o formato de mensagens moderno está no **[RFC 9580](https://www.rfc-editor.org/rfc/rfc9580)** (*OpenPGP*, 2024). As extensões **pós-quânticas** (chaves compostas **ML-KEM + ECC**, assinaturas **ML-DSA + ECC**, **SLH-DSA** / ex-SPHINCS+) seguem o documento de trabalho **[draft-ietf-openpgp-pqc](https://datatracker.ietf.org/doc/draft-ietf-openpgp-pqc/)** — em **2026** costuma estar **aprovado pelo IESG e em fila no RFC Editor**; até sair o número **RFC** definitivo, trate o *draft* como **referência viva** (verifique o rótulo *RFC Editor* / *Published* no [datatracker](https://datatracker.ietf.org/doc/draft-ietf-openpgp-pqc/)).
 
