@@ -724,6 +724,19 @@ gpg --version | head -n1
 
 * * *
 
+#### ▸ Linha do tempo da CLI de criação de chaves (Ubuntu 24.04 / GnuPG ~2.4.x)
+
+| Etapa | Comando típico | Onde o curso encaixa |
+| --- | --- | --- |
+| Tutoriais antigos | `gpg --gen-key` | 🟡 — **alias** do mesmo assistente simplificado que **`--generate-key`** em muitas builds; prefira o nome explícito ao copiar para scripts |
+| Assistente «completo» | `gpg --full-generate-key` | 🟡 — pergunta tipo/tamanho/validade; bom para ver todas as opções |
+| Fluxo moderno guiado | `gpg --generate-key` | 🟢 — recomendado para **aprender** o fluxo |
+| Automação reprodutível | `gpg --quick-generate-key "UID" ed25519 cert …` + `gpg --quick-add-key "$FP" …` | 🔵 — modelo principal dos scripts deste curso |
+
+> 📎 **Profundidade:** no **Módulo 1 → «Três formas de criar uma chave»** você **executa** e compara `--full-generate-key`, `--generate-key` e `--quick-generate-key`; aqui fica só o mapa mental antes de entrar na prática.
+
+* * *
+
 ### 📋 MÓDULO 1: SUA PRIMEIRA CHAVE
 
 > 🎯 **Objetivo:** Criar sua primeira chave GPG e entender o que cada comando faz
@@ -772,6 +785,25 @@ Se você perder o carimbo [A], só revoga ele. O cartório continua lá.
 gpg --quick-add-key "$FP" ed25519 sign 1y
 gpg --quick-add-key "$FP" cv25519 encr 1y
 gpg --quick-add-key "$FP" ed25519 auth 1y
+```
+
+#### ▸ Decisão rápida: papel de cada subchave (`[S]` / `[E]` / `[A]`)
+
+| Preciso de… | Curva no curso | Função `gpg --quick-add-key` |
+| --- | --- | --- |
+| Assinar commits/arquivos | `ed25519` na subchave **[S]** | `… ed25519 sign …` |
+| Cifrar/decifrar para outros | `cv25519` na subchave **[E]** | `… cv25519 encr …` |
+| SSH via GPG | `ed25519` na subchave **[A]** | `… ed25519 auth …` |
+
+**Anti‑padrão comum:** usar **`cv25519`** numa subchave **`sign`** ou **`ed25519`** numa subchave **`encr`** — pode até «passar» em alguns cenários, mas **desvia do modelo ECC que este curso ensina** e confunde auditoria.
+
+```sh
+# Laboratório — confirme que existe subchave [E] e que o pacote mostra cv25519 (ajuste LAB_EMAIL)
+LAB_EMAIL="${LAB_EMAIL:-aluno.training@openpgp-lab.local}"
+FP=$(gpg --list-secret-keys --with-colons "$LAB_EMAIL" | awk -F: '/^fpr:/ {print $10; exit}')
+if [ -z "${FP:-}" ]; then echo "❌ FP vazio — crie a mestra antes (COMANDO 1.1–1.4)."; exit 1; fi
+gpg --list-secret-keys --with-colons "$LAB_EMAIL" | awk -F: '/^ssb:/ && $0 ~ /:e:/ {print "(sub [E]) linha:", $0}'
+gpg --export "$FP" 2>/dev/null | gpg --list-packets 2>/dev/null | grep -i "cv25519" || echo "⚠️ Não encontrou cv25519 nos pacotes exportados — reveja a subchave [E]."
 ```
 
 * * *
@@ -1224,9 +1256,31 @@ diff segredo.txt segredo-recriado.txt
 
 | Problema | Solução |
 | --- | --- |
-| `No secret key` | Você cifrou para outro destinatário ou não tem a chave privada |
+| `No secret key` | Você cifrou para **outro** destinatário; **não** há subchave secreta **[E]** no cofre deste UID; ou a curva/papel da subchave **[E]** está errado — rode o diagnóstico abaixo |
 | `Bad passphrase` | Senha errada. Tente novamente (caps lock?) |
 | `Decryption failed` | Arquivo corrompido ou não foi cifrado para você |
+
+#### ▸ Diagnóstico rápido: «sem chave secreta» na decifração e subchave `[E]`
+
+```sh
+LAB_EMAIL="${LAB_EMAIL:-aluno.training@openpgp-lab.local}"
+echo "=== secret keys (uid + caps de uso) ==="
+gpg --list-secret-keys "$LAB_EMAIL"
+echo "=== linhas ssb com papel :e: (subchave de cifra) ==="
+gpg --list-secret-keys --with-colons "$LAB_EMAIL" | awk -F: '/^ssb:/ && $0 ~ /:e:/ {print}'
+echo "=== se FP já estiver definido no shell: pacotes exportados devem mencionar cv25519 na [E] ==="
+FP="${FP:-}"
+if [ -n "$FP" ]; then
+    gpg --export "$FP" 2>/dev/null | gpg --list-packets 2>/dev/null | grep -i cv25519 \
+      || echo "(sem cv25519 visível — pode faltar subchave [E] ou export/import)"
+else
+    echo "(defina FP ou siga Módulo 3 para export/import das subchaves)"
+fi
+echo "=== correção típica no modelo do curso (requer FP da mestra correta) ==="
+echo "gpg --quick-add-key \"\$FP\" cv25519 encr 1y"
+```
+
+> 📎 **Referência:** mensagem equivalente na tabela rápida — [Apêndice A](#apendice-a) nº **2** e coluna **Gravidade**.
 
 * * *
 
@@ -1489,6 +1543,35 @@ chmod 400 ~/secure-backup/offline/revogacao-*.asc
 * * *
 
 **▶️ EXERCÍCIO 3.1:** Liste o conteúdo do diretório `~/secure-backup/offline` com `ls -la`. Você deve ver o arquivo de revogação.
+
+* * *
+
+#### Modelo de e‑mail para comunicar revogação (adaptar ao canal)
+
+Use quando publicar revogação ou rodar **substituição** de chave — em correio formal, chat interno ou *ticket*.
+
+```
+Assunto: [OpenPGP] Atualização da minha chave / Revogação UID — NOME SOBRENOME
+
+Olá,
+
+Revoguei / substituí a minha chave OpenPGP anterior e passei a usar a chave nova.
+
+Fingerprint anterior (revogada ou em processo de substituição):
+  ABCD ABCD ABCD ABCD ABCD ABCD ABCD ABCD ABCD ABCD
+
+Fingerprint novo (use apenas este para futuras verificações):
+  1234 1234 1234 1234 1234 1234 1234 1234 1234 1234
+
+Motivo resumido (opcional mas recomendado): rotação planeada | compromisso suspeito | perda de hardware — escolha o que for verdadeiro na sua política.
+
+Como verificar: confira o fingerprint por um canal independente (presencial, chamada interna, intranet assinada).
+
+Obrigado(a),
+NOME
+```
+
+> ⚠️ **Política:** não envie **passphrase**, ficheiros `*.rev` completos por SMS nem prints do cofre; troque `ABCD…` / `1234…` por **FPR reais** da sua organização. Para sintomas de erro específicos continue a usar [Apêndice A](#apendice-a).
 
 * * *
 
@@ -3032,6 +3115,14 @@ echo "recuperei" | gpg --clearsign > /dev/null 2>&1 && echo "✓ Recuperação O
 
 * * *
 
+#### ▸ Os mesmos erros sob óculos de gravidade (↔ Apêndice A)
+
+Na rotina operativa os sintomas repetem‑se — a diferença é **quanto tempo você perde** antes de achar a causa certa. A tabela **[TOP 15 do Apêndice A](#apendice-a)** inclui uma coluna **Gravidade** (**Alta** / **Média** / **Baixa**) como **triagem rápida**: priorize primeiro o que bloqueia trabalho ou aumenta risco de uso incorreto de material criptográfico.
+
+> 📎 **Não duplica conteúdo:** sintoma, causa e comando de correção continuam centralizados no Apêndice A; aqui o Módulo 9 só **ancora** o raciocínio de *threat modeling* nessa lista.
+
+* * *
+
 #### Matriz de Riscos (Como priorizar)
 
 ```
@@ -3882,30 +3973,31 @@ Definições curtas dos termos que mais reaparecem no curso. **Inglês técnico:
 
 > 📎 Várias linhas abaixo usam **`"$FP"`** — deve ser o identificador da **mestra certa** (fingerprint na linha **`fpr:`**, campo **10**, após filtrar por `LAB_EMAIL`/UID). Se `FP` estiver errado ou vazio, os `quick-add-key` falham; ver **Módulo 3** e glossário **`--with-colons`**.
 > 📎 Em **`gpg --recv-keys`**, prefira **fingerprint completo** (40 hex, sem ambiguidade) em vez de KeyID curto — reduz colisões documentadas e falhas “silenciosas” ao puxar a chave errada.
+> 📎 **Gravidade:** triagem **operacional** do curso — **Alta** (bloqueio forte ou risco de uso inseguro até corrigir), **Média** (ambiente/rede/configuração — costuma resolver em minutos), **Baixa** (erro típico do operador, repetível com pouco impacto lateral).
 
-| #   | Mensagem de Erro | Causa | Solução Rápida |
-| --- | --- | --- | --- |
-| 1   | `gpg: signing failed: No secret key` | Não tem subchave \[S\] | `gpg --quick-add-key "$FP" ed25519 sign 1y` |
-| 2   | `gpg: decryption failed: No secret key` | Não tem subchave \[E\] | `gpg --quick-add-key "$FP" cv25519 encr 1y` |
-| 3   | `gpg: key ... not found` | Fingerprint ou seletor errado | `gpg --list-keys --keyid-format long` ou filtre por e-mail/UID; confira `fpr:` no `--with-colons` |
-| 4   | `gpg: Sorry, we are in batchmode...` | Modo não interativo sem pinentry/TTY adequado | `sudo apt install pinentry-tty` (desktop GNOME: `pinentry-gnome3`); em **SSH** também: `export GPG_TTY=$(tty)` |
-| 5   | `gpg: WARNING: unsafe permissions` | Permissões erradas | `chmod 700 ~/.gnupg` |
-| 6   | `gpg: keyserver receive failed` | Keyserver offline, limite, **FPR**/seletor incorreto ou **dirmngr**/TLS presos | FPR completo; `hkps://keys.openpgp.org` ou `hkps://keyserver.ubuntu.com`; prefira **WKD** ou `.asc`; se rede/TLS suspeitos: `gpgconf --kill dirmngr && gpgconf --launch dirmngr`; [COMANDO 10.1](#comando-10-1) (`keyserver` em `gpg.conf`) |
-| 7   | `gpg: decryption failed: Bad session key` | Senha errada | Verifique passphrase |
-| 8   | `gpg: Can't check signature: No public key` | Sem certificado público no chaveiro | `gpg --keyserver hkps://keys.openpgp.org --recv-keys FPR` (ou importe o `.asc` de quem assinou) |
-| 9   | `gpg: signing failed: Inappropriate ioctl` | Terminal não interativo | `export GPG_TTY=$(tty)` |
-| 10  | `ssh-add -L` vazio | SSH via GPG não configurado | Verifique `~/.gnupg/sshcontrol` |
-| 11  | `gpg: agent refused operation` | Agent travou ou estado inconsistente | `gpgconf --kill gpg-agent && gpgconf --launch gpg-agent` |
-| 12  | `gpg: no valid OpenPGP data found` | Caminho errado, truncado ou não é OpenPGP | `file` no arquivo; confira *path*; obtenha de novo o `.asc`/`.gpg` íntegro ou regenere o export |
-| 13  | `gpg: Sorry, no terminal at all requested` | Sem **TTY** ou GUI disponível para o pinentry | SSH/só texto: `export GPG_TTY=$(tty)` + `pinentry-tty`; desktop GNOME: `sudo apt install pinentry-gnome3` |
-| 14  | `gpg: key ... has been revoked` | Chave revogada ou substituída | `gpg --keyserver hkps://keys.openpgp.org --recv-keys FPR` ou novo `.asc` do autor; leia o pacote de revogação se tiver |
-| 15  | `gpg: Can't connect to agent` | Agent parado, socket antigo ou **`GNUPGHOME`** incoerente entre processos | `gpgconf --launch gpg-agent`; se persistir: `gpgconf --kill gpg-agent && gpgconf --launch gpg-agent`; confira `echo "$GNUPGHOME"` (em setup clássico costuma estar vazio) |
+| #   | Mensagem de Erro | Causa | Solução rápida | Gravidade |
+| --- | --- | --- | --- | --- |
+| 1   | `gpg: signing failed: No secret key` | Não tem subchave \[S\] | `gpg --quick-add-key "$FP" ed25519 sign 1y` | Alta |
+| 2   | `gpg: decryption failed: No secret key` | Não tem subchave \[E\] ou curva/papel incorretos | `gpg --quick-add-key "$FP" cv25519 encr 1y` — ver também **Módulo 2 → Diagnóstico rápido `[E]`** | Alta |
+| 3   | `gpg: key ... not found` | Fingerprint ou seletor errado | `gpg --list-keys --keyid-format long` ou filtre por e-mail/UID; confira `fpr:` no `--with-colons` | Média |
+| 4   | `gpg: Sorry, we are in batchmode...` | Modo não interativo sem pinentry/TTY adequado | `sudo apt install pinentry-tty` (desktop GNOME: `pinentry-gnome3`); em **SSH** também: `export GPG_TTY=$(tty)` | Alta |
+| 5   | `gpg: WARNING: unsafe permissions` | Permissões erradas | `chmod 700 ~/.gnupg` | Alta |
+| 6   | `gpg: keyserver receive failed` | Keyserver offline, limite, **FPR**/seletor incorreto ou **dirmngr**/TLS presos | FPR completo; `hkps://keys.openpgp.org` ou `hkps://keyserver.ubuntu.com`; prefira **WKD** ou `.asc`; se rede/TLS suspeitos: `gpgconf --kill dirmngr && gpgconf --launch dirmngr`; [COMANDO 10.1](#comando-10-1) (`keyserver` em `gpg.conf`) | Média |
+| 7   | `gpg: decryption failed: Bad session key` | Senha errada | Verifique passphrase | Baixa |
+| 8   | `gpg: Can't check signature: No public key` | Sem certificado público no chaveiro | `gpg --keyserver hkps://keys.openpgp.org --recv-keys FPR` (ou importe o `.asc` de quem assinou) | Média |
+| 9   | `gpg: signing failed: Inappropriate ioctl` | Terminal não interativo | `export GPG_TTY=$(tty)` | Alta |
+| 10  | `ssh-add -L` vazio | SSH via GPG não configurado | Verifique `~/.gnupg/sshcontrol` | Média |
+| 11  | `gpg: agent refused operation` | Agent travou ou estado inconsistente | `gpgconf --kill gpg-agent && gpgconf --launch gpg-agent` | Alta |
+| 12  | `gpg: no valid OpenPGP data found` | Caminho errado, truncado ou não é OpenPGP | `file` no arquivo; confira *path*; obtenha de novo o `.asc`/`.gpg` íntegro ou regenere o export | Média |
+| 13  | `gpg: Sorry, no terminal at all requested` | Sem **TTY** ou GUI disponível para o pinentry | SSH/só texto: `export GPG_TTY=$(tty)` + `pinentry-tty`; desktop GNOME: `sudo apt install pinentry-gnome3` | Alta |
+| 14  | `gpg: key ... has been revoked` | Chave revogada ou substituída | `gpg --keyserver hkps://keys.openpgp.org --recv-keys FPR` ou novo `.asc` do autor; leia o pacote de revogação se tiver | Alta |
+| 15  | `gpg: Can't connect to agent` | Agent parado, socket antigo ou **`GNUPGHOME`** incoerente entre processos | `gpgconf --launch gpg-agent`; se persistir: `gpgconf --kill gpg-agent && gpgconf --launch gpg-agent`; confira `echo "$GNUPGHOME"` (em setup clássico costuma estar vazio) | Alta |
 
 * * *
 
 #### Playbook rápido de diagnóstico (ordem recomendada)
 
-> 📌 **Sem duplicação:** a sequência completa de comandos (estado → chaves → agente → teste funcional) e a tabela **sintoma → causa → ação** estão no **Módulo 7 → Playbook de incidentes** e no **fluxo universal de diagnóstico** logo abaixo da tabela. Use este apêndice para a tabela dos 15 erros; use o Módulo 7 quando precisar **executar** o passo a passo.
+> 📌 **Sem duplicação:** a sequência completa de comandos (estado → chaves → agente → teste funcional) e a tabela **sintoma → causa → ação** estão no **Módulo 7 → Playbook de incidentes** e no **fluxo universal de diagnóstico** logo abaixo da tabela. Use este apêndice para a tabela dos **15 erros com gravidade indicativa** (**Alta** / **Média** / **Baixa**); use o **Módulo 7** quando precisar **executar** o passo a passo e o **Módulo 9** para enquadrar priorização operacional.
 
 **Decisão rápida por tipo de erro:**
 

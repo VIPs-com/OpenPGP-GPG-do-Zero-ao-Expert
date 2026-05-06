@@ -85,7 +85,8 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 
 - [ ] **R2 / W-07:** spot-check VM Ubuntu ainda adiado; checklist segue em branco até corrida real.
 - [ ] **A3 / I-03:** repetir rodada de HEAD em lote após *rename* + novas colagens/trincheiras (atualizar métrica de URLs na tabela de auditoria).
-- [ ] **Eixo B / I-02:** 5 trincheiras de conteúdo seguem como backlog v1.0.x (não bloqueiam a 1.0, mas ainda não iniciadas).
+- [x] **Eixo B (lote 2026-05-15):** linha do tempo CLI (**Módulo 0**); decisão + verificação **ed25519/cv25519** (**Módulo 1**); diagnóstico `[E]` (**Módulo 2**); modelo de e‑mail de revogação (**Módulo 3**); **TOP 15 + Gravidade** (**Apêndice A**) + ponte no **Módulo 9**.
+- [ ] **Eixo B / I-02 (restante):** trincheiras **PQ prático**, **hardware**, **profundidade Windows/iPhone** continuam **não iniciadas** no canônico — ver tabela abaixo.
 
 ### P1 — Correções técnicas imediatas (`.md` canônico)
 
@@ -139,8 +140,11 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 
 | Trincheira | Destino no canônico | Critério de pronto | Estado |
 | --- | --- | --- | --- |
-| Curvas **ed25519** × **cv25519** + tabela de decisão `[S]`/`[E]` | Módulo 1 (subsecções) | Aluno explica em ~60s o papel de `[S]` e `[E]` no curso | não iniciado |
-| Evolução CLI `--gen-key` → `--full-*` / `--generate-key` / `--quick-*` | Módulo 0 ou 1 | Linha do tempo + o que usar no Ubuntu 24.04 do curso | não iniciado |
+| Curvas **ed25519** × **cv25519** + tabela de decisão `[S]`/`[E]` | Módulo 1 | Aluno explica em ~60s o papel de `[S]`/`[E]`/`[A]` e corre no bloco de verificação | **integrado** (2026-05-15) |
+| Evolução CLI `--gen-key` → `--full-*` / `--generate-key` / `--quick-*` | Módulo 0 (+ profundidade no Módulo 1) | Linha do tempo explícita + remissão ao quadro «Três formas» | **integrado** (2026-05-15) |
+| Diagnóstico rápido «sem chave secreta» na **decifração** (`[E]`, `cv25519`) | Módulo 2 | Bloco shell reproduzível + remissão Apêndice A nº 2 | **integrado** (2026-05-15) |
+| Modelo de **e‑mail** para comunicar **revogação**/mudança de chave | Módulo 3 | Texto copiável + aviso de política | **integrado** (2026-05-15) |
+| **TOP 15** erros + coluna **Gravidade** + ponte *threat model* | Apêndice A + Módulo 9 | Triagem Alta/Média/Baixa coerente com operações | **integrado** (2026-05-15) |
 | PQ mais prático (lab híbrido, avisos 2.4 vs 2.5) | Módulo 11 | `GNUPGHOME` de teste + *teardown*; sem prometer 2.5 no `apt` para todos | não iniciado |
 | Hardware: comparação, limitações, remissões `keytocard` | Apêndice C (+ M6/M7) | Tabela YubiKey / Nitrokey / SoloKeys; **sem** triplicar COMANDOs existentes | não iniciado |
 | Windows / KeePassXC / FIDO2 / Syncthing / iPhone (profundidade) | Apêndice E | Roteiros em passos; **iPhone** mantém *disclaimer* Blink ≠ Secure Enclave | não iniciado |
@@ -250,6 +254,7 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-12** | **Apêndice E (Android):** OpenKeychain — manutenção limitada, lançamentos irregulares, aviso de dependência; glossário + mapa |
 | **2026-05-13** | **v1.1 planejado:** secção **Backlog v1.1** no `ROADMAP` (WSL2 + GPG, `SSH_AUTH_SOCK`, Gpg4win vs agente WSL); nota no Apêndice E + linha no mapa do curso |
 | **2026-05-14** | **Pré-lançamento 1.0:** `curl -I -L` nos URLs do cabeçalho (GnuPG download, Tails, Sequoia `sq`, manual OpenPGP Key Management) — **200** ou **302→200**; glossário — entradas **ML-KEM**, **`GPG_TTY`**, **`HEALTHCHECK_AUTO_RESET`** + âncora `#apendice-d-healthcheck-auto-reset`; **HEAD** na tabela de referências (**SafeCurves**, **EFF Diceware**) — **200**; rubrica certificação (Git **Módulo 4** / SSH **Módulo 5**); nota didática **Apêndice F** (migração RSA→ECC); **pedagogia WSL2:** Módulo 9 — linha **Win32 + WSL2** → **Apêndice E** + `ROADMAP` v1.1; Apêndice E — `#apendice-e`, remissões M1–M5 / M0·8 / D / Windows; `#modulo-9-threat-modeling` (PARTE 4 sem inflação — PQ / Sequoia / WKD) |
+| **2026-05-15** | **Eixo B (lote 1):** Módulo 0 — linha do tempo CLI; Módulo 1 — decisão `ed25519`/`cv25519` + anti‑padrão + verificação; Módulo 2 — diagnóstico `[E]`; Módulo 3 — modelo de e‑mail de revogação; **Apêndice A** — coluna **Gravidade** nos 15 erros; **Módulo 9** — ponte operacional para essa tabela; `ROADMAP` Eixo B actualizado |
 | **2026-05-02** | **ROADMAP:** secção **«Plano definitivo v1.0.x (excelência / nota 9,5)»** — Eixos A (higiene), B (trincheiras 4.4 → canônico), C (cadência); **Backlog v1.1** alargado (**E‑ZT**, **E‑BENCH**, **E‑FLOW**, **E‑CERT**, **E‑K8S**); **README** remete ao plano; **Próxima sessão** — linha 6 |
 | **2026-05-02 (II)** | **Auditoria pré-lançamento:** mapa Módulo 3 (COMANDO **3.2**/**3.3**); *hint* `gpg-health-check.sh` com `\"$FP\"`; `set -euo pipefail` + ajustes `|| true` onde necessário; passphrase exemplo sem `#` (TOC); `<a id="apendice-b">`; bloco «lixo ilegível» COMANDO 2.2; nota rubrica CP1 ↔ COMANDO **2.4**; *rename* canónico **`OpenPGP-GPG`**; governança **`gpg-automation.sh`**; ROADMAP **A1** fechado, **A3**/Eixo **B**/spot-check com notas de risco |
 | **Repo** | `.vscode/` e `scripts/` só locais (`.gitignore` + fora do remoto) |
