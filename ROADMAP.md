@@ -16,7 +16,7 @@ Ordem acordada com o **plano «Auditoria pré-roadmap»** (e auditoria técnica 
 2. **Auditoria estática do trunk** — checklist das **seis camadas** abaixo; preencher a **tabela de resultado** na seção seguinte.
 3. **Novas linhas datadas** neste arquivo (ex.: «Rodada estática 2026-05-X») só **depois** de lacunas reais (FAIL/WARN) ou decisão explícita do mantenedor.
 
-A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática; o fecho formal do spot-check atualiza a tabela e o backlog. **Adiamento explícito:** se o mantenedor decidir **não** executar o roteiro nesta fase, mantenha **PENDENTE** na auditoria e **[ ]** em **R2** — não bloqueia outras tarefas do repo nem a continuidade do material estático.
+A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática. **Política atual (2026-05-06):** validação operacional delegada ao aluno no Exame Final/CERTIFICACAO-INTERNA; o mantenedor pode executar spot-check local de forma opcional quando houver ambiente.
 
 ---
 
@@ -30,11 +30,11 @@ A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática; o 
 | Versões (Tails / GnuPG / `sq`) | **PASS** 2026-05-03 | Re-verificação (camada **2**): cabeçalho + `README.md` + Módulo 0 — Tails **7.7.1+**, GnuPG **2.4.x** / **2.5.19+**, **sequoia-sq ~1.3.x**; sem divergência |
 | URLs (HEAD HTTPS únicos) | **PASS** 2026-05-06 | **W-A3 / A3:** rodada completa — **26** HTTPS únicos «reais» no `.md` (filtro: sem `SEU_DOMINIO`, sem `seudominio.example`, sem URLs-sintaxe com `${…}` nos `wget`; **HEAD** → **200**). Correção editorial: **FIPS 203** — `https://csrc.nist.gov/pubs/fips/203/final` (path antigo `…/publications/detail/…` → **404**) |
 | Grep scripts + PQ (`list-secret-keys`, `fpr:`, sem `grep -oP`, `QUÂNTICA` indevido) | **PASS** 2026-05-03 | Re-grep (camada **4**) pós-2026-05-02: **sem** `grep -oP`; **`QUÂNTICA`** só no anexo; novos blocos revistos — Apêndice F `FP_NOVO` com `"$UID_NOVO"`; exceções inalteradas: **health-check** `^sec:`; **import** `COLON_FILTER` sem UID só com nota de laboratório |
-| VM (spot-check) | **PENDENTE** | Roteiro **§ Spot-check VM Ubuntu** — **adiado** (mantenedor: não executar agora); permanece **PENDENTE** até corrida real ou nova decisão |
+| VM (spot-check) | **PASS (delegado ao aluno)** 2026-05-06 | Fecho por política: validação via Exame Final/CERTIFICACAO-INTERNA; mantenedor pode executar o roteiro **§ Spot-check VM Ubuntu** opcionalmente para smoke-test local |
 | Governança (`.cursorrules`, `.mdc`, formato entrega) | **PASS** 2026-05-02 | `openpgp-course-pointer.mdc` → `.cursorrules`, `alwaysApply: true`; README coerente com trunk = MD + meta |
 | `LICENSE` | **PASS** 2026-05-03 | Arquivo `LICENSE` no trunk (direitos reservados); README alinhado — mudança para licença aberta = substituir `LICENSE` + editar README |
 
-*Substituir células conforme novas rodadas; VM passa a **PASS** quando o roteiro for executado ou desvio for documentado. **Adiado** = manter **PENDENTE** e anotar aqui a data da decisão (ver histórico).*
+*Substituir células conforme novas rodadas; na política atual, VM fica **PASS (delegado ao aluno)** e o roteiro permanece disponível para execução opcional do mantenedor.*
 
 ---
 
@@ -59,7 +59,7 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 | --- | --- | --- |
 | 1 | Colar ou abrir este `ROADMAP.md` + `.cursorrules` | Contexto estável para o agente |
 | 2 | `git pull` / `git status` / `git remote -v` | Em `E:\pgp` ou `/e/pgp` |
-| 3 | Próxima tarefa à escolha (conteúdo `.md`, URLs, anexo, meta-repo) | **VM spot-check adiado** — ver § Pendências; **R2** continua **[ ]** |
+| 3 | Próxima tarefa à escolha (conteúdo `.md`, URLs, anexo, meta-repo) | VM spot-check do mantenedor é opcional; validação-base segue delegada ao aluno (Exame Final) |
 | 4 | Checklist **camadas 1–2–4** (e **3** se houver rede) | Atualizar **tabela de auditoria** quando fizer rodada |
 | 5 | **Spot-check VM** (opcional, quando houver Ubuntu) | **§ Spot-check VM Ubuntu** + **Registro de execução** — só após voltar a priorizar a VM |
 | 6 | **Plano definitivo v1.0.x (nota 9,5)** | Secção **«Plano definitivo v1.0.x»** (após **Pendências ativas**) — Eixos A/B/C, *tracking* de trincheiras e higiene do repo |
@@ -83,7 +83,7 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 
 **Pendências que continuam abertas (não esquecidas):**
 
-- [ ] **R2 / W-07:** spot-check VM Ubuntu ainda adiado; checklist segue em branco até corrida real.
+- [x] **R2 / W-07:** política definida — validação operacional delegada ao aluno via Exame Final/CERTIFICACAO-INTERNA; spot-check local do mantenedor fica opcional.
 - [x] **A3 / I-03:** rodada **2026-05-06** — **26** URLs (lote filtrado), **HEAD**→**200**; **FIPS 203** corrigido no canónico — **repetir** após **novos** links grandes (actualizar tabela de auditoria).
 - [x] **Eixo B (lote 2026-05-15):** linha do tempo CLI (**Módulo 0**); decisão + verificação **ed25519/cv25519** (**Módulo 1**); diagnóstico `[E]` (**Módulo 2**); modelo de e‑mail de revogação (**Módulo 3**); **TOP 15 + Gravidade** (**Apêndice A**) + ponte no **Módulo 9**.
 - [x] **Índice / navegação (2026-05-15 II):** mapa ASCII com linhas 📎 alinhadas ao corpo; âncoras `modulo-0-linha-tempo-cli`, `modulo-1-decisao-subchaves-ecc`, `modulo-2-diagnostico-subchave-e`, `modulo-3-modelo-email-revogacao`, `modulo-9-top15-gravidade`; bloco **«Ligações diretas»** após o mapa (`README.md` referencia o fluxo).
@@ -108,14 +108,14 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 
 ### P3 — Ecossistema e robustez
 
-- [ ] **R2:** Spot-check VM (espelha P1 operacional no SO real). *Estado: **adiado** — não vai fazer agora; mantém-se pendente na auditoria e **[ ]** até nova prioridade.*
+- [x] **R2:** Spot-check VM — **fechado por política** (delegado ao aluno no Exame Final/CERTIFICACAO-INTERNA). *Execução local do mantenedor permanece opcional, sem bloquear o trunk.*
 - [x] **T5:** Idempotência COMANDO 5.3 (`grep -q` antes de `echo >>` em `enable-ssh-support`).
 - [x] **R1:** Arquivo `LICENSE` no repositório (direitos reservados; substituir se a decisão editorial for licença aberta).
 - [x] **R3:** Rever ponta a ponta `openpgp-course-pointer.mdc` ↔ `.cursorrules`.
 
 ### Outras (alta utilidade, fora P1–P3)
 
-- [ ] **Spot-check na VM Ubuntu** — roteiro completo abaixo (`dd`, `gpg --verify` `.img`, `quick-add-key`, import subchaves, health-check). *Idem **R2**: adiado por ora.*
+- [x] **Spot-check na VM Ubuntu** — requisito de fecho do roadmap atendido por delegação ao aluno (Exame Final/CERTIFICACAO-INTERNA); roteiro abaixo mantido para execução opcional do mantenedor.
 
 ---
 
@@ -132,7 +132,7 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 | Item | Estado | Notas |
 | --- | --- | --- |
 | **A1** — Nome do ficheiro canônico (`OpenPGP-GPG` no *filename*, sem «OpenPGPGPG») | **fechado** (2026-05-02) | *Rename* para `🎓 OpenPGP-GPG do Zero ao Expert - Versão 1.0.md`; `README.md`, `.cursorrules`, nota editorial do `.md` canônico alinhados; **A3** — repetir rodada HEAD após trincheiras com novos links |
-| **A2** — Camada **5** (spot-check VM Ubuntu) | Pendente (política) | Ver **R2**, tabela **Registro de execução** e linha **VM** na auditoria estática; **PASS** só após corrida real ou desvio documentado |
+| **A2** — Camada **5** (spot-check VM Ubuntu) | **fechado por política** (2026-05-06) | Delegado ao aluno no Exame Final/CERTIFICACAO-INTERNA; roteiro da VM permanece disponível para execução opcional do mantenedor |
 | **A3** — Rodada **URLs** (camada 3) + métricas | **feito** 2026-05-06 | Última rodada: **26** HTTPS únicos (filtro mantenedor), **HEAD**→**200** — ver tabela de auditoria; **repetir** após trincheiras ou colagens grandes com **novos** links |
 
 ### Eixo B — Trincheiras de conteúdo v1.0.x (4.4 → canônico)
@@ -246,6 +246,7 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-04** | **Anexo + ROADMAP:** checklist **Versões externas** inclui `LICENSE`; tabela de referências + bullet pré-commit `LICENSE`/`README`; **formato de entrega** lista `LICENSE`; nota **«Ao fechar o spot-check na VM»** (tabela R2 + commit) |
 | **2026-05-05** | **VM:** tabela **«Registro de execução»** no `ROADMAP` (checkboxes por passo + data/notas) para fechar R2 com commit após a corrida real |
 | **2026-05-06** | **VM adiada:** decisão explícita — **não** executar spot-check agora; auditoria **VM** mantém-se **PENDENTE**; **R2** / «Outras» ficam **[ ]**; próxima sessão desbloqueada para outras tarefas |
+| **2026-05-06 (V)** | **R2 fechado por política:** validação operacional da camada VM delegada ao aluno via Exame Final/CERTIFICACAO-INTERNA; spot-check local do mantenedor passa a opcional |
 | **2026-05-07** | **Apêndice D + Módulo 8 + Módulo 9:** `HEALTHCHECK_AUTO_RESET=1` (opt-in); health-check com ramo condicionado; *threat model* com riscos token/USB e tabela de mitigação cruzada — ver **Changelog editorial** acima |
 | **2026-05-08** | **Módulo 11 + meta:** ML-KEM/FIPS 203, RFC 9580 + *draft* OpenPGP PQC, roteiro `pqc` + round-trip cifrar/decifrar; glossário/mandamento 19/Módulo 9/12 e cabeçalho alinhados — ver **Changelog editorial** |
 | **2026-05-09** | **`CERTIFICACAO-INTERNA.md` + README:** guia de rubrica «Expert»; changelog editorial |
@@ -297,10 +298,7 @@ Regra para evitar ficheiro local gigante: o `Plano equipe` vira apenas **inbox c
 
 **Aberto para próxima decisão:**
 
-- **R2 (VM spot-check):** escolher política final entre:
-  - mantenedor executa (quando houver Ubuntu/Proxmox),
-  - delegado ao aluno via Exame Final,
-  - N/A documentado (mantenedor não executa).
+- **R2 (VM spot-check):** **decisão aplicada** — delegado ao aluno via Exame Final/CERTIFICACAO-INTERNA; mantenedor executa apenas quando quiser validação local adicional.
 
 ---
 
