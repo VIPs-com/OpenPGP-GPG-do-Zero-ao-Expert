@@ -86,6 +86,7 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 - [ ] **R2 / W-07:** spot-check VM Ubuntu ainda adiado; checklist segue em branco até corrida real.
 - [ ] **A3 / I-03:** repetir rodada de HEAD em lote após *rename* + novas colagens/trincheiras (atualizar métrica de URLs na tabela de auditoria).
 - [x] **Eixo B (lote 2026-05-15):** linha do tempo CLI (**Módulo 0**); decisão + verificação **ed25519/cv25519** (**Módulo 1**); diagnóstico `[E]` (**Módulo 2**); modelo de e‑mail de revogação (**Módulo 3**); **TOP 15 + Gravidade** (**Apêndice A**) + ponte no **Módulo 9**.
+- [x] **Índice / navegação (2026-05-15 II):** mapa ASCII com linhas 📎 alinhadas ao corpo; âncoras `modulo-0-linha-tempo-cli`, `modulo-1-decisao-subchaves-ecc`, `modulo-2-diagnostico-subchave-e`, `modulo-3-modelo-email-revogacao`, `modulo-9-top15-gravidade`; bloco **«Ligações diretas»** após o mapa (`README.md` referencia o fluxo).
 - [ ] **Eixo B / I-02 (restante):** trincheiras **PQ prático**, **hardware**, **profundidade Windows/iPhone** continuam **não iniciadas** no canônico — ver tabela abaixo.
 
 ### P1 — Correções técnicas imediatas (`.md` canônico)
