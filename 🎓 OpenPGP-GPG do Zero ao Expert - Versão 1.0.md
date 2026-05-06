@@ -364,10 +364,10 @@ Ao final deste curso, você será capaz de:
     ├── Apêndice A: Top 15 erros rápidos + Gravidade (Alta/Média/Baixa)
     ├── Apêndice B: SCRIPTS EVOLUTIVOS (simples → fingerprint → completo)
     ├── Apêndice C: HARDWARE WALLETS + SMARTCARDS
-    ├── Apêndice D: GPG EM PRODUÇÃO (Docker, CI/CD, K8s, *headless* / GPG_TTY)
-    ├── Apêndice E: GUIA MULTIPLATAFORMA (Win/Android/iPhone + SSH sem YubiKey: FIDO2/sk, ssh-add -c, cofres; OpenKeychain = manutenção limitada)
-    ├── **v1.1 (planejado):** WSL2 + GPG — `gpg-agent`, `SSH_AUTH_SOCK`, *boundary* WSL/Win32, conflito com Gpg4win (ver `ROADMAP.md`)
+    ├── Apêndice D: GPG EM PRODUÇÃO (Docker, CI/CD, K8s, *headless* / GPG_TTY, Zero Trust + extras v1.1)
+    ├── Apêndice E: GUIA MULTIPLATAFORMA (Win/Android/iPhone + SSH sem YubiKey; inclui guia Expert WSL2 ↔ Windows)
     ├── Apêndice F: MIGRAÇÃO RSA → ECC (Legado para Moderno)
+    ├── Apêndice G (EXPERT): LABORATÓRIO PROXMOX (produção/lab)
     ├── ⚖️ Qualidade, ética e referências (checklist mantenedor + ética + URLs)
     ├── ☑️ Opcional — Spot-check VM (camada 5 do `ROADMAP`; validar comandos no Ubuntu 24.04)
     ├── 📎 Anexo (mantenedor — opcional): princípios editoriais + pré-commit (PQ/Unicode, FP, URLs)
