@@ -4518,12 +4518,33 @@ age --version
 - Clone 2: `pgp-lab-expert` (módulos 9–12 + PQ em lab dedicado).
 - Regra: **snapshot antes** de qualquer passo destrutivo (`rm -rf ~/.gnupg`, testes de restore, rotação, etc.).
 
+**Naming sugerido (padrão de equipe):**
+
+- Template: `tpl-ubuntu-24.04-gpg-base`
+- VM online: `vm-pgp-online`
+- VM offline: `vm-pgp-offline`
+- VM expert/PQ: `vm-pgp-expert-pq`
+- LXC headless: `ct-gpg-headless`
+
+**Snapshots por checkpoint (mapa curto):**
+
+- Antes do **Checkpoint 1** (Módulos 0–2): `cp1-pre`
+- Antes do **Checkpoint 2** (Módulos 3–5): `cp2-pre`
+- Antes do **Checkpoint 3** (perda total simulada): `cp3-pre`
+
+> 📎 Regra de ouro: snapshot **antes** de alterar `~/.gnupg/` ou testar restore/revogação.
+
 #### Passo 3 — Air-gap simulado (Módulo 6)
 
 - Criar uma VM (ou clone) sem interface de rede conectada.
 - Usar pendrive/ISO e o fluxo do curso para manter a **mestra offline**.
 
 > 📎 O valor do Proxmox aqui é operacional: dá para repetir o ensaio com VM limpa e snapshot, reduzindo risco humano.
+
+**Dica prática (sem mexer em VLAN):**
+
+- No Proxmox, deixe a VM offline **sem NIC conectada** (ou conectada a uma bridge sem uplink).
+- Mantenha a VM online separada para baixar/verificar artefatos e preparar exports.
 
 #### Passo 4 — Headless/CI em LXC (Apêndice D)
 
@@ -4532,6 +4553,28 @@ Use um LXC só para testes de `gpg --batch`, loopback pinentry e verificação d
 Regras:
 - Não colocar chave mestra em container.
 - Preferir subchave de CI (ou material de teste) e segredos externos (vault).
+
+**Smoke-test mínimo (assinatura/verificação em batch, laboratório):**
+
+```sh
+set -euo pipefail
+export GNUPGHOME="${HOME}/.gnupg-ct-lab"
+install -d -m 700 "$GNUPGHOME"
+
+UID_CT="CT Lab (assinatura) <ct@lab>"
+gpg --batch --yes --pinentry-mode loopback --passphrase '' \
+  --quick-generate-key "$UID_CT" ed25519 cert 1y
+FP_CT=$(gpg --list-secret-keys --with-colons "$UID_CT" | awk -F: '/^fpr:/ {print $10; exit}')
+gpg --quick-add-key "$FP_CT" ed25519 sign 1y
+
+printf '%s\n' 'artefato de teste' > /tmp/ct-artifact.txt
+gpg --batch --yes --pinentry-mode loopback --passphrase '' \
+  --detach-sign --armor --output /tmp/ct-artifact.txt.asc /tmp/ct-artifact.txt
+gpg --verify /tmp/ct-artifact.txt.asc /tmp/ct-artifact.txt
+
+rm -rf "$GNUPGHOME" /tmp/ct-artifact.txt /tmp/ct-artifact.txt.asc
+unset GNUPGHOME
+```
 
 #### Critério de pronto (E‑PROX)
 
