@@ -4162,6 +4162,41 @@ set -euo pipefail
 - Rotação periódica com trilha de auditoria.
 - Execução de verificação criptográfica no CI.
 
+#### 🔐 Zero Trust aplicado ao cofre GnuPG (E‑ZT)
+
+Objetivo: tratar a infraestrutura de chaves como **sistema crítico**, assumindo que endpoints, redes e contas podem falhar. Zero Trust aqui não é um “produto”: é **política operacional**.
+
+**Princípios práticos (para PGP):**
+
+- **Segregação por função**: mestra offline (Módulo 6), subchaves operacionais no dia a dia.
+- **Segregação por ambiente**: `dev` ≠ `staging` ≠ `prod` (subchaves e UIDs diferentes quando necessário).
+- **Acesso mínimo**: só quem assina release tem acesso à subchave `[S]` de release.
+- **Auditoria**: toda assinatura/revogação/rotação precisa de trilha (ticket, PR, changelog interno).
+- **Break-glass**: caminho documentado e testado para revogar/rotacionar quando “deu ruim”.
+
+**Árvore de decisão (equipes / produção):**
+
+```mermaid
+flowchart TD
+  needSign[Precisa assinar release?] -->|sim| ciKey[Subchave_S_de_CI]
+  needSign -->|nao| devKey[Subchaves_dev]
+  ciKey --> storeKey[Cofre_de_segredos]
+  storeKey --> sign[Assinar_no_pipeline]
+  sign --> verify[Verificar_no_pipeline]
+  verify --> audit[Registrar_auditoria]
+  audit --> rotate[Rotacao_periodica]
+  rotate --> breakglass[Plano_break_glass]
+```
+
+**Checklist mínimo (para não virar “PGP artesanal”):**
+
+- [ ] Mestra offline e **nunca** em runner/CI/container.
+- [ ] Subchave `[S]` dedicada para CI/release (separada do uso pessoal).
+- [ ] `GNUPGHOME` isolado por finalidade (evitar chaveiro “tudo junto”).
+- [ ] Verificação obrigatória em pipeline (`gpg --verify`) antes de publicar artefatos.
+- [ ] Rotação planejada (expiração de 1 ano em subchaves operacionais é linha de base).
+- [ ] Procedimento de revogação testado (Módulo 3) e comunicado.
+
 #### Exemplo de verificação em CI (conceitual)
 
 ```sh
