@@ -87,6 +87,7 @@ Ao final deste curso, você será capaz de:
 | Ferramenta | Onde obter | Para quê |
 | --- | --- | --- |
 | **VirtualBox** | [virtualbox.org](https://www.virtualbox.org/) | Criar máquina virtual isolada |
+| **Proxmox VE** | [proxmox.com/downloads](https://www.proxmox.com/en/downloads) | **Trilha Expert (recomendada para lab de produção):** snapshots, clones e LXC headless para prática avançada de PGP |
 | **Ubuntu 24.04 LTS** | [ubuntu.com](https://ubuntu.com/download/desktop) | Sistema operacional do curso |
 | **Tails 7.7.1+** | [tails.net/install/download](https://tails.net/install/download/index.en.html) | Geração de chave mestra offline |
 | **GnuPG** (`gnupg2`) | `sudo apt install gnupg2` | **Ubuntu 24.04:** costuma ser série **2.4.x** (adequado ao curso). Trechos **2.5.19+** (ML‑KEM experimental): veja [gnupg.org/download](https://www.gnupg.org/download/index.en.html) |
@@ -95,6 +96,8 @@ Ao final deste curso, você será capaz de:
 | **Syncthing** | [syncthing.net](https://syncthing.net/) | Sincronização local sem nuvem |
 
 > 💡 **Versões empacotadas:** no Ubuntu **24.04 LTS**, `gnupg2` instalado pelo `apt` normalmente é **2.4.x** — cobre quase todo o curso. O **2.5.19+** (**ML-KEM** / `pqc`) **não** está no repositório padrão da distro: exige *build* ou binário do [projeto GnuPG](https://www.gnupg.org/download/index.en.html), ou **VM** só para laboratório. **PPA** ou pacotes de terceiros na máquina principal = risco de supply-chain — evite salvo política explícita da sua organização.
+
+> 📎 **Perfil Expert (produção/lab):** se você já trabalha com virtualização de laboratório, trate **Proxmox VE** como trilha prioritária para os módulos avançados (snapshots antes de checkpoints, VMs por perfil e LXC para testes headless). Para iniciantes, VirtualBox continua suficiente no começo.
 
 > 📎 **Conferência dos comandos `gpg`:** os exemplos foram revisados contra o manual oficial do projeto ([gestão OpenPGP / opções principais](https://www.gnupg.org/documentation/manuals/gnupg/OpenPGP-Key-Management.html)) para as séries **2.4.x** e **2.5.x**. Na máquina do curso, confirme sempre com `gpg --version`; em caso de divergência de distro, use `gpg OPÇÃO --help` ou `man gpg`.
 

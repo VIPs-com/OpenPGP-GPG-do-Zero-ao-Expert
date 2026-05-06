@@ -280,9 +280,9 @@ Conteúdo acordado para **futura** revisão **1.1.x** do `.md` canônico; o trun
 | **E‑FLOW** | **Fluxogramas** / *assets* visuais densos | Diagramas (WKD, Tails → subchaves, recuperação); manutenção extra — ficar para quando houver ferramenta e tempo |
 | **E‑CERT** | **Certificado** de conclusão mais elaborado (*design*) | Modelo visual ou PDF gerado; não bloqueia estudo pelo `.md` |
 | **E‑K8S** | **Kubernetes** / rotinas operacionais além do Apêndice D | *Playbooks* ou exemplos adicionais se o Apêndice D ficar curto para o teu público-alvo |
-| **E‑PROX** | **Laboratório Proxmox** (opcional; Apêndice futuro) | Template Ubuntu 24.04 + VMs por perfil + LXC headless + simulação de air-gap do Módulo 6; manter VirtualBox como padrão para iniciantes |
+| **E‑PROX** | **Laboratório Proxmox** (prioridade Expert) | Trilha para aluno que já opera lab de produção: template Ubuntu 24.04 + VMs por perfil + LXC headless + simulação de air-gap do Módulo 6; VirtualBox permanece como entrada para iniciantes |
 
-**Origem:** **E‑WSL** — *feedback* de *gap* corporativo Windows/WSL. **E‑ZT** a **E‑K8S** e **E‑PROX** — *stretch goals* acordados fora do âmbito **v1.0.x** (ver **Plano definitivo v1.0.x** — Eixo B para o que **entra** na 1.0).
+**Origem:** **E‑WSL** — *feedback* de *gap* corporativo Windows/WSL. **E‑PROX** foi promovido para prioridade da trilha **Expert** (v1.1), enquanto **E‑ZT** a **E‑K8S** seguem como *stretch goals* fora do âmbito **v1.0.x** (ver **Plano definitivo v1.0.x** — Eixo B para o que **entra** na 1.0).
 
 ---
 
