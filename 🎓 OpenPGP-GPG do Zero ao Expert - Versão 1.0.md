@@ -4287,11 +4287,62 @@ gpgconf --launch gpg-agent
 4. Fazer um teste de assinatura curto (`gpg --clearsign`) e verificar no mesmo host.
 5. Se usar SSH no Windows, reiniciar terminal e validar agente (`ssh-add -L` ou teste no Git/SSH real).
 
-> 📎 **v1.1 (planejado — não integrado na 1.0 canônica): conectividade WSL2 ↔ Windows**
->
-> - **O problema:** conflito entre o **`gpg-agent` do Windows** (**Gpg4win**) e o **`gpg`/agente dentro do Ubuntu embebido no WSL2** — dois agentes, sockets e `pinentry` que o utilizador precisa de **mapear** com consciência.
-> - **A fronteira:** **`SSH_AUTH_SOCK`** (e o socket do `gpg-agent` no Linux) **não** atravessam nativamente a barreira **Win32 ↔ kernel Linux do WSL2**; sem *forwarding* explícito (ex.: *named pipes* / **`npiperelay`**, **`socat`**, ou política «**tudo no WSL**»), o Git/SSH nativo no Windows **não** vê o agente do lado Linux.
-> - **Solução na v1.0 (hoje):** **isolar** o fluxo (chaves, Git e SSH **no mesmo** «mundo» — em geral **tudo no WSL2**) **ou** documentar internamente **pontes** aceites pela equipa. O **roteiro passo a passo** para ambientes híbridos corporativos fica no **`ROADMAP.md`**, secção **Backlog v1.1** — a **1.0** mantém-se **auditável** sem esse capítulo longo.
+#### WSL2 ↔ Windows (Gpg4win): guia Expert para não se perder (E‑WSL)
+
+O objetivo aqui é evitar o erro mais comum em ambiente corporativo Windows: **dois mundos** (Win32 e WSL2) com **dois `gpg-agent`**, **dois `GNUPGHOME`** e **dois `SSH_AUTH_SOCK`** — e você tentando assinar/SSH no “mundo errado”.
+
+##### Árvore de decisão (recomendada)
+
+1) **Você usa Git/SSH principalmente no WSL2?**  
+→ **Sim:** faça **tudo no WSL2** (GPG, Git, SSH). Evite misturar Gpg4win no caminho.
+
+2) **Você precisa usar Git/SSH nativo do Windows (IDE, ferramentas Win32)?**  
+→ **Sim:** escolha uma política explícita:
+- **Política A (mais simples):** tudo no **Windows** (Gpg4win) e o WSL2 fica só para Linux geral.
+- **Política B (híbrida):** chaves no WSL2, mas **ponte** o agente para Win32 (mais frágil; documentar e testar).
+
+> 📎 Regra: sem política explícita, o sistema tende a “funcionar às vezes” e falhar quando você muda de terminal/IDE.
+
+##### Diagnóstico rápido (WSL2)
+
+```sh
+set -euo pipefail
+echo "WSL? $(uname -a | grep -i microsoft >/dev/null && echo sim || echo nao)"
+echo "GNUPGHOME=${GNUPGHOME:-$HOME/.gnupg}"
+gpg --version | head -n1
+gpgconf --list-dirs agent-socket
+gpgconf --list-dirs agent-ssh-socket
+echo "SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-<vazio>}"
+```
+
+Checklist:
+- `SSH_AUTH_SOCK` deve apontar para `$(gpgconf --list-dirs agent-ssh-socket)` quando você usa o Módulo 5.
+- Se `gpg -K` no WSL2 não mostra suas chaves mas no Windows mostra (ou vice-versa), você está em mundos diferentes.
+
+##### Diagnóstico rápido (Windows / PowerShell)
+
+```powershell
+gpg --version
+gpgconf --list-dirs
+gpgconf --list-dirs agent-ssh-socket
+```
+
+Checklist:
+- Se o `gpg` aqui é o **Gpg4win**, ele usa `%APPDATA%\gnupg` (não o `~/.gnupg` do WSL).
+- O `SSH_AUTH_SOCK` do Windows não “vê” o socket Linux do WSL2 por padrão.
+
+##### Sintomas típicos (e o que significam)
+
+- **Git não assina** no Windows, mas assina no WSL2: chave/agent estão no WSL2, Git está no Win32.
+- **`ssh-add -L` vazio** no Windows, mas cheio no WSL2: `SSH_AUTH_SOCK` não está apontando para o agente certo (ou não há ponte).
+- **Pinentry não aparece** no WSL2: falta TTY/GUI; ver Apêndice D (`GPG_TTY`, headless, loopback).
+
+##### Recomendação prática (para aluno que quer “lab de produção”)
+
+- Escolha **um mundo** como padrão (WSL2 **ou** Windows) e execute os módulos do curso nesse mundo.
+- Use o outro mundo apenas como “cliente” (ex.: editar texto, navegar, etc.), não como executor de `gpg`.
+
+> ⚠️ Pontes (npiperelay/socat) existem, mas são variáveis entre empresas e hardening. Só implemente se o seu ambiente realmente exigir, e trate como projeto de infra com teste de regressão.
 
 #### WSL2: onde rever o que já aprendeu *(sem repetir comandos neste bloco)*
 
