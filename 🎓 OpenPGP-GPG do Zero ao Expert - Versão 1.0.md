@@ -4242,6 +4242,14 @@ Em pipeline/CI o padrão seguro é **segredo externo** (vault, secret do orchest
 
 Em laboratório, montar um diretório `gnupg/` no container pode funcionar para ensaios; **encaminhar socket** do `gpg-agent` do host para dentro do container é frágil entre sistemas — evite salvo PoC documentado.
 
+#### Extras do processo (v1.1) — existe, mas só aprofundamos se o teu contexto pedir
+
+> 📎 Estes três temas aparecem muito em turmas corporativas. Eles **não** são pré-requisito do núcleo OpenPGP do curso, mas fazem parte do “processo de maturidade” quando você opera PGP em equipe.
+
+- **E‑BENCH (benchmarks reprodutíveis):** medir custo de assinar/verificar/cifrar no seu hardware/runner **sem** cair em microbenchmark enganoso (CPU governor, cache, I/O, RNG). Se não for reprodutível, não conclua nada.
+- **E‑CERT (certificado visual/PDF):** versão mais elaborada do certificado (design/geração). Útil para turma, RH e trilha interna — não muda o conteúdo criptográfico.
+- **E‑K8S (playbooks Kubernetes):** rotinas operacionais além desta visão geral (sealed secrets, rotação, auditoria, OIDC/vault). Só entra se você **já** opera cluster e quer padronizar PGP no pipeline.
+
 ```dockerfile
 FROM ubuntu:24.04
 RUN apt-get update \
