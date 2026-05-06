@@ -3571,6 +3571,23 @@ gpg --yes --decrypt /tmp/pq-lab-plain.txt.asc
 # ⚠️ NÃO use em produção crítica — experimental; apague o diretório GNUPGHOME de teste quando terminar.
 ```
 
+##### Teardown do laboratório PQ (obrigatório no fim do ensaio)
+
+```sh
+# Fechar processos ligados ao chaveiro de teste
+gpgconf --homedir "$GNUPGHOME" --kill gpg-agent || true
+gpgconf --homedir "$GNUPGHOME" --kill dirmngr || true
+
+# Apagar artefatos temporários do roteiro
+rm -f /tmp/pq-lab-plain.txt /tmp/pq-lab-plain.txt.asc
+
+# Apagar o chaveiro de laboratório (somente se for ambiente de ensaio)
+rm -rf "$GNUPGHOME"
+unset GNUPGHOME
+```
+
+> 📎 **Disciplina operacional:** o laboratório PQ deve nascer e morrer no mesmo ciclo de teste. Não misture esse `GNUPGHOME` com a identidade principal do curso (Módulos 1–10).
+
 **Por que investir tempo em ML-KEM agora?**
 
 *   Reduz o risco de **«capture agora, decifrar depois»** contra curvas clássicas quando computadores quânticos escaláveis existirem.
@@ -4081,8 +4098,18 @@ set -euo pipefail
 | --- | --- | --- | --- |
 | YubiKey (OpenPGP applet) | Muito alta | Médio/Alto | Produção, equipe técnica |
 | Nitrokey | Alta | Médio | Usuário avançado com foco open |
+| SoloKeys (FIDO2/Open) | Média/Alta (para SSH/FIDO2) | Médio | Reforço SSH com orçamento menor; avaliar limites OpenPGP |
 | Smartcard PIV/OpenPGP | Alta | Variável | Corporações com política de identidade |
 | Sem hardware (Tails+LUKS) | Alta (se bem operado) | Baixo | Curso/lab e operação pessoal disciplinada |
+
+#### Tabela rápida de decisão (YubiKey / Nitrokey / SoloKeys)
+
+| Critério | YubiKey | Nitrokey | SoloKeys |
+| --- | --- | --- | --- |
+| Applet OpenPGP para `keytocard` do curso | Muito maduro | Maduro | Limitado ou ausente (foco principal em FIDO2) |
+| Fluxo SSH sem chave exportável (`-sk`, FIDO2) | Sim | Sim (modelos compatíveis) | Sim (foco do ecossistema) |
+| Ecossistema corporativo / documentação pronta | Muito amplo | Bom (open-friendly) | Crescente, mais comunitário |
+| Melhor encaixe na trilha 1.0 | Operação diária com GPG + SSH | Operação open com GPG + SSH | SSH/FIDO2 como segunda camada; GPG principal segue no Linux/Tails |
 
 **Quando vale adotar hardware:**
 
@@ -4247,6 +4274,14 @@ gpgconf --kill gpg-agent
 gpgconf --launch gpg-agent
 ```
 
+**Roteiro rápido (Windows nativo, 5 passos):**
+
+1. Confirmar `gpg --version` (Gpg4win instalado) e conectar pendrive com os `.asc` de subchaves.
+2. Rodar o bloco PowerShell acima para importar subchaves e garantir `enable-ssh-support`.
+3. Validar presença das subchaves: `gpg -K --keyid-format long`.
+4. Fazer um teste de assinatura curto (`gpg --clearsign`) e verificar no mesmo host.
+5. Se usar SSH no Windows, reiniciar terminal e validar agente (`ssh-add -L` ou teste no Git/SSH real).
+
 > 📎 **v1.1 (planejado — não integrado na 1.0 canônica): conectividade WSL2 ↔ Windows**
 >
 > - **O problema:** conflito entre o **`gpg-agent` do Windows** (**Gpg4win**) e o **`gpg`/agente dentro do Ubuntu embebido no WSL2** — dois agentes, sockets e `pinentry` que o utilizador precisa de **mapear** com consciência.
@@ -4304,6 +4339,14 @@ blink> ssh-keygen -t ed25519 -C "iphone-ssh-lab"
 ```
 
 No mesmo espírito (chave **limitada**, sem mestra no telefone), cofres como **Strongbox** podem guardar entradas SSH ou reutilizar um `.kdbx` criado no KeePassXC — avalie **como** sincroniza o arquivo (LAN/Syncthing vs nuvem) antes de confiar no modelo.
+
+**Roteiro rápido (iPhone, 5 passos):**
+
+1. Gerar chave operacional no Blink (`ssh-keygen -t ed25519`) com passphrase forte.
+2. Exportar apenas a pública (`.pub`) para servidores e validar fingerprint fora da banda.
+3. Manter a chave mestra OpenPGP fora do telefone (Tails/Linux, conforme Módulo 6).
+4. Se usar cofre móvel (`.kdbx`), definir política de sincronização antes de publicar segredos.
+5. Testar acesso real em conta não crítica; só depois promover para ambientes produtivos.
 
 #### SSH forte sem YubiKey (FIDO2/sk, agente com confirmação, cofre, hardware barato)
 

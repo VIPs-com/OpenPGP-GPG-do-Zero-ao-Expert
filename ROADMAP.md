@@ -26,7 +26,7 @@ A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática; o 
 
 | Área | Resultado | Notas / próximo passo |
 | --- | --- | --- |
-| Git / trunk | **PASS** 2026-05-03 | Re-verificação rápida (camada **1**): `main` alinhado com `origin/main`; working tree limpo; `git remote -v` = **OpenPGP-GPG-do-Zero-ao-Expert**; `git ls-files` sem `.vscode/` nem `scripts/` |
+| Git / trunk | **PASS** 2026-05-06 | Re-verificação rápida (camada **1**): `main` alinhado com `origin/main`; working tree limpo; `git remote -v` = **OpenPGP-GPG-do-Zero-ao-Expert**; `git ls-files` sem `.vscode/` nem `scripts/`; snapshot publicado em `origin/main` no commit **`7dfc698`** |
 | Versões (Tails / GnuPG / `sq`) | **PASS** 2026-05-03 | Re-verificação (camada **2**): cabeçalho + `README.md` + Módulo 0 — Tails **7.7.1+**, GnuPG **2.4.x** / **2.5.19+**, **sequoia-sq ~1.3.x**; sem divergência |
 | URLs (HEAD HTTPS únicos) | **PASS** 2026-05-06 | **W-A3 / A3:** rodada completa — **26** HTTPS únicos «reais» no `.md` (filtro: sem `SEU_DOMINIO`, sem `seudominio.example`, sem URLs-sintaxe com `${…}` nos `wget`; **HEAD** → **200**). Correção editorial: **FIPS 203** — `https://csrc.nist.gov/pubs/fips/203/final` (path antigo `…/publications/detail/…` → **404**) |
 | Grep scripts + PQ (`list-secret-keys`, `fpr:`, sem `grep -oP`, `QUÂNTICA` indevido) | **PASS** 2026-05-03 | Re-grep (camada **4**) pós-2026-05-02: **sem** `grep -oP`; **`QUÂNTICA`** só no anexo; novos blocos revistos — Apêndice F `FP_NOVO` com `"$UID_NOVO"`; exceções inalteradas: **health-check** `^sec:`; **import** `COLON_FILTER` sem UID só com nota de laboratório |
@@ -87,7 +87,7 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 - [x] **A3 / I-03:** rodada **2026-05-06** — **26** URLs (lote filtrado), **HEAD**→**200**; **FIPS 203** corrigido no canónico — **repetir** após **novos** links grandes (actualizar tabela de auditoria).
 - [x] **Eixo B (lote 2026-05-15):** linha do tempo CLI (**Módulo 0**); decisão + verificação **ed25519/cv25519** (**Módulo 1**); diagnóstico `[E]` (**Módulo 2**); modelo de e‑mail de revogação (**Módulo 3**); **TOP 15 + Gravidade** (**Apêndice A**) + ponte no **Módulo 9**.
 - [x] **Índice / navegação (2026-05-15 II):** mapa ASCII com linhas 📎 alinhadas ao corpo; âncoras `modulo-0-linha-tempo-cli`, `modulo-1-decisao-subchaves-ecc`, `modulo-2-diagnostico-subchave-e`, `modulo-3-modelo-email-revogacao`, `modulo-9-top15-gravidade`; bloco **«Ligações diretas»** após o mapa (`README.md` referencia o fluxo).
-- [ ] **Eixo B / I-02 (restante):** trincheiras **PQ prático**, **hardware**, **profundidade Windows/iPhone** continuam **não iniciadas** no canônico — ver tabela abaixo.
+- [x] **Eixo B / I-02 (restante):** lote 2 integrado no canônico — **Módulo 11** (roteiro `pqc default` + *teardown* em `GNUPGHOME` isolado), **Apêndice C** (tabela YubiKey/Nitrokey/SoloKeys), **Apêndice E** (roteiros Windows/iPhone em passos).
 
 ### P1 — Correções técnicas imediatas (`.md` canônico)
 
@@ -146,9 +146,9 @@ Use na ordem sugerida: **1 → 2 → 4 → 3 → 6** (offline primeiro); **5** =
 | Diagnóstico rápido «sem chave secreta» na **decifração** (`[E]`, `cv25519`) | Módulo 2 | Bloco shell reproduzível + remissão Apêndice A nº 2 | **integrado** (2026-05-15) |
 | Modelo de **e‑mail** para comunicar **revogação**/mudança de chave | Módulo 3 | Texto copiável + aviso de política | **integrado** (2026-05-15) |
 | **TOP 15** erros + coluna **Gravidade** + ponte *threat model* | Apêndice A + Módulo 9 | Triagem Alta/Média/Baixa coerente com operações | **integrado** (2026-05-15) |
-| PQ mais prático (lab híbrido, avisos 2.4 vs 2.5) | Módulo 11 | `GNUPGHOME` de teste + *teardown*; sem prometer 2.5 no `apt` para todos | não iniciado |
-| Hardware: comparação, limitações, remissões `keytocard` | Apêndice C (+ M6/M7) | Tabela YubiKey / Nitrokey / SoloKeys; **sem** triplicar COMANDOs existentes | não iniciado |
-| Windows / KeePassXC / FIDO2 / Syncthing / iPhone (profundidade) | Apêndice E | Roteiros em passos; **iPhone** mantém *disclaimer* Blink ≠ Secure Enclave | não iniciado |
+| PQ mais prático (lab híbrido, avisos 2.4 vs 2.5) | Módulo 11 | `GNUPGHOME` de teste + *teardown*; sem prometer 2.5 no `apt` para todos | **integrado** (2026-05-06) |
+| Hardware: comparação, limitações, remissões `keytocard` | Apêndice C (+ M6/M7) | Tabela YubiKey / Nitrokey / SoloKeys; **sem** triplicar COMANDOs existentes | **integrado** (2026-05-06) |
+| Windows / KeePassXC / FIDO2 / Syncthing / iPhone (profundidade) | Apêndice E | Roteiros em passos; **iPhone** mantém *disclaimer* Blink ≠ Secure Enclave | **integrado** (2026-05-06) |
 
 **Fonte de mineração (opcional):** cópia local `🎓 VERSÃO 4.4 EVOLUÍDA – A OBR.md` na pasta do clone — **não** faz parte do trunk; reaproveitar **ideia e estrutura**; reescrever no vocabulário e nas versões do trunk.
 
@@ -258,6 +258,7 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-15** | **Eixo B (lote 1):** Módulo 0 — linha do tempo CLI; Módulo 1 — decisão `ed25519`/`cv25519` + anti‑padrão + verificação; Módulo 2 — diagnóstico `[E]`; Módulo 3 — modelo de e‑mail de revogação; **Apêndice A** — coluna **Gravidade** nos 15 erros; **Módulo 9** — ponte operacional para essa tabela; `ROADMAP` Eixo B actualizado |
 | **2026-05-15 (II)** | **Curso — mapa visual:** linhas 📎 no índice ASCII (Módulos **0–3**, **9**, Apêndice **A**); âncoras explícitas `modulo-0-linha-tempo-cli`, `modulo-1-decisao-subchaves-ecc`, `modulo-2-diagnostico-subchave-e`, `modulo-3-modelo-email-revogacao`, `modulo-9-top15-gravidade`; bloco **«Ligações diretas»** após o mapa (Markdown clicável fora da cerca ` ``` `) |
 | **2026-05-06 (III)** | **Camada 3 (W-A3):** `curl -IL` nos **26** HTTPS únicos do `.md` canónico (placeholders e templates `${…}` **fora** do lote); **200** em todos; hiperligação **FIPS 203** actualizada para `csrc.nist.gov/pubs/fips/203/final` |
+| **2026-05-06 (IV)** | **Eixo B (lote 2) integrado:** Módulo 11 com *teardown* explícito do `GNUPGHOME` de laboratório PQ; Apêndice C com comparação **YubiKey / Nitrokey / SoloKeys** e tabela de decisão; Apêndice E com roteiros em passos para **Windows** e **iPhone**; linha **Git/trunk** actualizada para **PASS 2026-05-06** (snapshot **`7dfc698`**) |
 | **2026-05-02** | **ROADMAP:** secção **«Plano definitivo v1.0.x (excelência / nota 9,5)»** — Eixos A (higiene), B (trincheiras 4.4 → canônico), C (cadência); **Backlog v1.1** alargado (**E‑ZT**, **E‑BENCH**, **E‑FLOW**, **E‑CERT**, **E‑K8S**); **README** remete ao plano; **Próxima sessão** — linha 6 |
 | **2026-05-02 (II)** | **Auditoria pré-lançamento:** mapa Módulo 3 (COMANDO **3.2**/**3.3**); *hint* `gpg-health-check.sh` com `\"$FP\"`; `set -euo pipefail` + ajustes `|| true` onde necessário; passphrase exemplo sem `#` (TOC); `<a id="apendice-b">`; bloco «lixo ilegível» COMANDO 2.2; nota rubrica CP1 ↔ COMANDO **2.4**; *rename* canónico **`OpenPGP-GPG`**; governança **`gpg-automation.sh`**; ROADMAP **A1** fechado, **A3**/Eixo **B**/spot-check com notas de risco |
 | **Repo** | `.vscode/` e `scripts/` só locais (`.gitignore` + fora do remoto) |
