@@ -241,6 +241,7 @@ Ao final deste curso, você será capaz de:
 │   │   ├── ▸ COMANDO 0.6: identidade de laboratório (nome/e-mail fictícios)
 │   │   ├── ▸ COMANDO 0.7: hardening gpg.conf (baseline 2026)
 │   │   ├── ▸ COMANDO 0.8: hardening gpg-agent.conf (+ SSH-ready)
+│   │   ├── 📎 Linha do tempo da CLI (--gen-key → full → generate → quick)
 │   │   └── 🚀 Bônus: Script de instalação automatizada
 │   │
 │   ├── 📋 Módulo 1: Sua Primeira Chave
@@ -252,12 +253,14 @@ Ao final deste curso, você será capaz de:
 │   │   ├── ▸ COMANDO 1.2: gpg --list-keys
 │   │   ├── ▸ COMANDO 1.3: gpg --fingerprint
 │   │   ├── ▸ COMANDO 1.4: gpg --quick-add-key
+│   │   ├── 📎 Decisão rápida [S]/[E]/[A] — ed25519 × cv25519 (+ verificação)
 │   │   └── 🚀 Bônus: Script de geração de chaves
 │   │
 │   ├── 📋 Módulo 2: Cifrando e Decifrando
 │   │   ├── ▸ COMANDO 2.1: echo > arquivo
 │   │   ├── ▸ COMANDO 2.2: gpg --encrypt
 │   │   ├── ▸ COMANDO 2.3: gpg --decrypt
+│   │   ├── 📎 Diagnóstico: «No secret key» / subchave [E] + cv25519
 │   │   ├── ▸ COMANDO 2.4: gpg --detach-sign
 │   │   ├── ▸ COMANDO 2.5: gpg --verify
 │   │   └── 🚀 Bônus: Script de backup diário
@@ -271,6 +274,7 @@ Ao final deste curso, você será capaz de:
 │   │   ├── 🟡 Abordagem com fingerprint (melhor)
 │   │   ├── 🟢 Abordagem completa (recomendada)
 │   │   ├── ▸ COMANDO 3.1: gpg --gen-revoke
+│   │   ├── 📎 Modelo de e-mail (comunicar revogação / troca de chave)
 │   │   ├── ▸ COMANDO 3.2: Backup subchaves (🔴→🟡→🟢; export + age; backup-subkeys-completo.sh)
 │   │   ├── ▸ COMANDO 3.3: Teste de restauração (obrigatório)
 │   │   ├── ▸ COMANDO 3.4: Simulando perda total
@@ -325,6 +329,7 @@ Ao final deste curso, você será capaz de:
 │   │
 │   ├── 📋 Módulo 9: Threat Modeling (Modelagem de Ameaças)
 │   │   ├── Quais são seus riscos?
+│   │   ├── 📎 TOP 15 (Apêndice A) + coluna Gravidade — triagem operacional
 │   │   ├── Como mitigar cada um?
 │   │   └── 📎 Risco Win32 + WSL2 (dois gpg-agent) → Apêndice E + ROADMAP.md (Backlog v1.1)
 │   │
@@ -353,7 +358,7 @@ Ao final deste curso, você será capaz de:
     │
     ├── ✅ Folha única — checklists dos checkpoints
     ├── 📖 Glossário de referência (aluno)
-    ├── Apêndice A: TABELA DE ERROS RÁPIDOS (Top 15)
+    ├── Apêndice A: Top 15 erros rápidos + Gravidade (Alta/Média/Baixa)
     ├── Apêndice B: SCRIPTS EVOLUTIVOS (simples → fingerprint → completo)
     ├── Apêndice C: HARDWARE WALLETS + SMARTCARDS
     ├── Apêndice D: GPG EM PRODUÇÃO (Docker, CI/CD, K8s, *headless* / GPG_TTY)
@@ -372,6 +377,8 @@ Ao final deste curso, você será capaz de:
 ```
 
 > 📌 **Sincronização com o texto:** esta árvore é um **índice visual**. Se algum COMANDO no corpo mudar de nome ou ordem, atualize este mapa — ou confira sempre pelos títulos **COMANDO** no texto principal.
+
+> 📎 **Ligações diretas** (saltar no leitor Markdown / GitHub; **fora** do bloco ASCII acima): [Linha do tempo CLI — Módulo 0](#modulo-0-linha-tempo-cli) · [Decisão subchaves e curvas ECC — Módulo 1](#modulo-1-decisao-subchaves-ecc) · [Diagnóstico subchave de cifra \[E\] — Módulo 2](#modulo-2-diagnostico-subchave-e) · [Modelo de e‑mail de revogação — Módulo 3](#modulo-3-modelo-email-revogacao) · [TOP 15 e gravidade (ponte Módulo 9)](#modulo-9-top15-gravidade) · [Apêndice A — tabela completa](#apendice-a)
 
 * * *
 
@@ -724,6 +731,8 @@ gpg --version | head -n1
 
 * * *
 
+<a id="modulo-0-linha-tempo-cli"></a>
+
 #### ▸ Linha do tempo da CLI de criação de chaves (Ubuntu 24.04 / GnuPG ~2.4.x)
 
 | Etapa | Comando típico | Onde o curso encaixa |
@@ -786,6 +795,8 @@ gpg --quick-add-key "$FP" ed25519 sign 1y
 gpg --quick-add-key "$FP" cv25519 encr 1y
 gpg --quick-add-key "$FP" ed25519 auth 1y
 ```
+
+<a id="modulo-1-decisao-subchaves-ecc"></a>
 
 #### ▸ Decisão rápida: papel de cada subchave (`[S]` / `[E]` / `[A]`)
 
@@ -1260,6 +1271,8 @@ diff segredo.txt segredo-recriado.txt
 | `Bad passphrase` | Senha errada. Tente novamente (caps lock?) |
 | `Decryption failed` | Arquivo corrompido ou não foi cifrado para você |
 
+<a id="modulo-2-diagnostico-subchave-e"></a>
+
 #### ▸ Diagnóstico rápido: «sem chave secreta» na decifração e subchave `[E]`
 
 ```sh
@@ -1545,6 +1558,8 @@ chmod 400 ~/secure-backup/offline/revogacao-*.asc
 **▶️ EXERCÍCIO 3.1:** Liste o conteúdo do diretório `~/secure-backup/offline` com `ls -la`. Você deve ver o arquivo de revogação.
 
 * * *
+
+<a id="modulo-3-modelo-email-revogacao"></a>
 
 #### Modelo de e‑mail para comunicar revogação (adaptar ao canal)
 
@@ -3114,6 +3129,8 @@ echo "recuperei" | gpg --clearsign > /dev/null 2>&1 && echo "✓ Recuperação O
 | **Perda ou roubo do token** | Baixa | Alto | PIN forte + contingência de **revogação** + **subchaves** de reserva (política interna) |
 
 * * *
+
+<a id="modulo-9-top15-gravidade"></a>
 
 #### ▸ Os mesmos erros sob óculos de gravidade (↔ Apêndice A)
 
