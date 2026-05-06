@@ -4477,6 +4477,69 @@ gpg --export --armor "$FP_NOVO" > nova-chave-ecc.asc
 
 * * *
 
+<a id="apendice-g"></a>
+
+### APÊNDICE G (EXPERT): LABORATÓRIO PROXMOX (PRODUÇÃO/LAB)
+
+> 🎯 **Objetivo:** para quem já trabalha com **laboratório em produção** e quer aprender OpenPGP “do jeito certo”: usar **Proxmox VE** para criar VMs limpas, fazer **snapshots** antes de checkpoints, isolar redes (air-gap simulado) e testar cenários *headless* (Apêndice D) sem destruir o ambiente principal.
+
+> ⚠️ **Importante:** este apêndice **não** substitui a trilha de iniciantes (VirtualBox). Ele é o caminho **recomendado** quando você já tem Proxmox, storage e disciplina de snapshots.
+
+#### Modelo de lab (visão)
+
+- **Template**: `ubuntu-24.04-gpg-base` (gnupg2 + age + utilitários).
+- **VM online (diária)**: para módulos 0–5 e operações com rede.
+- **VM offline/air-gap**: para ensaios do Módulo 6 (sem rede).
+- **LXC headless (opcional)**: para Apêndice D (pipeline/CI, `--batch`, loopback pinentry).
+
+#### Passo 0 — Pré-requisitos mínimos
+
+- Proxmox VE instalado e acessível.
+- Uma bridge (ex.: `vmbr0`) com rede normal.
+- Storage com suporte a snapshots (ZFS/LVM-thin recomendado).
+- ISOs/artefatos: Ubuntu 24.04, Tails (conforme COMANDO 6.1).
+
+#### Passo 1 — Criar o template `ubuntu-24.04-gpg-base`
+
+Na VM Ubuntu (após instalação básica):
+
+```sh
+sudo apt update
+sudo apt install -y gnupg2 age curl wget ca-certificates
+gpg --version | head -n 2
+age --version
+```
+
+> 📎 Dica: mantenha o template “seco” (sem chaves). O template serve para reproduzir o curso, não para guardar identidade.
+
+#### Passo 2 — Clones por perfil + snapshots por checkpoint
+
+- Clone 1: `pgp-lab-novato` (antes do Checkpoint 1, snapshot “cp1-pre”).
+- Clone 2: `pgp-lab-expert` (módulos 9–12 + PQ em lab dedicado).
+- Regra: **snapshot antes** de qualquer passo destrutivo (`rm -rf ~/.gnupg`, testes de restore, rotação, etc.).
+
+#### Passo 3 — Air-gap simulado (Módulo 6)
+
+- Criar uma VM (ou clone) sem interface de rede conectada.
+- Usar pendrive/ISO e o fluxo do curso para manter a **mestra offline**.
+
+> 📎 O valor do Proxmox aqui é operacional: dá para repetir o ensaio com VM limpa e snapshot, reduzindo risco humano.
+
+#### Passo 4 — Headless/CI em LXC (Apêndice D)
+
+Use um LXC só para testes de `gpg --batch`, loopback pinentry e verificação de assinaturas.
+
+Regras:
+- Não colocar chave mestra em container.
+- Preferir subchave de CI (ou material de teste) e segredos externos (vault).
+
+#### Critério de pronto (E‑PROX)
+
+- Template criado e reproduzível.
+- Pelo menos 2 clones com snapshots por checkpoint.
+- 1 cenário offline (sem rede) documentado.
+- (Opcional) 1 LXC headless com teste de assinatura/verificação em modo batch.
+
 ### Qualidade, ética e referências
 
 #### CHECKLIST DE QUALIDADE DO CURSO (MANTENEDOR)
