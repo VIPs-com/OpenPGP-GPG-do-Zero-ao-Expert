@@ -2313,6 +2313,19 @@ sync
    └─ [A] → Autenticar via SSH
 ```
 
+```mermaid
+flowchart LR
+  tailsOffline["TAILS_offline (mestra [C])"] --> exportSubs["Export_subchaves (S/E/A)"]
+  exportSubs --> usb["Pendrive_subchaves.asc"]
+  usb --> pcOnline["PC_online (subchaves operacionais)"]
+  pcOnline --> signOps["Assinar (Git/releases)"]
+  pcOnline --> cryptOps["Cifrar/decifrar"]
+  pcOnline --> sshOps["SSH via subchave [A]"]
+  pcOnline --> backup["Backup_subchaves (COMANDO 3.2)"]
+  backup --> restoreTest["Teste_restore (COMANDO 3.3)"]
+  restoreTest --> pcOnline
+```
+
 * * *
 
 #### ▸ COMANDO 6.3: Exportando subchaves no Tails (script automatizado)
@@ -3384,6 +3397,16 @@ gpg --export --armor "$FP" > pubkey.asc
 ##### WKD no seu domínio — passo a passo (*direct method*)
 
 Objetivo: servir a chave pública em **`https://SEU_DOMINIO/.well-known/openpgpkey/hu/…`** (método **direct**; o método **advanced** usa o subdomínio `openpgpkey.` + DNS — ver [Wiki WKD](https://wiki.gnupg.org/WKD)).
+
+```mermaid
+flowchart TD
+  uid["UID_email (voce@dominio)"] --> hash["gpg-wks-client --print-wkd-hash"]
+  hash --> file["Gerar arquivo hu/H (export-minimal)"]
+  file --> publish["Publicar em HTTPS /.well-known/openpgpkey/hu/"]
+  publish --> tls["TLS_valido + MIME_ok"]
+  tls --> check["gpg-wks-client --check + gpg --auto-key-locate=wkd"]
+  check --> ok["Cliente encontra chave por e-mail"]
+```
 
 1. **Instale** a ferramenta (Ubuntu do laboratório): `sudo apt install -y gpg-wks-client`
 2. **Obtenha o *hash* WKD** do endereço que aparece no UID da chave (ex.: `voce@seudominio.example`):

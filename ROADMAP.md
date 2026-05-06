@@ -250,6 +250,7 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-06 (VI)** | **E‑PROX iniciado (trilha Expert):** Apêndice G no curso com modelo de lab Proxmox (template Ubuntu 24.04, clones + snapshots, air-gap simulado, LXC headless) |
 | **2026-05-06 (VII)** | **E‑PROX fechado:** Apêndice G expandido com naming, snapshots por checkpoint, dica de air-gap simples e smoke-test headless (`gpg --batch`) |
 | **2026-05-06 (VIII)** | **E‑WSL iniciado/fechado:** Apêndice E expandido com guia Expert Win32 ↔ WSL2 (política “um só mundo”, diagnóstico GNUPGHOME/SSH_AUTH_SOCK, sintomas e decisão) |
+| **2026-05-06 (IX)** | **E‑FLOW iniciado/fechado:** fluxogramas (mermaid) adicionados no curso para WKD (COMANDO 10.5) e para ciclo Tails → subchaves → backup/restore (COMANDOs 3.2/3.3 + Módulo 6) |
 | **2026-05-07** | **Apêndice D + Módulo 8 + Módulo 9:** `HEALTHCHECK_AUTO_RESET=1` (opt-in); health-check com ramo condicionado; *threat model* com riscos token/USB e tabela de mitigação cruzada — ver **Changelog editorial** acima |
 | **2026-05-08** | **Módulo 11 + meta:** ML-KEM/FIPS 203, RFC 9580 + *draft* OpenPGP PQC, roteiro `pqc` + round-trip cifrar/decifrar; glossário/mandamento 19/Módulo 9/12 e cabeçalho alinhados — ver **Changelog editorial** |
 | **2026-05-09** | **`CERTIFICACAO-INTERNA.md` + README:** guia de rubrica «Expert»; changelog editorial |
