@@ -13,6 +13,18 @@ Curso em **um único Markdown** (versão canônica **1.0**), com orientações p
 | [.cursorrules](./.cursorrules) | Contexto e padrões do projeto para IA / equipe |
 | [`.cursor/rules/openpgp-course-pointer.mdc`](./.cursor/rules/openpgp-course-pointer.mdc) | Ponte MDC do Cursor ao `.cursorrules` (regras canónicas) |
 
+## Trilha integrada: [Zero Trust Core Expert](https://github.com/VIPs-com/Zero-Trust-Core)
+
+Depois dos **Módulos 0–5** (ou em paralelo na trilha Expert deste repositório), o material de **integração operacional** cobre:
+
+- KeePassXC + VeraCrypt + keyfile em **NTAG**
+- Backup **3-2-1-1-0**, VM off-site (WireGuard + `rsync`)
+- Runbook de contingência e automação (`ztc-health`, cron)
+
+**Repositório:** [github.com/VIPs-com/Zero-Trust-Core](https://github.com/VIPs-com/Zero-Trust-Core) · release [v1.0.1](https://github.com/VIPs-com/Zero-Trust-Core/releases/tag/v1.0.1) · licença CC BY-SA 4.0.
+
+> Este curso (OpenPGP-GPG) permanece a base de **GnuPG, Tails, subchaves e SSH**; Zero Trust Core **não** repete a teoria — só a pilha pessoal em camadas.
+
 ## Requisitos no leitor
 
 - **GnuPG** ~2.4.x (Ubuntu 24.04 do curso); trechos experimentais **2.5.19+** (**ML-KEM** / `pqc`; rótulo «Kyber» na CLI) onde indicado.
