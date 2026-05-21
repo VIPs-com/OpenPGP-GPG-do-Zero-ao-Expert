@@ -6,6 +6,7 @@ Material para **instrutor e mantenedor**. O aluno pode estudar só o [curso na r
 | --- | --- |
 | [ROADMAP.md](./ROADMAP.md) | Auditoria, plano v1.0.x, checklist por camada |
 | [CERTIFICACAO-INTERNA.md](./CERTIFICACAO-INTERNA.md) | Rubrica opcional nível Expert (turma) |
+| [RELEASE-v1.0.0.md](./RELEASE-v1.0.0.md) | Notas da release [v1.0.0](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/releases/tag/v1.0.0) |
 
 **Scripts (aluno):** [`scripts/`](../scripts/) — `gpg-health-check.sh` (Módulo 8).
 

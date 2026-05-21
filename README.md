@@ -10,6 +10,8 @@ Curso em **um único Markdown** (versão canônica **1.0**), com scripts opciona
 | [`scripts/`](./scripts/) | `gpg-health-check.sh` (Módulo 8) — copiar para `~/bin/` |
 | [`LICENSE`](./LICENSE) | Direitos reservados (por padrão); substituir se mudar a política editorial |
 
+**Release:** [v1.0.0](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/releases/tag/v1.0.0) (Latest)
+
 ## Documentação equipe (`docs/`)
 
 | Arquivo | Descrição |

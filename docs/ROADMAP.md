@@ -4,7 +4,23 @@
 
 **Repositório remoto:** [github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert) — antes de editar noutra máquina: `git pull origin main`.
 
-**PowerShell (Windows):** pasta do clone = `E:\pgp` / `Set-Location E:\pgp` — **`cd /e/pgp` é só Git Bash** (ver `.cursorrules`).
+**PowerShell (Windows):** pasta do clone = `E:\pgp` / `Set-Location E:\pgp` — **`cd /e/pgp` é só Git Bash** (ferramentas locais `.cursor/` não vão ao remoto).
+
+**Release publicada:** [v1.0.0](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/releases/tag/v1.0.0) (maio/2026) — curso v1.0 + `scripts/gpg-health-check.sh` + `docs/` + âncoras trilha [Zero Trust Core](https://github.com/VIPs-com/Zero-Trust-Core/releases/tag/v1.0.2). Notas: [`RELEASE-v1.0.0.md`](./RELEASE-v1.0.0.md).
+
+---
+
+## Fecho editorial maio/2026 (trilha integrada)
+
+| Item | Status |
+| --- | :---: |
+| Faxina repo (raiz só curso + `scripts/` + `LICENSE`; `docs/` para equipe) | ✅ `5db70d1` |
+| Âncoras ZTC (`#modulo-*-ztc`, `#comando-6-1-tails-ztc`, …) | ✅ PR #3 |
+| `gpg-health-check.sh` publicado em `scripts/` | ✅ |
+| Release **v1.0.0** no GitHub | ✅ |
+| Contributors (@VIPs-com + integração Cursor) | ✅ mantido (trabalho em parceria) |
+
+*Próximo marco operacional (outro repo):* teste físico NFC — [Zero Trust Core issue #2](https://github.com/VIPs-com/Zero-Trust-Core/issues/2).
 
 ---
 
