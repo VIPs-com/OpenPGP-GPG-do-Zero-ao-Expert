@@ -383,6 +383,8 @@ Ao final deste curso, você será capaz de:
 
 > 📎 **Ligações diretas** (saltar no leitor Markdown / GitHub; **fora** do bloco ASCII acima): [Linha do tempo CLI — Módulo 0](#modulo-0-linha-tempo-cli) · [Decisão subchaves e curvas ECC — Módulo 1](#modulo-1-decisao-subchaves-ecc) · [Diagnóstico subchave de cifra \[E\] — Módulo 2](#modulo-2-diagnostico-subchave-e) · [Modelo de e‑mail de revogação — Módulo 3](#modulo-3-modelo-email-revogacao) · [TOP 15 e gravidade (ponte Módulo 9)](#modulo-9-top15-gravidade) · [Apêndice A — tabela completa](#apendice-a)
 
+> 📎 **Trilha integrada [Zero Trust Core Expert](https://github.com/VIPs-com/Zero-Trust-Core)** (âncoras para links do outro curso): [#modulo-0-ztc](#modulo-0-ztc) · [#modulo-1-ztc](#modulo-1-ztc) · [#modulo-2-ztc](#modulo-2-ztc) · [#modulo-3-ztc](#modulo-3-ztc) · [#modulo-5-ztc](#modulo-5-ztc) · [#modulo-6-ztc](#modulo-6-ztc) · [#modulo-10-ztc](#modulo-10-ztc) · [#comando-6-1-tails-ztc](#comando-6-1-tails-ztc) · [#comando-3-1-revogacao-ztc](#comando-3-1-revogacao-ztc) · [#comando-6-4](#comando-6-4) · [Manual ZTC](https://github.com/VIPs-com/Zero-Trust-Core/blob/master/docs/MANUAL-DE-USO.md)
+
 * * *
 
 ## 🔴🟡🟢🔵 LEGENDA DE CORES (GUIA VISUAL)
@@ -406,6 +408,8 @@ Ao final deste curso, você será capaz de:
 > 🎯 **Objetivo:** Instalar o GPG, criar sua primeira chave, cifrar e decifrar arquivos
 
 * * *
+
+<a id="modulo-0-ztc"></a>
 
 ### 📋 MÓDULO 0: PREPARAÇÃO DO AMBIENTE
 
@@ -628,6 +632,8 @@ timedatectl status
 
 * * *
 
+<a id="comando-0-6-lab-ztc"></a>
+
 #### ▸ COMANDO 0.6: Identidade de laboratório obrigatória
 
 **O que faz:** Evita misturar estudo com identidade real.
@@ -765,6 +771,8 @@ gpg --version | head -n1
 > 📎 **Profundidade:** no **Módulo 1 → «Três formas de criar uma chave»** você **executa** e compara `--full-generate-key`, `--generate-key` e `--quick-generate-key`; aqui fica só o mapa mental antes de entrar na prática.
 
 * * *
+
+<a id="modulo-1-ztc"></a>
 
 ### 📋 MÓDULO 1: SUA PRIMEIRA CHAVE
 
@@ -1155,6 +1163,8 @@ echo "💰 Não se esqueça: gere o certificado de revogação!"
 
 * * *
 
+<a id="modulo-2-ztc"></a>
+
 ### 📋 MÓDULO 2: CIFRANDO E DECIFRANDO
 
 > 🎯 **Objetivo:** Cifrar, decifrar, assinar e verificar arquivos
@@ -1503,6 +1513,8 @@ echo "✓ Backup: $BACKUP_DIR/subkeys-${TIMESTAMP}.age"
 
 * * *
 
+<a id="modulo-3-ztc"></a>
+
 ### 📋 MÓDULO 3: BACKUP E REVOGAÇÃO
 
 > 🎯 **Objetivo:** Proteger suas chaves contra perda e roubo
@@ -1510,6 +1522,8 @@ echo "✓ Backup: $BACKUP_DIR/subkeys-${TIMESTAMP}.age"
 > ⏱️ **Tempo estimado:** 60 minutos
 
 * * *
+
+<a id="comando-3-1-revogacao-ztc"></a>
 
 #### ▸ COMANDO 3.1: Gerando o certificado de revogação (FAÇA AGORA!)
 
@@ -1894,6 +1908,8 @@ git log --show-signature -1
 
 * * *
 
+<a id="modulo-5-ztc"></a>
+
 ### 📋 MÓDULO 5: SSH VIA GPG
 
 > 🎯 **Objetivo:** Substituir suas chaves SSH tradicionais pela subchave \[A\] do GPG
@@ -2149,6 +2165,8 @@ echo "💻 Adicione o conteúdo de gpg-ssh-key.pub ao ~/.ssh/authorized_keys do 
 
 * * *
 
+<a id="modulo-6-ztc"></a>
+
 ### 📋 MÓDULO 6: TAILS E CHAVE MESTRA OFFLINE
 
 > 🎯 **Objetivo:** Criar a chave mestra em um ambiente isolado (air-gapped)
@@ -2191,6 +2209,8 @@ echo "💻 Adicione o conteúdo de gpg-ssh-key.pub ao ~/.ssh/authorized_keys do 
 **Resumo em 30 s:** para **produção**, trate o Tails como **cozinha limpa**: entre, opera offline, exporta para **mídia dedicada**, sai — sem depender de persistência como “cofre permanente”. Para **lab**, persistência é conforto pedagógico, não modelo de vida útil da mestra.
 
 * * *
+
+<a id="comando-6-1-tails-ztc"></a>
 
 #### ▸ COMANDO 6.1: Preparando o pendrive Tails (COM VERIFICAÇÃO)
 
@@ -3242,6 +3262,8 @@ Mapa rápido (útil ao revisar política com times de segurança — mesmo vocab
 | Segmentação | Mestra offline / operação diária só com subs; ambientes separados em CI |
 
 * * *
+
+<a id="modulo-10-ztc"></a>
 
 ### 📋 MÓDULO 10: COMANDOS DE MANUTENÇÃO
 
