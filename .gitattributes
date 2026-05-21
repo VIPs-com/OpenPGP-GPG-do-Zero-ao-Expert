@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.md text eol=lf
+*.sh text eol=lf
+docs/** linguist-documentation
+🎓*.md linguist-detectable
+scripts/** linguist-language=Shell

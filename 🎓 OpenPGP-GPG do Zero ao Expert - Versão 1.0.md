@@ -2769,6 +2769,8 @@ gpg --verify /tmp/gpg-smoke.asc
 
 #### 🚀 BÔNUS: Script de health-check completo
 
+> 📎 **Script publicado (copiar sem colar do PDF):** [`scripts/gpg-health-check.sh`](./scripts/gpg-health-check.sh) · instalação em [`scripts/README.md`](./scripts/README.md).
+
 > 💡 Este script usa **`grep -oE`** (primeiro par **M.N** na linha da versão) e **`bc`** para comparar versões — no Ubuntu do curso: `sudo apt install bc`. Sem `bc`, o script apenas **avisa** e mostra o **M.N** detectado; confira sempre com `gpg --version | head -n1`. Os passos **7–8** (*token* / `pcscd` / grupos) são **heurísticos**: em **cron** sem sessão interativa, `gpg --card-status` pode dar **falso negativo** — interprete com contexto ou rode o mesmo script **no terminal** do usuário. **`HEALTHCHECK_AUTO_RESET=1`** (opt-in, **Apêndice D**) mata **só** o `scdaemon` e relança o `gpg-agent` quando o token aparece no `lsusb` mas o `card-status` falha — **não** use em *desktop* partilhado sem política; em **CI/servidor de assinatura** pode recuperar disponibilidade sem reboot.
 
 ```sh
@@ -3967,7 +3969,7 @@ Complete este desafio para obter seu certificado:
 
 ### 🏅 Validação de competências (nível Expert)
 
-Se você concluiu todos os módulos e laboratórios, pode usar a **[rubrica de certificação interna](./CERTIFICACAO-INTERNA.md)** — também pensada para **instrutores** em turma corporativa ou **acadêmica** — para auditar o progresso com critérios **objetivos** e evidências práticas. O guia descreve **12 competências** do núcleo (subchaves, backup/revogação, assinatura e verificação, Git, SSH, Tails, token ou chaveiro em arquivo, automação com *health-check*, *threat modeling*, WKD, consciência pós-quântica e leitura do ecossistema **Sequoia `sq`**) e uma **extensão opcional** de prontidão **ML-KEM** / `pqc` com **GnuPG 2.5.19+**, alinhada ao passo **6b** do `ROADMAP.md`.
+Se você concluiu todos os módulos e laboratórios, pode usar a **[rubrica de certificação interna](./docs/CERTIFICACAO-INTERNA.md)** — também pensada para **instrutores** em turma corporativa ou **acadêmica** — para auditar o progresso com critérios **objetivos** e evidências práticas. O guia descreve **12 competências** do núcleo (subchaves, backup/revogação, assinatura e verificação, Git, SSH, Tails, token ou chaveiro em arquivo, automação com *health-check*, *threat modeling*, WKD, consciência pós-quântica e leitura do ecossistema **Sequoia `sq`**) e uma **extensão opcional** de prontidão **ML-KEM** / `pqc` com **GnuPG 2.5.19+**, alinhada ao passo **6b** do `ROADMAP.md`.
 
 > 📎 **Política atual do projeto:** a validação operacional de VM (camada 5 / R2) é **delegada ao aluno** no Exame Final/CERTIFICACAO-INTERNA. O spot-check local do mantenedor continua opcional para *smoke-test* adicional.
 

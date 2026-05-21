@@ -1,17 +1,22 @@
 # OpenPGP/GPG do Zero ao Expert
 
-Curso em **um único Markdown** (versão canônica **1.0**), com orientações para mantenedor, roadmap e regras para o Cursor. **Plano de evolução v1.0.x** (trincheiras, higiene do repo, nota 9,5): ver secção **«Plano definitivo v1.0.x»** no [`ROADMAP.md`](./ROADMAP.md).
+Curso em **um único Markdown** (versão canônica **1.0**), com scripts opcionais e documentação de equipe em `docs/`. **Plano de evolução v1.0.x:** [`docs/ROADMAP.md`](./docs/ROADMAP.md).
 
-## Conteúdo principal
+## Conteúdo principal (aluno)
 
 | Arquivo | Descrição |
 |---------|-----------|
-| [🎓 OpenPGP-GPG do Zero ao Expert - Versão 1.0.md](./🎓%20OpenPGP-GPG%20do%20Zero%20ao%20Expert%20-%20Versão%201.0.md) | Curso completo (módulos, comandos, checkpoints, apêndices). No topo há um **mapa ASCII** (` ``` `) + logo abaixo o bloco **«Ligações diretas»** com saltos clicáveis para subsecções recentes (ex.: `#modulo-0-linha-tempo-cli`, `#modulo-1-decisao-subchaves-ecc`, `#apendice-a`). |
-| [ROADMAP.md](./ROADMAP.md) | Fluxo auditoria → roadmap; **spot-check VM** opcional/pendente; checklist por camada; **Plano definitivo v1.0.x** (Eixos A/B/C) |
-| [CERTIFICACAO-INTERNA.md](./CERTIFICACAO-INTERNA.md) | Rubrica opcional para validar nível **Expert** ao fechar o curso (instrutor/mantenedor) |
+| [🎓 OpenPGP-GPG do Zero ao Expert - Versão 1.0.md](./🎓%20OpenPGP-GPG%20do%20Zero%20ao%20Expert%20-%20Versão%201.0.md) | Curso completo (módulos, comandos, checkpoints, apêndices). Mapa ASCII + **Ligações diretas** no §1. |
+| [`scripts/`](./scripts/) | `gpg-health-check.sh` (Módulo 8) — copiar para `~/bin/` |
 | [`LICENSE`](./LICENSE) | Direitos reservados (por padrão); substituir se mudar a política editorial |
-| [.cursorrules](./.cursorrules) | Contexto e padrões do projeto para IA / equipe |
-| [`.cursor/rules/openpgp-course-pointer.mdc`](./.cursor/rules/openpgp-course-pointer.mdc) | Ponte MDC do Cursor ao `.cursorrules` (regras canónicas) |
+
+## Documentação equipe (`docs/`)
+
+| Arquivo | Descrição |
+|---------|-----------|
+| [docs/README.md](./docs/README.md) | Índice da pasta |
+| [docs/ROADMAP.md](./docs/ROADMAP.md) | Auditoria, plano v1.0.x, checklist mantenedor |
+| [docs/CERTIFICACAO-INTERNA.md](./docs/CERTIFICACAO-INTERNA.md) | Rubrica opcional nível **Expert** (instrutor) |
 
 <a id="trilha-integrada-zero-trust-core-expert"></a>
 
@@ -79,11 +84,11 @@ O desafio **Win32 ↔ WSL2** (dois `gpg-agent`, sockets, `SSH_AUTH_SOCK`) **não
 
 - **Módulo 9:** linha de risco **Superfície dupla Win32 + WSL2** e mitigação **«um só mundo»** (política explícita).
 - **Apêndice E:** caixa **v1.1 planejado** + tabela **«onde rever»** (M1–M5, M0/8, Apêndice D, bloco Windows) — mesma sintaxe `gpg`/`git`/`ssh`, outro contexto de agente e *keyring*.
-- **[ROADMAP.md](./ROADMAP.md)** — **Backlog v1.1:** roteiro detalhado quando existir texto dedicado.
+- **[docs/ROADMAP.md](./docs/ROADMAP.md)** — **Backlog v1.1:** roteiro detalhado quando existir texto dedicado.
 
 ## Governança e qualidade
 
-- **Só no disco local:** alguns ficheiros e pastas estão no [`.gitignore`](./.gitignore) (ex.: rascunhos, plano interno da equipa, diretórios de trabalho opcionais) — **não** sobem para o GitHub; o remoto fica o curso + meta-documentação acordada na raiz.
-- **[ROADMAP.md](./ROADMAP.md):** tabela **«Última auditoria estática»** (Git/trunk, versões Tails/GnuPG/`sq`, HEAD em URLs do curso, grep preventivo, **VM** opcional, governança, `LICENSE`), **histórico de rodadas** e *snapshot* de pendências.
+- **Só no disco local:** rascunhos e `.cursor/` estão no [`.gitignore`](./.gitignore) — **não** sobem para o GitHub.
+- **[docs/ROADMAP.md](./docs/ROADMAP.md):** tabela **«Última auditoria estática»** (Git/trunk, versões Tails/GnuPG/`sq`, HEAD em URLs do curso, grep preventivo, **VM** opcional, governança, `LICENSE`), **histórico de rodadas** e *snapshot* de pendências.
 - **Workflow Git:** depois de alterar o `.md` canônico ou meta-docs, `git commit` + **`git push origin main`** para manter [o remoto](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert) alinhado ao clone local (ver secção **Repositório no GitHub** acima).
 - Conteúdo didático alinhado ao ecossistema **OpenPGP / GnuPG**; menções à **RFC 9580** e ao plano **pós-quântico** **onde o curso assinala** — material de formação, não substitui auditoria legal ou *compliance* formal da tua organização.

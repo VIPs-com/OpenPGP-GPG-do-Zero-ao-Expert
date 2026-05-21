@@ -10,7 +10,7 @@
 
 1. **Evidência por feito:** cada critério exige **comando executado**, **artefato** (arquivo, *commit*, *backup*) ou **relato datado** com saída reproduzível — não basta «li o módulo».
 2. **Separação laboratório / produção:** chaves de laboratório (`LAB_EMAIL`, `GNUPGHOME` de teste) **não** contam como prova de operação segura em dados reais; servem para **técnica**. Para «Expert operacional», exija pelo menos um cenário com **UID/domínio próprio** ou política interna equivalente.
-3. **Opcional avançado:** roteiro **ML-KEM** (Módulo 11 + passo **6b** do `ROADMAP.md`) é **extra**; não é obrigatório para declarar «Expert» no núcleo **ECC + OpenPGP clássico** de 2026.
+3. **Opcional avançado:** roteiro **ML-KEM** (Módulo 11 + passo **6b** do [`ROADMAP.md`](./ROADMAP.md)) é **extra**; não é obrigatório para declarar «Expert» no núcleo **ECC + OpenPGP clássico** de 2026.
 
 ---
 

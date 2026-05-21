@@ -4,12 +4,12 @@ Desktop.ini
 *.tmp
 ~$*
 
-# Apenas local — não publicar no remoto (clone público fica só curso + metadados mínimos)
+# Ferramentas locais — não publicar (só curso + docs + scripts para alunos)
 .vscode/
-scripts/
+.cursor/
+.cursorrules
 
-# Rascunho / mineração (referência V4.4 — mantenedor; ver ROADMAP «Plano definitivo v1.0.x»)
+# Rascunho / mineração (referência V4.4 — mantenedor; ver docs/ROADMAP.md)
 🎓 VERSÃO 4.4 EVOLUÍDA – A OBR.md
 Plano equipe
 Plano equipe.md
-
