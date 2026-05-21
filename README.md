@@ -13,7 +13,7 @@ Curso em **um único Markdown** (versão canônica **1.0**), com orientações p
 | [.cursorrules](./.cursorrules) | Contexto e padrões do projeto para IA / equipe |
 | [`.cursor/rules/openpgp-course-pointer.mdc`](./.cursor/rules/openpgp-course-pointer.mdc) | Ponte MDC do Cursor ao `.cursorrules` (regras canónicas) |
 
-<a id="trilha-integrada-zero-trust-core"></a>
+<a id="trilha-integrada-zero-trust-core-expert"></a>
 
 ## Trilha integrada: [Zero Trust Core Expert](https://github.com/VIPs-com/Zero-Trust-Core)
 
