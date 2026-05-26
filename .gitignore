@@ -1,4 +1,4 @@
-# Windows / editores
+﻿# Windows / editores
 Thumbs.db
 Desktop.ini
 *.tmp
@@ -15,3 +15,5 @@ scripts/push-curso.bat
 🎓 VERSÃO 4.4 EVOLUÍDA – A OBR.md
 Plano equipe
 Plano equipe.md
+
+CLAUDE.md
