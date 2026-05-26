@@ -38,11 +38,11 @@ A **VM** pode correr em **paralelo** ou logo a seguir à auditoria estática. **
 
 ## Última auditoria estática (preencher após cada rodada completa)
 
-**Rodada de fecho:** **2026-05-14** — plano «Auditoria pré-roadmap» (camadas 1, 2, 4, 3, 6; **5** = VM continua manual).
+**Rodada de fecho:** **2026-05-26** — playbooks/ adicionados (commit `863c29a`).
 
 | Área | Resultado | Notas / próximo passo |
 | --- | --- | --- |
-| Git / trunk | **PASS** 2026-05-06 | Re-verificação rápida (camada **1**): `main` alinhado com `origin/main`; working tree limpo; `git remote -v` = **OpenPGP-GPG-do-Zero-ao-Expert**; `git ls-files` sem `.vscode/` nem `scripts/`; snapshot publicado em `origin/main` no commit **`5201809`** |
+| Git / trunk | **PASS** 2026-05-26 | Re-verificação: `main` alinhado com `origin/main`; working tree limpo; snapshot atual commit **`863c29a`** (playbooks/ — 9 guias código-primeiro + README) |
 | Versões (Tails / GnuPG / `sq`) | **PASS** 2026-05-03 | Re-verificação (camada **2**): cabeçalho + `README.md` + Módulo 0 — Tails **7.7.1+**, GnuPG **2.4.x** / **2.5.19+**, **sequoia-sq ~1.3.x**; sem divergência |
 | URLs (HEAD HTTPS únicos) | **PASS** 2026-05-06 | **W-A3 / A3:** rodada completa — **26** HTTPS únicos «reais» no `.md` (filtro: sem `SEU_DOMINIO`, sem `seudominio.example`, sem URLs-sintaxe com `${…}` nos `wget`; **HEAD** → **200**). Correção editorial: **FIPS 203** — `https://csrc.nist.gov/pubs/fips/203/final` (path antigo `…/publications/detail/…` → **404**) |
 | Grep scripts + PQ (`list-secret-keys`, `fpr:`, sem `grep -oP`, `QUÂNTICA` indevido) | **PASS** 2026-05-03 | Re-grep (camada **4**) pós-2026-05-02: **sem** `grep -oP`; **`QUÂNTICA`** só no anexo; novos blocos revistos — Apêndice F `FP_NOVO` com `"$UID_NOVO"`; exceções inalteradas: **health-check** `^sec:`; **import** `COLON_FILTER` sem UID só com nota de laboratório |
@@ -285,6 +285,7 @@ Resumo do que já foi integrado no material ou no repo; detalhes finos no `git l
 | **2026-05-06 (IV)** | **Eixo B (lote 2) integrado:** Módulo 11 com *teardown* explícito do `GNUPGHOME` de laboratório PQ; Apêndice C com comparação **YubiKey / Nitrokey / SoloKeys** e tabela de decisão; Apêndice E com roteiros em passos para **Windows** e **iPhone**; linha **Git/trunk** actualizada para **PASS 2026-05-06** (snapshot **`0ebcd71`**) |
 | **2026-05-02** | **ROADMAP:** secção **«Plano definitivo v1.0.x (excelência / nota 9,5)»** — Eixos A (higiene), B (trincheiras 4.4 → canônico), C (cadência); **Backlog v1.1** alargado (**E‑ZT**, **E‑BENCH**, **E‑FLOW**, **E‑CERT**, **E‑K8S**); **README** remete ao plano; **Próxima sessão** — linha 6 |
 | **2026-05-02 (II)** | **Auditoria pré-lançamento:** mapa Módulo 3 (COMANDO **3.2**/**3.3**); *hint* `gpg-health-check.sh` com `\"$FP\"`; `set -euo pipefail` + ajustes `|| true` onde necessário; passphrase exemplo sem `#` (TOC); `<a id="apendice-b">`; bloco «lixo ilegível» COMANDO 2.2; nota rubrica CP1 ↔ COMANDO **2.4**; *rename* canónico **`OpenPGP-GPG`**; governança **`gpg-automation.sh`**; ROADMAP **A1** fechado, **A3**/Eixo **B**/spot-check com notas de risco |
+| **2026-05-26** | **playbooks/ (9 guias código-primeiro):** commit `863c29a` — `01-ambiente-gpg` → `09-manutencao`; fluxogramas Mermaid por módulo; smoke tests; deep links para COMMANDs do curso; `playbooks/README.md` com mapa e correlação de âncoras; `README.md` e `docs/README.md` atualizados com atalho «Executar agora?» |
 | **Repo** | `.vscode/` e `scripts/` só locais (`.gitignore` + fora do remoto) |
 
 **Manutenção recorrente:** ao **novo** bloco shell no `.md` canônico → rever `list-secret-keys` + `fpr:` + `UID_IMPORT` / `LAB_EMAIL`; ao **novo** link HTTPS → repetir **HEAD** em lote; ao subir **GnuPG** experimental → rever nomes PQ na CLI (Módulo 11).

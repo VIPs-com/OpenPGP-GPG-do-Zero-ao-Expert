@@ -10,4 +10,6 @@ Material para **instrutor e mantenedor**. O aluno pode estudar só o [curso na r
 
 **Scripts (aluno):** [`scripts/`](../scripts/) — `gpg-health-check.sh` (Módulo 8).
 
+**Playbooks (aluno — código primeiro):** [`playbooks/`](../playbooks/) — 9 guias com fluxograma Mermaid + passos + smoke test, cobrindo Módulos 0–10. Ver [`playbooks/README.md`](../playbooks/README.md) para mapa completo.
+
 **Trilha integrada:** [Zero Trust Core Expert](https://github.com/VIPs-com/Zero-Trust-Core) — manual, cofres, NFC, `ztc-*`.
