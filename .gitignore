@@ -8,6 +8,8 @@ Desktop.ini
 .vscode/
 .cursor/
 .cursorrules
+scripts/head_audit_once.py
+scripts/push-curso.bat
 
 # Rascunho / mineração (referência V4.4 — mantenedor; ver docs/ROADMAP.md)
 🎓 VERSÃO 4.4 EVOLUÍDA – A OBR.md
