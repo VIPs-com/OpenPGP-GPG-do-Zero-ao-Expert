@@ -1,4 +1,4 @@
-# 🎓 OpenPGP/GPG do Zero ao Expert – **VERSÃO 1.0 (canônica)**
+﻿# 🎓 OpenPGP/GPG do Zero ao Expert – **VERSÃO 1.0 (canônica)**
 
 **Autor:** Professor Especialista em Criptografia Aplicada no Linux, Windows, Android, iPhone  
 **GnuPG:** ~**2.4.x** no Ubuntu 24.04 do curso (`apt`) · **2.5.19+** só para **ML‑KEM** experimental (rótulos **«Kyber»** na CLI; **não** vem no `apt` LTS — [download](https://www.gnupg.org/download/index.en.html) oficial ou VM dedicada)  
@@ -383,7 +383,7 @@ Ao final deste curso, você será capaz de:
 
 > 📎 **Ligações diretas** (saltar no leitor Markdown / GitHub; **fora** do bloco ASCII acima): [Linha do tempo CLI — Módulo 0](#modulo-0-linha-tempo-cli) · [Decisão subchaves e curvas ECC — Módulo 1](#modulo-1-decisao-subchaves-ecc) · [Diagnóstico subchave de cifra \[E\] — Módulo 2](#modulo-2-diagnostico-subchave-e) · [Modelo de e‑mail de revogação — Módulo 3](#modulo-3-modelo-email-revogacao) · [TOP 15 e gravidade (ponte Módulo 9)](#modulo-9-top15-gravidade) · [Apêndice A — tabela completa](#apendice-a)
 
-> 📎 **Trilha integrada [Zero Trust Core Expert](https://github.com/VIPs-com/Zero-Trust-Core)** (âncoras para links do outro curso): [#modulo-0-ztc](#modulo-0-ztc) · [#modulo-1-ztc](#modulo-1-ztc) · [#modulo-2-ztc](#modulo-2-ztc) · [#modulo-3-ztc](#modulo-3-ztc) · [#modulo-5-ztc](#modulo-5-ztc) · [#modulo-6-ztc](#modulo-6-ztc) · [#modulo-10-ztc](#modulo-10-ztc) · [#comando-6-1-tails-ztc](#comando-6-1-tails-ztc) · [#comando-3-1-revogacao-ztc](#comando-3-1-revogacao-ztc) · [#comando-6-4](#comando-6-4) · [Manual ZTC](https://github.com/VIPs-com/Zero-Trust-Core/blob/master/docs/MANUAL-DE-USO.md)
+> 📎 **Trilha integrada [Zero Trust Core Expert](https://github.com/VIPs-com/Zero-Trust-Core)** (âncoras para links do outro curso): [#modulo-0-ztc](#modulo-0-ztc) · [#modulo-1-ztc](#modulo-1-ztc) · [#modulo-2-ztc](#modulo-2-ztc) · [#modulo-3-ztc](#modulo-3-ztc) · [#modulo-5-ztc](#modulo-5-ztc) · [#modulo-6-ztc](#modulo-6-ztc) · [#modulo-10-ztc](#modulo-10-ztc) · [#comando-6-1-tails-ztc](#comando-6-1-tails-ztc) · [#comando-3-1-revogacao-ztc](#comando-3-1-revogacao-ztc) · [#comando-6-4](#comando-6-4) · [Manual ZTC](https://github.com/VIPs-com/Zero-Trust-Core/blob/main/docs/MANUAL-DE-USO.md)
 
 * * *
 

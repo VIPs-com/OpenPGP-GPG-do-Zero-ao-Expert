@@ -1,4 +1,4 @@
-# Scripts — OpenPGP-GPG do Zero ao Expert
+﻿# Scripts — OpenPGP-GPG do Zero ao Expert
 
 Scripts oficiais do curso [OpenPGP-GPG do Zero ao Expert](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert). Correspondem ao **bônus do Módulo 8** (health-check) no arquivo canônico do curso.
 
@@ -28,7 +28,7 @@ Cofres NFC, VeraCrypt, `ztc-health` e off-site estão no repositório irmão —
 
 | Script | Repositório |
 | --- | --- |
-| `ztc-health.sh`, `ztc-open-cofre.sh`, `ztc-rsync-offsite.sh` | [Zero-Trust-Core/scripts](https://github.com/VIPs-com/Zero-Trust-Core/tree/master/scripts) |
+| `ztc-health.sh`, `ztc-open-cofre.sh`, `ztc-rsync-offsite.sh` | [Zero-Trust-Core/scripts](https://github.com/VIPs-com/Zero-Trust-Core/tree/main/scripts) |
 
 ## Licença
 
