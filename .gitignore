@@ -21,6 +21,9 @@ CLAUDE.md
 pgp-equipe-dev/
 MANIFEST.txt
 
+# docs/ removido do remoto (jul/2026) — material mantenedor em pgp-equipe-dev/docs/
+/docs/
+
 # --- Arquivos compactados (backups locais) ---
 *.zip
 *.7z

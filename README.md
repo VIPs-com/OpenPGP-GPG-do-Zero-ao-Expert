@@ -1,6 +1,6 @@
 ﻿# OpenPGP/GPG do Zero ao Expert
 
-Curso em **um único Markdown** (versão canônica **1.0**), com scripts opcionais e documentação de equipe em `docs/`. **Plano de evolução v1.0.x:** [`docs/ROADMAP.md`](./docs/ROADMAP.md).
+Curso em **um único Markdown** (versão canônica **1.0**), com scripts opcionais e [playbooks](./playbooks/) código-primeiro.
 
 ## Conteúdo principal (aluno)
 
@@ -14,14 +14,6 @@ Curso em **um único Markdown** (versão canônica **1.0**), com scripts opciona
 **Quer executar agora (zero teoria, código direto)?** → **[`playbooks/`](./playbooks/)** — 9 guias com fluxograma Mermaid + passos numerados + smoke test + deep links para COMMANDs do curso.
 
 **Release:** [v1.0.0](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/releases/tag/v1.0.0) (Latest)
-
-## Documentação equipe (`docs/`)
-
-| Arquivo | Descrição |
-|---------|-----------|
-| [docs/README.md](./docs/README.md) | Índice da pasta |
-| [docs/ROADMAP.md](./docs/ROADMAP.md) | Auditoria, plano v1.0.x, checklist mantenedor |
-| [docs/CERTIFICACAO-INTERNA.md](./docs/CERTIFICACAO-INTERNA.md) | Rubrica opcional nível **Expert** (instrutor) |
 
 <a id="trilha-integrada-zero-trust-core-expert"></a>
 
@@ -89,11 +81,8 @@ O desafio **Win32 ↔ WSL2** (dois `gpg-agent`, sockets, `SSH_AUTH_SOCK`) **não
 
 - **Módulo 9:** linha de risco **Superfície dupla Win32 + WSL2** e mitigação **«um só mundo»** (política explícita).
 - **Apêndice E:** caixa **v1.1 planejado** + tabela **«onde rever»** (M1–M5, M0/8, Apêndice D, bloco Windows) — mesma sintaxe `gpg`/`git`/`ssh`, outro contexto de agente e *keyring*.
-- **[docs/ROADMAP.md](./docs/ROADMAP.md)** — **Backlog v1.1:** roteiro detalhado quando existir texto dedicado.
-
 ## Governança e qualidade
 
-- **Só no disco local:** rascunhos e `.cursor/` estão no [`.gitignore`](./.gitignore) — **não** sobem para o GitHub.
-- **[docs/ROADMAP.md](./docs/ROADMAP.md):** tabela **«Última auditoria estática»** (Git/trunk, versões Tails/GnuPG/`sq`, HEAD em URLs do curso, grep preventivo, **VM** opcional, governança, `LICENSE`), **histórico de rodadas** e *snapshot* de pendências.
-- **Workflow Git:** depois de alterar o `.md` canônico ou meta-docs, `git commit` + **`git push origin main`** para manter [o remoto](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert) alinhado ao clone local (ver secção **Repositório no GitHub** acima).
+- **Só no disco local:** rascunhos, `.cursor/` e material de mantenedor estão no [`.gitignore`](./.gitignore) — **não** sobem para o GitHub.
+- **Workflow Git:** depois de alterar o `.md` canônico, `git commit` + **`git push origin main`** para manter [o remoto](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert) alinhado ao clone local (ver secção **Repositório no GitHub** acima).
 - Conteúdo didático alinhado ao ecossistema **OpenPGP / GnuPG**; menções à **RFC 9580** e ao plano **pós-quântico** **onde o curso assinala** — material de formação, não substitui auditoria legal ou *compliance* formal da tua organização.

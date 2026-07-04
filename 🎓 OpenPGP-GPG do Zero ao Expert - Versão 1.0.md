@@ -3969,7 +3969,7 @@ Complete este desafio para obter seu certificado:
 
 ### 🏅 Validação de competências (nível Expert)
 
-Se você concluiu todos os módulos e laboratórios, pode usar a **[rubrica de certificação interna](./docs/CERTIFICACAO-INTERNA.md)** — também pensada para **instrutores** em turma corporativa ou **acadêmica** — para auditar o progresso com critérios **objetivos** e evidências práticas. O guia descreve **12 competências** do núcleo (subchaves, backup/revogação, assinatura e verificação, Git, SSH, Tails, token ou chaveiro em arquivo, automação com *health-check*, *threat modeling*, WKD, consciência pós-quântica e leitura do ecossistema **Sequoia `sq`**) e uma **extensão opcional** de prontidão **ML-KEM** / `pqc` com **GnuPG 2.5.19+**, alinhada ao passo **6b** do `ROADMAP.md`.
+Se você concluiu todos os módulos e laboratórios, peça ao **instrutor** a rubrica de certificação Expert (material de turma, não publicado no GitHub) — ou autoavalie com os **12 critérios** abaixo e as evidências do exame final deste módulo. O núcleo cobre: subchaves, backup/revogação, assinatura e verificação, Git, SSH, Tails, token ou chaveiro em arquivo, automação com *health-check*, *threat modeling*, WKD, consciência pós-quântica e leitura do ecossistema **Sequoia `sq`**. Extensão opcional **ML-KEM** / `pqc` com **GnuPG 2.5.19+** (passo **6b** do roadmap de mantenedor).
 
 > 📎 **Política atual do projeto:** a validação operacional de VM (camada 5 / R2) é **delegada ao aluno** no Exame Final/CERTIFICACAO-INTERNA. O spot-check local do mantenedor continua opcional para *smoke-test* adicional.
 
