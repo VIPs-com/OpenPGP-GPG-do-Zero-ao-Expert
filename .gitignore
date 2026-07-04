@@ -6,14 +6,23 @@ Desktop.ini
 
 # Ferramentas locais — não publicar (só curso + docs + scripts para alunos)
 .vscode/
-.cursor/
-.cursorrules
 scripts/head_audit_once.py
 scripts/push-curso.bat
 
-# Rascunho / mineração (referência V4.4 — mantenedor; ver docs/ROADMAP.md)
+# Rascunho / mineração (referência V4.4 — mantenedor)
 🎓 VERSÃO 4.4 EVOLUÍDA – A OBR.md
 Plano equipe
 Plano equipe.md
 
+# --- Repo público = SÓ O CURSO. Interno → pgp-equipe-dev/ (local). ---
 CLAUDE.md
+
+# --- Doc interna equipe dev ---
+pgp-equipe-dev/
+MANIFEST.txt
+
+# --- Arquivos compactados (backups locais) ---
+*.zip
+*.7z
+
+# --- Cursor (dentro de pgp-equipe-dev/.cursor/ quando existir) ---
