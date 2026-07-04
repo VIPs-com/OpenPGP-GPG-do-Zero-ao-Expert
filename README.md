@@ -32,6 +32,7 @@ Depois dos **Módulos 0–5** (ou em paralelo na trilha Expert deste repositóri
 | **Manual de uso** (estrutura do repo, trilhas, FAQ — **recomendado antes do `.md` do curso**) | [docs/MANUAL-DE-USO.md](https://github.com/VIPs-com/Zero-Trust-Core/blob/main/docs/MANUAL-DE-USO.md) |
 | Curso canônico (COMANDOs e checkpoints) | [🎓 Zero-Trust-Core-Expert - Versão 1.0.md](https://github.com/VIPs-com/Zero-Trust-Core/blob/main/%F0%9F%8E%93%20Zero-Trust-Core-Expert%20-%20Vers%C3%A3o%201.0.md) |
 | Scripts opcionais (`ztc-health`, rsync off-site) | [scripts/](https://github.com/VIPs-com/Zero-Trust-Core/tree/main/scripts) |
+| Whonix + VirtualBox (capstone, W00–W03) | [whonix/playbooks/](https://github.com/VIPs-com/Zero-Trust-Core/tree/main/whonix/playbooks) |
 
 > Este curso (OpenPGP-GPG) permanece a base de **GnuPG, Tails, subchaves e SSH**; Zero Trust Core **não** repete a teoria — só a pilha pessoal em camadas. Quem acabou de clonar o Zero Trust Core: leia primeiro o **Manual de uso**.
 
