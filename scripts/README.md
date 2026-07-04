@@ -1,35 +1,37 @@
 ﻿# Scripts — OpenPGP-GPG do Zero ao Expert
 
-Scripts oficiais do curso [OpenPGP-GPG do Zero ao Expert](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert). Correspondem ao **bônus do Módulo 8** (health-check) no arquivo canônico do curso.
+Scripts oficiais do curso [OpenPGP-GPG do Zero ao Expert](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert).
 
-## Instalação
+## GPG (Módulo 8)
 
 ```sh
-git clone https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert.git
-cd OpenPGP-GPG-do-Zero-ao-Expert
 mkdir -p ~/bin
 cp scripts/gpg-health-check.sh ~/bin/
 chmod +x ~/bin/gpg-health-check.sh
-export LAB_EMAIL="seu.uid@exemplo.com"   # opcional; padrão = lab do curso
 ~/bin/gpg-health-check.sh
 ```
 
-Dependência opcional: `sudo apt install bc` (comparativo de versão GnuPG).
-
-## Arquivos
-
 | Arquivo | Função |
 | --- | --- |
-| `gpg-health-check.sh` | Versão GnuPG, permissões `~/.gnupg`, subchaves, assinatura, SSH-agent, token USB, backup `~/gpg-backups/` |
+| `gpg-health-check.sh` | Versão GnuPG, `~/.gnupg`, subchaves, SSH-agent, backup |
+
+## Whonix capstone (playbook 10)
+
+Scripts **autocontidos** — prefixo `pgp-whonix-*` (host Debian + Workstation):
+
+| Arquivo | Onde roda | Função |
+| --- | --- | --- |
+| `pgp-whonix-install-virtualbox.sh` | Host | VirtualBox Oracle verificado |
+| `pgp-whonix-verify-image.sh` | Host | Só verificação PGP (`derivative.asc`, `-f`) |
+| `pgp-whonix-import-ova.sh` | Host | Verify + `VBoxManage import` |
+| `pgp-whonix-verificar-tor.sh` | Workstation | Tor + systemcheck |
+
+Guia: [`playbooks/10-whonix-capstone.md`](../playbooks/10-whonix-capstone.md)
 
 ## Trilha integrada (Zero Trust Core)
 
-Cofres NFC, VeraCrypt, `ztc-health` e off-site estão no repositório irmão — **não** duplicados aqui:
-
-| Script | Repositório |
-| --- | --- |
-| `ztc-health.sh`, `ztc-open-cofre.sh`, `ztc-rsync-offsite.sh` | [Zero-Trust-Core/scripts](https://github.com/VIPs-com/Zero-Trust-Core/tree/main/scripts) |
+Cofres NFC, VeraCrypt e `ztc-health` estão no repositório irmão — **não** duplicados aqui. Whonix neste repo é **autocontido** via `pgp-whonix-*`.
 
 ## Licença
 
-Mesma do repositório: ver [`LICENSE`](../LICENSE).
+Ver [`LICENSE`](../LICENSE).

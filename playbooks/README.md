@@ -19,6 +19,7 @@
 | 07 | [07-tails-chave-mestra.md](./07-tails-chave-mestra.md) | Módulo 6 | ~60 min | Gravar Tails · mestra air-gapped · exportar subchaves para PC |
 | 08 | [08-debug-diagnostico.md](./08-debug-diagnostico.md) | Módulo 7 | ~15 min | Fluxo universal de diagnóstico · token USB · tabela sintoma→ação |
 | 09 | [09-manutencao.md](./09-manutencao.md) | Módulo 10 + 8 | ~20 min | Refresh · trustdb · rotação subchaves · WKD · cron |
+| 10 | [10-whonix-capstone.md](./10-whonix-capstone.md) | Capstone GPG+Tor | ~60 min | VirtualBox · Whonix LXQt · verify · import · subkeys na WS |
 
 ---
 
@@ -28,6 +29,8 @@
 01 → 02 → 03 → 04 → 05 → 06
                 ↓
                07 (Tails — para identidade de produção)
+                ↓
+               10 (Whonix capstone — ambiente Tor para subkeys)
                 ↓
                08 (quando algo der errado)
                09 (rotina mensal/trimestral)
