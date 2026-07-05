@@ -357,6 +357,10 @@ Ao final deste curso, você será capaz de:
 │   │
 │   └── 🎓 EXAME FINAL + CERTIFICADO (+ Desafio final + modelo de certificado)
 │
+├── 🧅 CAPSTONE Whonix (opcional · pós Mód. 6–7 · autocontido neste repo)
+│   ├── Playbook 10 — VirtualBox + verify (`derivative.asc`) + import + Tor
+│   └── Scripts `pgp-whonix-*` · [`playbooks/10-whonix-capstone.md`](playbooks/10-whonix-capstone.md)
+│
 └── 📚 6. APÊNDICES E FECHO DO CURSO
     │
     ├── ✅ Folha única — checklists dos checkpoints

@@ -8,7 +8,7 @@ Curso em **um único Markdown** (versão canônica **1.0**), com scripts opciona
 |---------|-----------|
 | [🎓 OpenPGP-GPG do Zero ao Expert - Versão 1.0.md](./🎓%20OpenPGP-GPG%20do%20Zero%20ao%20Expert%20-%20Versão%201.0.md) | Curso completo (módulos, comandos, checkpoints, apêndices). Mapa ASCII + **Ligações diretas** no §1. |
 | [`playbooks/`](./playbooks/) | 10 guias **código-primeiro** (0–9 + **10 Whonix capstone**) com fluxogramas Mermaid |
-| [`scripts/`](./scripts/) | `gpg-health-check.sh` (Módulo 8) — copiar para `~/bin/` |
+| [`scripts/`](./scripts/) | `gpg-health-check.sh` (Módulo 8) · `pgp-whonix-*` (capstone Whonix) — copiar para `~/bin/` |
 | [`LICENSE`](./LICENSE) | Direitos reservados (por padrão); substituir se mudar a política editorial |
 
 **Quer executar agora (zero teoria, código direto)?** → **[`playbooks/`](./playbooks/)** — 10 guias (incl. capstone Whonix) + scripts `pgp-whonix-*`.
