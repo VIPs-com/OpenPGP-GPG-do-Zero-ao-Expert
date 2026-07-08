@@ -5,14 +5,30 @@
 # pgp-whonix-verificar-tor.sh — rode na Whonix-Workstation
 # Playbook: playbooks/10-whonix-capstone.md (Passo 5)
 #
-# Changelog jul/2026: retry + timeout; finais de linha LF (CRLF quebra shebang).
+# Uso: ./pgp-whonix-verificar-tor.sh [--skip-systemcheck]
+#
+# Changelog jul/2026 (paridade Privacy-OS-Hub v1.0.9.1):
+#   - retry + timeout no check Tor; finais de linha LF (CRLF quebra shebang no Linux).
 
 set -euo pipefail
 
-SKIP=0
+SKIP_SYSTEMCHECK=0
 TOR_RETRIES=3
 TOR_TIMEOUT=30
-for a in "$@"; do [[ "$a" == "--skip-systemcheck" ]] && SKIP=1; done
+
+for arg in "$@"; do
+    case "$arg" in
+        --skip-systemcheck) SKIP_SYSTEMCHECK=1 ;;
+        -h|--help)
+            echo "Uso: $0 [--skip-systemcheck]"
+            exit 0
+            ;;
+        *)
+            echo "Opção desconhecida: $arg" >&2
+            exit 1
+            ;;
+    esac
+done
 
 tor_check_ok() {
     if curl --silent --fail --max-time "$TOR_TIMEOUT" --socks5-hostname 127.0.0.1:9050 \
@@ -27,19 +43,35 @@ tor_check_ok() {
 }
 
 echo "=== OpenPGP-GPG — verificação Tor (Whonix Workstation) ==="
-if [[ "$SKIP" -eq 0 ]] && command -v systemcheck >/dev/null 2>&1; then
-    systemcheck || exit 1
+
+if [[ "$SKIP_SYSTEMCHECK" -eq 0 ]] && command -v systemcheck >/dev/null 2>&1; then
+    echo ""
+    echo "[1/2] systemcheck (interativo — leia a saída)..."
+    systemcheck || {
+        echo "ERRO: systemcheck falhou. Investigue antes de importar subkeys." >&2
+        exit 1
+    }
+else
+    echo "[1/2] systemcheck pulado (--skip-systemcheck ou comando ausente)."
 fi
 
-echo "check.torproject.org via SOCKS (até ${TOR_RETRIES} tentativas)..."
+echo ""
+echo "[2/2] check.torproject.org via SOCKS Tor local (até ${TOR_RETRIES} tentativas)..."
 _tor_ok=0
 for _n in $(seq 1 "$TOR_RETRIES"); do
     if tor_check_ok; then
         _tor_ok=1
         break
     fi
-    echo "  Tentativa ${_n}/${TOR_RETRIES} sem confirmação — aguardando 10s..."
+    echo "  Tentativa ${_n}/${TOR_RETRIES} sem confirmação Tor — aguardando 10s (Gateway pode estar aquecendo)..."
     sleep 10
 done
-[[ "$_tor_ok" -eq 1 ]] || { echo "ERRO: Tor não confirmado." >&2; exit 1; }
+
+if [[ "$_tor_ok" -ne 1 ]]; then
+    echo "ERRO: Tor não confirmado após ${TOR_RETRIES} tentativas." >&2
+    echo "Gateway rodando primeiro? Tor verde no Gateway?" >&2
+    exit 1
+fi
+
+echo ""
 echo "OK: Tor operacional. Importe subkeys (Módulo 6) na Workstation."

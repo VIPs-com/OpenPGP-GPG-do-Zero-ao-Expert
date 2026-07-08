@@ -8,24 +8,52 @@
 # Uso: ./pgp-whonix-verify-image.sh -i imagem.ova -s imagem.ova.asc \
 #        -f FINGERPRINT_wiki_Verify_the_images [-k derivative.asc]
 #
-# Changelog jul/2026: VALIDSIG+FPR; retry derivative.asc; sem "Good signature"
+# Changelog jul/2026 (paridade Privacy-OS-Hub v1.0.9.1):
+#   - retry download derivative.asc (3 tentativas)
+#   - VALIDSIG + fingerprint (não "Good signature"); EXPKEYSIG
 
 set -euo pipefail
-IMAGE="" SIG="" KEY_FILE="" EXPECTED_FPR=""
+
+IMAGE=""
+SIG=""
+KEY_FILE=""
+EXPECTED_FPR=""
 DERIVATIVE_URL="https://www.whonix.org/keys/derivative.asc"
-WORKDIR="" GNUPGHOME_DIR=""
+WORKDIR=""
+GNUPGHOME_DIR=""
+DOWNLOADED_KEY=0
 
 fail() { echo "ERRO: $*" >&2; exit 1; }
+
 cleanup() {
-    [[ -n "$GNUPGHOME_DIR" ]] && rm -rf "$GNUPGHOME_DIR"
-    [[ -n "$WORKDIR" ]] && rm -rf "$WORKDIR"
+    [[ -n "$GNUPGHOME_DIR" && -d "$GNUPGHOME_DIR" ]] && rm -rf "$GNUPGHOME_DIR"
+    [[ -n "$WORKDIR" && -d "$WORKDIR" ]] && rm -rf "$WORKDIR"
 }
 trap cleanup EXIT
 
+fetch_url() {
+    local url="$1" dest="$2" tries="${3:-3}"
+    local n
+    for ((n=1; n<=tries; n++)); do
+        if curl -fsSL --max-time 120 -o "$dest" "$url" && [[ -s "$dest" ]]; then
+            return 0
+        fi
+        echo "AVISO: download falhou (tentativa ${n}/${tries}): $url" >&2
+        sleep 5
+    done
+    return 1
+}
+
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        -i) IMAGE="$2"; shift 2 ;; -s) SIG="$2"; shift 2 ;;
-        -k) KEY_FILE="$2"; shift 2 ;; -f) EXPECTED_FPR="$2"; shift 2 ;;
+        -i) IMAGE="$2"; shift 2 ;;
+        -s) SIG="$2"; shift 2 ;;
+        -k) KEY_FILE="$2"; shift 2 ;;
+        -f) EXPECTED_FPR="$2"; shift 2 ;;
+        -h|--help)
+            echo "Uso: $0 -i IMAGEM -s IMAGEM.asc -f FINGERPRINT [-k derivative.asc]"
+            exit 0
+            ;;
         *) fail "Opção: $1" ;;
     esac
 done
@@ -36,21 +64,16 @@ command -v gpg >/dev/null 2>&1 || fail "Instale gnupg."
 command -v curl >/dev/null 2>&1 || fail "Instale curl."
 
 WORKDIR="$(mktemp -d)"
-GNUPGHOME_DIR="$(mktemp -d)"; chmod 700 "$GNUPGHOME_DIR"; export GNUPGHOME="$GNUPGHOME_DIR"
+GNUPGHOME_DIR="$(mktemp -d)"
+chmod 700 "$GNUPGHOME_DIR"
+export GNUPGHOME="$GNUPGHOME_DIR"
 
 if [[ -z "$KEY_FILE" ]]; then
     KEY_FILE="${WORKDIR}/derivative.asc"
-    _ok=0
-    for _try in 1 2 3; do
-        if curl -fsSL --max-time 120 "$DERIVATIVE_URL" -o "$KEY_FILE" && [[ -s "$KEY_FILE" ]]; then
-            _ok=1; break
-        fi
-        echo "  Tentativa ${_try}/3 falhou — aguardando 5s..." >&2
-        sleep 5
-    done
-    [[ "$_ok" = "1" ]] || fail "derivative.asc após 3 tentativas"
+    DOWNLOADED_KEY=1
+    fetch_url "$DERIVATIVE_URL" "$KEY_FILE" || fail "Falha ao baixar derivative.asc após 3 tentativas"
 elif [[ ! -f "$KEY_FILE" ]]; then
-    fail "Chave não encontrada: $KEY_FILE"
+    fail "Arquivo de chave não encontrado: $KEY_FILE"
 fi
 
 gpg --quiet --import "$KEY_FILE"
@@ -61,22 +84,25 @@ while read -r fpr; do
     act="$(echo "$fpr" | tr -d ' ' | tr '[:lower:]' '[:upper:]')"
     [[ "$act" == "$exp" ]] && ok=1 && break
 done < <(gpg --with-colons --fingerprint 2>/dev/null | awk -F: '/^fpr:/ {print $10}')
-[[ "$ok" -eq 1 ]] || fail "Fingerprint não confere."
+[[ "$ok" -eq 1 ]] || fail "Fingerprint não confere. Confira https://www.whonix.org/wiki/Verify_the_images"
 
 gpg_log="$(mktemp)"
 gpg --status-fd 1 --verify-options show-notations --verify "$SIG" "$IMAGE" \
     >"$gpg_log" 2>&1 || true
+
 if grep -q "^\[GNUPG:\] VALIDSIG .*${exp}" "$gpg_log"; then
     cat "$gpg_log" >&2
     rm -f "$gpg_log"
     echo "OK — VALIDSIG + fingerprint. Próximo: pgp-whonix-import-ova.sh"
     exit 0
 fi
+
 if grep -qi "EXPKEYSIG" "$gpg_log"; then
     cat "$gpg_log" >&2
     rm -f "$gpg_log"
-    fail "EXPKEYSIG — chave expirada."
+    fail "EXPKEYSIG — reimporte derivative.asc e confira fingerprint na wiki."
 fi
+
 cat "$gpg_log" >&2
 rm -f "$gpg_log"
-fail "Assinatura inválida."
+fail "Assinatura inválida. NÃO importe a VM."

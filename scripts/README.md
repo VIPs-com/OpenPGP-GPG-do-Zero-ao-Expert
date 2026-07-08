@@ -21,7 +21,9 @@ Scripts **autocontidos** — prefixo `pgp-whonix-*` (host Debian + Workstation):
 
 | Arquivo | Onde roda | Função |
 | --- | --- | --- |
-| `pgp-whonix-install-virtualbox.sh` | Host | VirtualBox Oracle verificado |
+| `pgp-whonix-install-virtualbox.sh` | Host | VirtualBox Oracle verificado + MOK (Secure Boot) |
+| `pgp-whonix-sign-virtualbox-modules.sh` | Host | Assina + carrega vboxdrv (repetir a cada kernel novo) |
+| `pgp-whonix-verify-virtualbox-host.sh` | Host | 9 checks read-only + QA log |
 | `pgp-whonix-verify-image.sh` | Host | Só verificação PGP (`derivative.asc`, `-f`) |
 | `pgp-whonix-import-ova.sh` | Host | Verify + `VBoxManage import` |
 | `pgp-whonix-verificar-tor.sh` | Workstation | Tor + systemcheck |

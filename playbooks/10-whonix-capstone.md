@@ -28,8 +28,13 @@ flowchart LR
 ```bash
 cd scripts
 chmod +x pgp-whonix-*.sh
-sudo ./pgp-whonix-install-virtualbox.sh -e -y
+sudo ./pgp-whonix-install-virtualbox.sh -y            # pacote + Extension Pack + MOK (se Secure Boot)
+# Secure Boot ON: reboot → tela azul Enroll MOK → Continue → Yes → senha → Reboot → depois:
+sudo ./pgp-whonix-sign-virtualbox-modules.sh -y --qa-log
+sudo ./pgp-whonix-verify-virtualbox-host.sh --qa-log  # esperado: RESULTADO: PASS
 ```
+
+Suíte port da Privacy-OS-Hub `whonix-host` v3.5.4 (validada em campo: Debian 13 + SB + VBox 7.2.12). Kernel novo? Repita só o `sign`.
 
 Windows/macOS: instalador oficial em virtualbox.org + Extension Pack (mesma versão).
 

@@ -7,33 +7,49 @@
 # Playbook: playbooks/10-whonix-capstone.md (Passos 2–4)
 # Verify derivative.asc + fingerprint (-f da wiki) + VBoxManage import.
 #
+# Fingerprint SEMPRE de https://www.whonix.org/wiki/Verify_the_images (-f obrigatório).
+#
 # Uso:
 #   sudo ./pgp-whonix-import-ova.sh \
-#        -i /caminho/Whonix-*.ova -s /caminho/Whonix-*.ova.asc \
-#        -f "FINGERPRINT_wiki" [-k derivative.asc] [-b] [-y]
+#        -i /caminho/Whonix-LXQt-VERSAO.Intel_AMD64.ova \
+#        -s /caminho/Whonix-LXQt-VERSAO.Intel_AMD64.ova.asc \
+#        -f "FINGERPRINT" \
+#        [-k /caminho/derivative.asc] \
+#        [-b] [-t lxqt|cli] [-y]
 #
-# Changelog jul/2026 (port Privacy-OS-Hub v1.0.9.1):
-#   - log() → stderr; VALIDSIG+FPR (locale PT-BR); EXPKEYSIG; fetch retry
+# Log: /var/log/whonix-install.log
+#
+# Changelog jul/2026 (paridade Privacy-OS-Hub v1.0.9.1):
+#   - log() em stderr; fetch_url com retry para derivative.asc
+#   - verify_signature: VALIDSIG + fingerprint (não "Good signature")
+#   - detecção EXPKEYSIG; tee para stderr
 
 set -euo pipefail
 
-OVA_FILE="" SIG_FILE="" KEY_FILE="" EXPECTED_FPR=""
-BOOT_VMS=0 ASSUME_YES=0
+# ----------------------------- Configuração ------------------------------
+
+OVA_FILE=""
+SIG_FILE=""
+KEY_FILE=""
+VARIANT=""
+EXPECTED_FPR=""
+BOOT_VMS=0
+ASSUME_YES=0
 LOG_FILE="/var/log/whonix-install.log"
 GNUPGHOME_DIR=""
 DERIVATIVE_URL="https://www.whonix.org/keys/derivative.asc"
 DOWNLOADED_KEY=0
 
-log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG_FILE" >&2; }
-fail() { log "ERRO: $*"; cleanup; exit 1; }
-cleanup() {
-    [[ -n "$GNUPGHOME_DIR" && -d "$GNUPGHOME_DIR" ]] && rm -rf "$GNUPGHOME_DIR"
-    [[ "$DOWNLOADED_KEY" -eq 1 && -n "$KEY_FILE" && -f "$KEY_FILE" ]] && rm -f "$KEY_FILE"
+# ------------------------------- Funções ----------------------------------
+
+# stderr: não poluir stdout em capturas $(...)
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG_FILE" >&2
 }
-trap cleanup EXIT
 
 fetch_url() {
-    local url="$1" dest="$2" tries="${3:-3}" n
+    local url="$1" dest="$2" tries="${3:-3}"
+    local n
     for ((n=1; n<=tries; n++)); do
         if curl -fsSL --max-time 120 -o "$dest" "$url" && [[ -s "$dest" ]]; then
             return 0
@@ -44,63 +60,215 @@ fetch_url() {
     return 1
 }
 
-confirm() { [[ "$ASSUME_YES" -eq 1 ]] && return 0; read -r -p "$1 [s/N] " r; [[ "$r" =~ ^[sSyY]$ ]]; }
+fail() {
+    log "ERRO: $*"
+    cleanup
+    exit 1
+}
 
-while getopts ":i:s:k:f:byh" opt; do
-    case "$opt" in
-        i) OVA_FILE="$OPTARG" ;; s) SIG_FILE="$OPTARG" ;; k) KEY_FILE="$OPTARG" ;;
-        f) EXPECTED_FPR="$OPTARG" ;; b) BOOT_VMS=1 ;; y) ASSUME_YES=1 ;;
-        h) exit 0 ;; *) exit 1 ;;
-    esac
-done
+cleanup() {
+    if [[ -n "$GNUPGHOME_DIR" && -d "$GNUPGHOME_DIR" ]]; then
+        rm -rf "$GNUPGHOME_DIR"
+    fi
+    if [[ "$DOWNLOADED_KEY" -eq 1 && -n "$KEY_FILE" && -f "$KEY_FILE" ]]; then
+        rm -f "$KEY_FILE"
+    fi
+}
+trap cleanup EXIT
 
-command -v VBoxManage >/dev/null 2>&1 || fail "VBoxManage ausente — rode pgp-whonix-install-virtualbox.sh primeiro."
-[[ -n "$OVA_FILE" && -n "$SIG_FILE" && -n "$EXPECTED_FPR" ]] || fail "Use -i -s -f ( -k opcional )."
-[[ -f "$OVA_FILE" && -f "$SIG_FILE" ]] || fail "Arquivo .ova/.asc não encontrado."
+usage() {
+    grep '^#' "$0" | sed -e 's/^#//' -e '1d' | head -n 35
+    exit 1
+}
 
-if [[ -z "$KEY_FILE" ]]; then
-    KEY_FILE="$(mktemp)"
-    DOWNLOADED_KEY=1
-    fetch_url "$DERIVATIVE_URL" "$KEY_FILE" || fail "Falha ao baixar derivative.asc após 3 tentativas"
-fi
-[[ -f "$KEY_FILE" ]] || fail "Arquivo de chave não encontrado: $KEY_FILE"
+confirm() {
+    if [[ "$ASSUME_YES" -eq 1 ]]; then
+        return 0
+    fi
+    read -r -p "$1 [s/N] " resp
+    [[ "$resp" =~ ^[sSyY]$ ]]
+}
 
-touch "$LOG_FILE" 2>/dev/null || LOG_FILE="./whonix-install.log"
-confirm "Importar '$OVA_FILE'?" || exit 0
+require_vboxmanage() {
+    command -v VBoxManage >/dev/null 2>&1 \
+        || fail "VBoxManage não encontrado. Rode pgp-whonix-install-virtualbox.sh primeiro."
+}
 
-GNUPGHOME_DIR="$(mktemp -d)"; chmod 700 "$GNUPGHOME_DIR"; export GNUPGHOME="$GNUPGHOME_DIR"
-gpg --quiet --import "$KEY_FILE" 2>&1 | tee -a "$LOG_FILE" >&2
+validate_inputs() {
+    [[ -n "$OVA_FILE"      ]] || fail "Informe o arquivo .ova com -i."
+    [[ -n "$SIG_FILE"      ]] || fail "Informe o arquivo de assinatura (.asc/.sig) com -s."
+    [[ -n "$EXPECTED_FPR"  ]] || fail "Informe o fingerprint com -f (wiki Verify_the_images)."
 
-exp="$(echo "$EXPECTED_FPR" | tr -d ' ' | tr '[:lower:]' '[:upper:]')"
-matched=0
-while read -r fpr; do
-    act="$(echo "$fpr" | tr -d ' ' | tr '[:lower:]' '[:upper:]')"
-    [[ "$act" == "$exp" ]] && matched=1 && break
-done < <(gpg --with-colons --fingerprint 2>/dev/null | awk -F: '/^fpr:/ {print $10}')
-[[ "$matched" -eq 1 ]] || fail "Fingerprint não confere — whonix.org/wiki/Verify_the_images"
+    [[ -f "$OVA_FILE" ]] || fail "Arquivo .ova não encontrado: $OVA_FILE"
+    [[ -f "$SIG_FILE" ]] || fail "Arquivo de assinatura não encontrado: $SIG_FILE"
 
-gpg_log="$(mktemp)"
-gpg --status-fd 1 --verify-options show-notations --verify "$SIG_FILE" "$OVA_FILE" \
-    >"$gpg_log" 2>&1 || true
-if grep -q "^\[GNUPG:\] VALIDSIG .*${exp}" "$gpg_log"; then
-    log "Assinatura verificada (VALIDSIG + fingerprint esperado)."
-    cat "$gpg_log" | tee -a "$LOG_FILE" >&2
-    rm -f "$gpg_log"
-else
+    if [[ -z "$KEY_FILE" ]]; then
+        KEY_FILE="$(mktemp)"
+        DOWNLOADED_KEY=1
+        fetch_url "$DERIVATIVE_URL" "$KEY_FILE" || fail "Falha ao baixar derivative.asc após 3 tentativas"
+    fi
+    [[ -f "$KEY_FILE" ]] || fail "Arquivo de chave não encontrado: $KEY_FILE"
+}
+
+detect_or_validate_variant() {
+    local basename_ova detected=""
+    basename_ova="$(basename "$OVA_FILE")"
+
+    if echo "$basename_ova" | grep -qi "lxqt"; then
+        detected="lxqt"
+    elif echo "$basename_ova" | grep -qi "cli"; then
+        detected="cli"
+    elif echo "$basename_ova" | grep -qi "xfce"; then
+        log "AVISO: o nome do arquivo sugere a variante Xfce, DESCONTINUADA. Use LXQt."
+    fi
+
+    if [[ -n "$VARIANT" ]]; then
+        VARIANT="$(echo "$VARIANT" | tr '[:upper:]' '[:lower:]')"
+        if [[ "$VARIANT" != "lxqt" && "$VARIANT" != "cli" ]]; then
+            fail "Valor inválido para -t: '$VARIANT' (use 'lxqt' ou 'cli')."
+        fi
+        if [[ -n "$detected" && "$detected" != "$VARIANT" ]]; then
+            log "AVISO: -t indicou '$VARIANT' mas o nome do arquivo sugere '$detected'."
+        else
+            log "Variante '$VARIANT' confirmada (informada via -t)."
+        fi
+    elif [[ -n "$detected" ]]; then
+        VARIANT="$detected"
+        log "Variante detectada automaticamente: $VARIANT"
+    fi
+}
+
+import_key() {
+    log "[Passo 2/5] Importando chave de assinatura em keyring temporário e isolado..."
+    GNUPGHOME_DIR="$(mktemp -d)"
+    chmod 700 "$GNUPGHOME_DIR"
+    export GNUPGHOME="$GNUPGHOME_DIR"
+
+    gpg --quiet --import "$KEY_FILE" 2>&1 | tee -a "$LOG_FILE" >&2
+}
+
+verify_fingerprint() {
+    log "[Passo 2/5] Verificando fingerprint da chave contra o valor informado (-f)..."
+    local normalized_expected normalized_actual fpr_list
+
+    normalized_expected="$(echo "$EXPECTED_FPR" | tr -d ' ' | tr '[:lower:]' '[:upper:]')"
+
+    fpr_list="$(gpg --with-colons --fingerprint 2>/dev/null | awk -F: '/^fpr:/ {print $10}')"
+
+    local matched=0
+    while read -r fpr; do
+        normalized_actual="$(echo "$fpr" | tr -d ' ' | tr '[:lower:]' '[:upper:]')"
+        if [[ "$normalized_actual" == "$normalized_expected" ]]; then
+            matched=1
+            break
+        fi
+    done <<< "$fpr_list"
+
+    if [[ "$matched" -ne 1 ]]; then
+        fail "Fingerprint NÃO confere com o informado. Abortando — chave não confiável. Confirme em https://www.whonix.org/wiki/Verify_the_images"
+    fi
+
+    log "Fingerprint confirmado com sucesso."
+}
+
+# Fail-closed: VALIDSIG + fingerprint (imune a locale PT-BR "Assinatura válida")
+verify_signature() {
+    log "[Passo 3/5] Verificando assinatura do arquivo .ova (OBRIGATÓRIO)..."
+    local fpr_norm gpg_log
+    fpr_norm="$(echo "$EXPECTED_FPR" | tr -d ' ' | tr '[:lower:]' '[:upper:]')"
+    gpg_log="$(mktemp)"
+    gpg --status-fd 1 --verify-options show-notations --verify "$SIG_FILE" "$OVA_FILE" \
+        >"$gpg_log" 2>&1 || true
+
+    if grep -q "^\[GNUPG:\] VALIDSIG .*${fpr_norm}" "$gpg_log"; then
+        log "Assinatura verificada (VALIDSIG + fingerprint esperado)."
+        cat "$gpg_log" | tee -a "$LOG_FILE" >&2
+        rm -f "$gpg_log"
+        return 0
+    fi
     if grep -qi "EXPKEYSIG" "$gpg_log"; then
         cat "$gpg_log" | tee -a "$LOG_FILE" >&2
         rm -f "$gpg_log"
-        fail "EXPKEYSIG — chave expirada. Reimporte derivative.asc e confira fingerprint."
+        fail "EXPKEYSIG — chave expirada. Reimporte derivative.asc de whonix.org e confira fingerprint em Verify_the_images."
     fi
     cat "$gpg_log" | tee -a "$LOG_FILE" >&2
     rm -f "$gpg_log"
-    fail "Assinatura INVÁLIDA. NÃO importe."
+    fail "Assinatura INVÁLIDA. NÃO importe este arquivo. Apague e baixe novamente."
+}
+
+import_ova() {
+    log "[Passo 4/5] Importando appliance no VirtualBox..."
+    VBoxManage import "$OVA_FILE" | tee -a "$LOG_FILE" >&2
+
+    local vms
+    vms="$(VBoxManage list vms)"
+    echo "$vms" | tee -a "$LOG_FILE" >&2
+
+    echo "$vms" | grep -qi "Whonix-Gateway" || log "AVISO: 'Whonix-Gateway' não encontrada na lista de VMs."
+    echo "$vms" | grep -qi "Whonix-Workstation" || log "AVISO: 'Whonix-Workstation' não encontrada na lista de VMs."
+}
+
+boot_vms() {
+    log "[Passo 5/5] Iniciando Whonix-Gateway (headless)..."
+    VBoxManage startvm "Whonix-Gateway" --type headless || log "AVISO: falha ao iniciar Whonix-Gateway. Inicie manualmente."
+
+    log "Aguardando 20s antes de iniciar a Workstation..."
+    sleep 20
+
+    log "Iniciando Whonix-Workstation (GUI)..."
+    VBoxManage startvm "Whonix-Workstation" --type gui || log "AVISO: falha ao iniciar Whonix-Workstation. Inicie manualmente."
+}
+
+print_manual_steps() {
+    cat <<'EOF'
+
+===================================================================
+PRÓXIMOS PASSOS — AÇÃO MANUAL NAS VMs:
+
+  [Gateway] Anon Connection Wizard → Tor conectado
+  [Workstation] systemcheck + Tor Browser → check.torproject.org
+  Depois: ./pgp-whonix-verificar-tor.sh e importe subkeys (Módulo 6)
+===================================================================
+EOF
+}
+
+# -------------------------------- Main -------------------------------------
+
+while getopts ":i:s:k:f:t:byh" opt; do
+    case "$opt" in
+        i) OVA_FILE="$OPTARG" ;;
+        s) SIG_FILE="$OPTARG" ;;
+        k) KEY_FILE="$OPTARG" ;;
+        f) EXPECTED_FPR="$OPTARG" ;;
+        t) VARIANT="$OPTARG" ;;
+        b) BOOT_VMS=1 ;;
+        y) ASSUME_YES=1 ;;
+        h) usage ;;
+        *) usage ;;
+    esac
+done
+
+touch "$LOG_FILE" 2>/dev/null || LOG_FILE="./whonix-install.log"
+log "===== OpenPGP-GPG — pgp-whonix-import-ova (verify + import) ====="
+
+require_vboxmanage
+validate_inputs
+detect_or_validate_variant
+
+if ! confirm "Importar e verificar '${OVA_FILE}' com a chave '${KEY_FILE}'?"; then
+    log "Cancelado pelo usuário."
+    exit 0
 fi
 
-VBoxManage import "$OVA_FILE" | tee -a "$LOG_FILE" >&2
+import_key
+verify_fingerprint
+verify_signature
+import_ova
+
 if [[ "$BOOT_VMS" -eq 1 ]]; then
-    VBoxManage startvm "Whonix-Gateway" --type headless || true
-    sleep 20
-    VBoxManage startvm "Whonix-Workstation" --type gui || true
+    boot_vms
 fi
-log "OK — Gateway primeiro, depois pgp-whonix-verificar-tor.sh na Workstation."
+
+print_manual_steps
+
+log "===== OK — Gateway primeiro, depois pgp-whonix-verificar-tor.sh na Workstation. ====="
