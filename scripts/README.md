@@ -28,7 +28,7 @@ Scripts **autocontidos** — prefixo `pgp-whonix-*` (host Debian + Workstation):
 
 Guia: [`playbooks/10-whonix-capstone.md`](../playbooks/10-whonix-capstone.md)
 
-**jul/2026:** PGP fail-closed com `VALIDSIG` + fingerprint (não depende de `Good signature`/locale PT-BR); `install-virtualbox` com `log` em stderr + `apt-get update` exit real; `verificar-tor` com retry/timeout e finais de linha LF.
+**jul/2026:** PGP fail-closed com `VALIDSIG` + fingerprint (não depende de `Good signature`/locale PT-BR); `install-virtualbox` com `log` em stderr + `apt-get update` exit real; `sanitize_stale_repo_file()` remove `virtualbox.list` corrompido antes do Passo 1; `verificar-tor` com retry/timeout e finais de linha LF.
 
 ## Trilha integrada (Zero Trust Core)
 
