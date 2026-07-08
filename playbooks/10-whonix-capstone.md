@@ -95,7 +95,7 @@ Importe as **subkeys** exportadas no playbook [07-tails-chave-mestra.md](./07-ta
 
 ## ✅ Concluído
 
-- [ ] Good signature antes do import
+- [ ] Assinatura verificada (`VALIDSIG` + fingerprint da wiki) antes do import
 - [ ] Tor confirmado na Workstation
 - [ ] Senhas padrão alteradas
 - [ ] Subkeys `[S][E][A]` visíveis com `gpg -K` (master ausente)

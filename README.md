@@ -1,4 +1,4 @@
-﻿# OpenPGP/GPG do Zero ao Expert
+# OpenPGP/GPG do Zero ao Expert
 
 Curso em **um único Markdown** (versão canônica **1.0**), com scripts opcionais e [playbooks](./playbooks/) código-primeiro.
 

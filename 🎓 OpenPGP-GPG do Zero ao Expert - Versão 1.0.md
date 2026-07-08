@@ -1,4 +1,4 @@
-﻿# 🎓 OpenPGP/GPG do Zero ao Expert – **VERSÃO 1.0 (canônica)**
+# 🎓 OpenPGP/GPG do Zero ao Expert – **VERSÃO 1.0 (canônica)**
 
 **Autor:** Professor Especialista em Criptografia Aplicada no Linux, Windows, Android, iPhone  
 **GnuPG:** ~**2.4.x** no Ubuntu 24.04 do curso (`apt`) · **2.5.19+** só para **ML‑KEM** experimental (rótulos **«Kyber»** na CLI; **não** vem no `apt` LTS — [download](https://www.gnupg.org/download/index.en.html) oficial ou VM dedicada)  

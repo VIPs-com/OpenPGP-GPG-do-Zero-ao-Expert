@@ -1,4 +1,4 @@
-﻿# Windows / editores
+# Windows / editores
 Thumbs.db
 Desktop.ini
 *.tmp
@@ -16,6 +16,7 @@ Plano equipe.md
 
 # --- Repo público = SÓ O CURSO. Interno → pgp-equipe-dev/ (local). ---
 CLAUDE.md
+.claude/
 
 # --- Doc interna equipe dev ---
 pgp-equipe-dev/
