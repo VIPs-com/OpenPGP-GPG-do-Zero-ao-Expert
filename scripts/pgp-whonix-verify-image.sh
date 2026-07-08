@@ -7,6 +7,8 @@
 #
 # Uso: ./pgp-whonix-verify-image.sh -i imagem.ova -s imagem.ova.asc \
 #        -f FINGERPRINT_wiki_Verify_the_images [-k derivative.asc]
+#
+# Changelog jul/2026: VALIDSIG+FPR; retry derivative.asc; sem "Good signature"
 
 set -euo pipefail
 IMAGE="" SIG="" KEY_FILE="" EXPECTED_FPR=""
@@ -30,12 +32,27 @@ done
 
 [[ -n "$IMAGE" && -n "$SIG" && -n "$EXPECTED_FPR" ]] || fail "Use -i -s -f."
 [[ -f "$IMAGE" && -f "$SIG" ]] || fail "Arquivo não encontrado."
-command -v gpg curl >/dev/null 2>&1 || fail "Instale gnupg curl."
+command -v gpg >/dev/null 2>&1 || fail "Instale gnupg."
+command -v curl >/dev/null 2>&1 || fail "Instale curl."
 
 WORKDIR="$(mktemp -d)"
 GNUPGHOME_DIR="$(mktemp -d)"; chmod 700 "$GNUPGHOME_DIR"; export GNUPGHOME="$GNUPGHOME_DIR"
-[[ -n "$KEY_FILE" ]] || KEY_FILE="${WORKDIR}/derivative.asc"
-[[ -f "$KEY_FILE" ]] || curl -fsSL "$DERIVATIVE_URL" -o "$KEY_FILE" || fail "derivative.asc"
+
+if [[ -z "$KEY_FILE" ]]; then
+    KEY_FILE="${WORKDIR}/derivative.asc"
+    _ok=0
+    for _try in 1 2 3; do
+        if curl -fsSL --max-time 120 "$DERIVATIVE_URL" -o "$KEY_FILE" && [[ -s "$KEY_FILE" ]]; then
+            _ok=1; break
+        fi
+        echo "  Tentativa ${_try}/3 falhou — aguardando 5s..." >&2
+        sleep 5
+    done
+    [[ "$_ok" = "1" ]] || fail "derivative.asc após 3 tentativas"
+elif [[ ! -f "$KEY_FILE" ]]; then
+    fail "Chave não encontrada: $KEY_FILE"
+fi
+
 gpg --quiet --import "$KEY_FILE"
 
 exp="$(echo "$EXPECTED_FPR" | tr -d ' ' | tr '[:lower:]' '[:upper:]')"
@@ -46,5 +63,20 @@ while read -r fpr; do
 done < <(gpg --with-colons --fingerprint 2>/dev/null | awk -F: '/^fpr:/ {print $10}')
 [[ "$ok" -eq 1 ]] || fail "Fingerprint não confere."
 
-gpg --verify "$SIG" "$IMAGE" 2>&1 | grep -qi "Good signature" || fail "Assinatura inválida."
-echo "OK — Good signature. Próximo: pgp-whonix-import-ova.sh"
+gpg_log="$(mktemp)"
+gpg --status-fd 1 --verify-options show-notations --verify "$SIG" "$IMAGE" \
+    >"$gpg_log" 2>&1 || true
+if grep -q "^\[GNUPG:\] VALIDSIG .*${exp}" "$gpg_log"; then
+    cat "$gpg_log" >&2
+    rm -f "$gpg_log"
+    echo "OK — VALIDSIG + fingerprint. Próximo: pgp-whonix-import-ova.sh"
+    exit 0
+fi
+if grep -qi "EXPKEYSIG" "$gpg_log"; then
+    cat "$gpg_log" >&2
+    rm -f "$gpg_log"
+    fail "EXPKEYSIG — chave expirada."
+fi
+cat "$gpg_log" >&2
+rm -f "$gpg_log"
+fail "Assinatura inválida."

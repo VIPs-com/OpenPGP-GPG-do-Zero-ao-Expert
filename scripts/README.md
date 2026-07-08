@@ -1,4 +1,4 @@
-﻿# Scripts — OpenPGP-GPG do Zero ao Expert
+# Scripts — OpenPGP-GPG do Zero ao Expert
 
 Scripts oficiais do curso [OpenPGP-GPG do Zero ao Expert](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert).
 
@@ -27,6 +27,8 @@ Scripts **autocontidos** — prefixo `pgp-whonix-*` (host Debian + Workstation):
 | `pgp-whonix-verificar-tor.sh` | Workstation | Tor + systemcheck |
 
 Guia: [`playbooks/10-whonix-capstone.md`](../playbooks/10-whonix-capstone.md)
+
+**jul/2026:** PGP fail-closed com `VALIDSIG` + fingerprint (não depende de `Good signature`/locale PT-BR); `install-virtualbox` com `log` em stderr + `apt-get update` exit real; `verificar-tor` com retry/timeout e finais de linha LF.
 
 ## Trilha integrada (Zero Trust Core)
 
