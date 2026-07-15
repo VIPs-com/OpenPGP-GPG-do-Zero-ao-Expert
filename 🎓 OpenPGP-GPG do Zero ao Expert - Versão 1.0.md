@@ -358,7 +358,7 @@ Ao final deste curso, você será capaz de:
 │   └── 🎓 EXAME FINAL + CERTIFICADO (+ Desafio final + modelo de certificado)
 │
 ├── 🧅 CAPSTONE Whonix (opcional · pós Mód. 6–7 · autocontido neste repo)
-│   ├── Playbook 10 — VirtualBox + verify (`derivative.asc`) + import + Tor
+│   ├── Playbook 10 — install VB (+ MOK/sign/verify se SB) + OVA PGP + import + Tor
 │   └── Scripts `pgp-whonix-*` · [`playbooks/10-whonix-capstone.md`](playbooks/10-whonix-capstone.md)
 │
 └── 📚 6. APÊNDICES E FECHO DO CURSO
@@ -387,7 +387,7 @@ Ao final deste curso, você será capaz de:
 
 > 📎 **Ligações diretas** (saltar no leitor Markdown / GitHub; **fora** do bloco ASCII acima): [Linha do tempo CLI — Módulo 0](#modulo-0-linha-tempo-cli) · [Decisão subchaves e curvas ECC — Módulo 1](#modulo-1-decisao-subchaves-ecc) · [Diagnóstico subchave de cifra \[E\] — Módulo 2](#modulo-2-diagnostico-subchave-e) · [Modelo de e‑mail de revogação — Módulo 3](#modulo-3-modelo-email-revogacao) · [TOP 15 e gravidade (ponte Módulo 9)](#modulo-9-top15-gravidade) · [Apêndice A — tabela completa](#apendice-a) · [**Whonix capstone — playbook 10**](playbooks/10-whonix-capstone.md)
 
-> 📎 **Whonix capstone (autocontido neste repo):** após Módulos 6–7, use [Playbook 10](playbooks/10-whonix-capstone.md) + scripts `pgp-whonix-*` ([`scripts/README.md`](scripts/README.md)) — baixar, verificar (`derivative.asc`), instalar VirtualBox, importar VMs e confirmar Tor na Workstation antes de importar subkeys.
+> 📎 **Whonix capstone (autocontido neste repo):** após Módulos 6–7, use [Playbook 10](playbooks/10-whonix-capstone.md) + scripts `pgp-whonix-*` ([`scripts/README.md`](scripts/README.md)) — instalar VirtualBox verificado (MOK/sign/verify-host se Secure Boot), baixar e verificar a `.ova` (`derivative.asc`), importar VMs e confirmar Tor na Workstation antes de importar subkeys.
 
 > 📎 **Trilha integrada [Zero Trust Core Expert](https://github.com/VIPs-com/Zero-Trust-Core)** (âncoras para links do outro curso): [#modulo-0-ztc](#modulo-0-ztc) · [#modulo-1-ztc](#modulo-1-ztc) · [#modulo-2-ztc](#modulo-2-ztc) · [#modulo-3-ztc](#modulo-3-ztc) · [#modulo-5-ztc](#modulo-5-ztc) · [#modulo-6-ztc](#modulo-6-ztc) · [#modulo-10-ztc](#modulo-10-ztc) · [#comando-6-1-tails-ztc](#comando-6-1-tails-ztc) · [#comando-3-1-revogacao-ztc](#comando-3-1-revogacao-ztc) · [#comando-6-4](#comando-6-4) · [Manual ZTC](https://github.com/VIPs-com/Zero-Trust-Core/blob/main/docs/MANUAL-DE-USO.md)
 
@@ -4139,7 +4139,9 @@ A progressão **🔴 simples → 🟡 com fingerprint → 🟢 completa** com ex
 | `gpg-health-check.sh` | Auditoria de estado | Lab + Produção | Diário/Semanal |
 | `gpg-export-subkeys.sh` | Export no Tails offline | Operação sensível | Sob demanda |
 | `gpg-import-subkeys.sh` | Import no host online | Reinstalação/restore | Sob demanda |
-| `pgp-whonix-install-virtualbox.sh` | VirtualBox Oracle verificado (host Debian) | Capstone Whonix | Uma vez |
+| `pgp-whonix-install-virtualbox.sh` | VirtualBox Oracle verificado + Extension Pack + MOK (se Secure Boot); retoma se já instalado | Capstone Whonix | Uma vez |
+| `pgp-whonix-sign-virtualbox-modules.sh` | Assina + carrega `vboxdrv` (após tela azul MOK; repetir a cada kernel novo) | Capstone Whonix | Pós-MOK / pós-kernel |
+| `pgp-whonix-verify-virtualbox-host.sh` | 9 checks read-only do host — esperado: `RESULTADO: PASS` | Capstone Whonix | Pós-sign |
 | `pgp-whonix-verify-image.sh` | Verificação PGP da imagem `.ova` | Capstone Whonix | Por download |
 | `pgp-whonix-import-ova.sh` | Verify + `VBoxManage import` | Capstone Whonix | Por download |
 | `pgp-whonix-verificar-tor.sh` | Tor + `systemcheck` na Workstation | Capstone Whonix | Pós-boot |
