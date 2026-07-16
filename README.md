@@ -8,12 +8,12 @@ Curso em **um único Markdown** (versão canônica **1.0**), com scripts opciona
 |---------|-----------|
 | [🎓 OpenPGP-GPG do Zero ao Expert - Versão 1.0.md](./🎓%20OpenPGP-GPG%20do%20Zero%20ao%20Expert%20-%20Versão%201.0.md) | Curso completo (módulos, comandos, checkpoints, apêndices). Mapa ASCII + **Ligações diretas** no §1. |
 | [`playbooks/`](./playbooks/) | 10 guias **código-primeiro** (0–9 + **10 Whonix capstone**) com fluxogramas Mermaid |
-| [`scripts/`](./scripts/) | `gpg-health-check.sh` (Módulo 8) · `pgp-whonix-*` (capstone Whonix) — copiar para `~/bin/` |
+| [`scripts/`](./scripts/) | `gpg-health-check.sh` (Módulo 8) · `pgp-whonix-*` (capstone: install · sign · verify-host · OVA · Tor) — copiar para `~/bin/` |
 | [`LICENSE`](./LICENSE) | Direitos reservados (por padrão); substituir se mudar a política editorial |
 
 **Quer executar agora (zero teoria, código direto)?** → **[`playbooks/`](./playbooks/)** — 10 guias (incl. capstone Whonix) + scripts `pgp-whonix-*`.
 
-**Release:** [v1.0.1](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/releases/tag/v1.0.1) (Latest) · [v1.0.0](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/releases/tag/v1.0.0)
+**Release:** [v1.0.3](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/releases/tag/v1.0.3) (Latest) · [v1.0.2](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/releases/tag/v1.0.2) · [v1.0.1](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/releases/tag/v1.0.1) (capstone Whonix) · [v1.0.0](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/releases/tag/v1.0.0)
 
 <a id="trilha-integrada-zero-trust-core-expert"></a>
 
@@ -39,7 +39,7 @@ Depois dos **Módulos 0–5** (ou em paralelo na trilha Expert deste repositóri
 ## Requisitos no leitor
 
 - **GnuPG** ~2.4.x (Ubuntu 24.04 do curso); trechos experimentais **2.5.19+** (**ML-KEM** / `pqc`; rótulo «Kyber» na CLI) onde indicado.
-- **Tails** 7.7.1+ para laboratório offline; imagem **`.img`** para pendrive (ver curso, COMANDO 6.1).
+- **Tails** 7.9.x+ recomendado para laboratório offline (mínimo documentado no curso: 7.7.1+); imagem **`.img`** para pendrive (ver curso, COMANDO 6.1).
 - **Sequoia `sq`** ~1.3.x onde o Módulo 12 referenciar.
 
 ## Licença e uso
