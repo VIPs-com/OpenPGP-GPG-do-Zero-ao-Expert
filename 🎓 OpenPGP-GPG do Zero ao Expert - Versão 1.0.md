@@ -5,7 +5,7 @@
 **Tails:** 7.7.1+ (confira sempre em [tails.net/install/download](https://tails.net/install/download/index.en.html))  
 **Sequoia (`sq`):** exemplos do curso alinhados a **sequoia-sq ~1.3.x** ([manual `sq(1)`](https://sequoia-pgp.gitlab.io/sequoia-sq/man/sq.1.html) · [páginas do projeto](https://sequoia-pgp.gitlab.io/sequoia-sq/) · depois de instalar, use `sq version`)  
 **Metodologia:** 🔴🟡🟢🔵 + COMANDO A COMANDO + Checkpoints  
-**Status:** ✅ **VERSÃO 1.0 — material canônico único** · **Release GitHub:** [`v1.0.1`](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/releases/tag/v1.0.1) (jul/2026 — capstone Whonix + scripts `pgp-whonix-*`)
+**Status:** ✅ **VERSÃO 1.0 — material canônico único** · **Release GitHub:** [`v1.0.3`](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/releases/tag/v1.0.3) (Latest) · capstone Whonix desde [`v1.0.1`](https://github.com/VIPs-com/OpenPGP-GPG-do-Zero-ao-Expert/releases/tag/v1.0.1) (`pgp-whonix-*` · MOK/sign/verify-host)
 
 > 📌 **Nota editorial:** **`🎓 OpenPGP-GPG do Zero ao Expert - Versão 1.0.md`** é o curso oficial (**VERSÃO 1.0 canônica**), arquivo único no projeto. O cabeçalho usa **OpenPGP/GPG** como nome didático do curso; o *filename* usa **OpenPGP-GPG** (hífen) para evitar o typo histórico «OpenPGPGPG» no nome em disco.
 
